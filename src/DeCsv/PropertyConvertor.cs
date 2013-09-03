@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace DeCsv
 {
-	internal static class PropertyConvertor
+	public static class PropertyConvertor
 	{
 		public static void SetValue<T>(object item, PropertyInfo property, T value)
 		{

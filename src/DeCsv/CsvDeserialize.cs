@@ -7,6 +7,14 @@ using System.Text;
 
 namespace DeCsv
 {
+	public static class CsvSerializer
+	{
+		public static IEnumerable<T> DeserializeEnumerableFromStream<T>(Stream stream)
+		{
+			return CsvDeserialize.DeSerialize<T>(stream);
+		} 
+	}
+
 	public static class CsvDeserialize
 	{
 		private const char DELIMETER = ',';
