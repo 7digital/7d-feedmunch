@@ -3,9 +3,9 @@ using System.IO;
 using ServiceStack.Text;
 using SevenDigital.Api.FeedReader.Feeds.Schema;
 
-namespace SevenDigital.Api.FeedReader.Unit.Tests
+namespace SevenDigital.Api.FeedReader.Unit.Tests.TestData
 {
-	public static class TestData
+	public static class ArtistData
 	{
 		public static string GetArtistCsv()
 		{

@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using SevenDigital.Api.FeedReader.Http;
 
-namespace SevenDigital.Api.FeedReader.Feeds.Artist
+namespace SevenDigital.Api.FeedReader.Feeds
 {
 	public class FeedDownload
 	{

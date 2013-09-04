@@ -52,9 +52,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Feeds\Artist\ArtistFeed.cs" />
-    <Compile Include="Feeds\Artist\FeedDownload.cs" />
+    <Compile Include="Feeds\FeedDownload.cs" />
     <Compile Include="Feeds\Artist\ArtistFeedReader.cs" />
-    <Compile Include="Feeds\Artist\ArtistFeedUnpacker.cs" />
+    <Compile Include="Feeds\FeedUnpacker.cs" />
     <Compile Include="Configuration\ApiUrl.cs" />
     <Compile Include="Configuration\OAuthConsumerCreds.cs" />
     <Compile Include="Dates\DateExtensions.cs" />

@@ -1,15 +1,15 @@
 ﻿using System.IO;
 using System.IO.Compression;
 
-namespace SevenDigital.Api.FeedReader.Feeds.Artist
+namespace SevenDigital.Api.FeedReader.Feeds
 {
-	public class ArtistFeedUnpacker : IFeedUnpacker
+	public class FeedUnpacker : IFeedUnpacker
 	{
-		private readonly Feed _artistFeed;
+		private readonly Feed _feed;
 
-		public ArtistFeedUnpacker(Feed artistFeed)
+		public FeedUnpacker(Feed feed)
 		{
-			_artistFeed = artistFeed;
+			_feed = feed;
 		}
 
 		public Stream GetDecompressedStream()
@@ -17,7 +17,7 @@ namespace SevenDigital.Api.FeedReader.Feeds.Artist
 			FileStream fileStream = null;
 			try
 			{
-				fileStream = new FileStream(_artistFeed.GetLatest(), FileMode.Open, FileAccess.Read);
+				fileStream = new FileStream(_feed.GetLatest(), FileMode.Open, FileAccess.Read);
 				return new GZipStream(fileStream, CompressionMode.Decompress);
 			}
 			catch

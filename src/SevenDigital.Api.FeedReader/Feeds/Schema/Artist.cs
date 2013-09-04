@@ -9,4 +9,9 @@
 		public string Image { get; set; }
 		public string Url { get; set; }
 	}
+
+	public class Track
+	{
+		public int TrackId { get; set; }
+	}
 }

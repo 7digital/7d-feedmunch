@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using NUnit.Framework;
 using Rhino.Mocks;
+using SevenDigital.Api.FeedReader.Feeds;
 using SevenDigital.Api.FeedReader.Feeds.Artist;
 using SevenDigital.Api.FeedReader.Http;
 
