@@ -14,8 +14,8 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 		public void _returns_true_if_feed_exists()
 		{
 			var artistFeed = FeedThatExists();
-			var artistFeedDownload = new FeedDownload(null, null, artistFeed);
-			Assert.That(artistFeedDownload.FeedAlreadyExists());
+			var artistFeedDownload = new FeedDownload(null, null);
+			Assert.That(artistFeedDownload.FeedAlreadyExists(artistFeed));
 		}
 
 		[Test]
@@ -25,8 +25,8 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 
 			var feedsUrlCreator = MockRepository.GenerateStub<IFeedsUrlCreator>();
 
-			var artistFeedDownload = new FeedDownload(feedsUrlCreator, null, artistFeed);
-			artistFeedDownload.SaveLocally();
+			var artistFeedDownload = new FeedDownload(feedsUrlCreator, null);
+			artistFeedDownload.SaveLocally(artistFeed);
 
 			feedsUrlCreator.AssertWasNotCalled(x => x.SignUrlForLatestArtistFeed(FeedType.Full, "GB"));
 		}
@@ -35,8 +35,8 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 		public void _returns_false_if_feed_doesnt_exists()
 		{
 			var artistFeed = FeedThatDoesNotExist();
-			var artistFeedDownload = new FeedDownload(null, null, artistFeed);
-			Assert.That(artistFeedDownload.FeedAlreadyExists(), Is.False);
+			var artistFeedDownload = new FeedDownload(null, null);
+			Assert.That(artistFeedDownload.FeedAlreadyExists(artistFeed), Is.False);
 		}
 
 		[Test]
@@ -51,8 +51,8 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 
 			var webClientWrapper = MockRepository.GenerateStub<IWebClientWrapper>();
 
-			var artistFeedDownload = new FeedDownload(feedsUrlCreator, webClientWrapper, artistFeed);
-			artistFeedDownload.SaveLocally();
+			var artistFeedDownload = new FeedDownload(feedsUrlCreator, webClientWrapper);
+			artistFeedDownload.SaveLocally(artistFeed);
 
 			feedsUrlCreator.AssertWasCalled(x => x.SignUrlForLatestArtistFeed(FeedType.Full, "GB"));
 
