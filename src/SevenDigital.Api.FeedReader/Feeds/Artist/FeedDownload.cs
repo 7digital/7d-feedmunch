@@ -3,17 +3,17 @@ using SevenDigital.Api.FeedReader.Http;
 
 namespace SevenDigital.Api.FeedReader.Feeds.Artist
 {
-	public class ArtistFeedDownload
+	public class FeedDownload
 	{
 		private readonly IFeedsUrlCreator _feedsUrlCreator;
 		private readonly IWebClientWrapper _webClient;
-		private readonly Feed _artistFeed;
+		private readonly Feed _suppliedFeed;
 
-		public ArtistFeedDownload(IFeedsUrlCreator feedsUrlCreator, IWebClientWrapper webClient, Feed artistFeed)
+		public FeedDownload(IFeedsUrlCreator feedsUrlCreator, IWebClientWrapper webClient, Feed suppliedFeed)
 		{
 			_feedsUrlCreator = feedsUrlCreator;
 			_webClient = webClient;
-			_artistFeed = artistFeed;
+			_suppliedFeed = suppliedFeed;
 		}
 
 		public void SaveLocally()
@@ -22,12 +22,12 @@ namespace SevenDigital.Api.FeedReader.Feeds.Artist
 
 			var signedFeedsUrl = _feedsUrlCreator.SignUrlForLatestArtistFeed(FeedType.Full, "GB");
 
-			_webClient.DownloadFile(signedFeedsUrl, _artistFeed.GetLatest());
+			_webClient.DownloadFile(signedFeedsUrl, _suppliedFeed.GetLatest());
 		}
 
 		public bool FeedAlreadyExists()
 		{
-			if (!File.Exists(_artistFeed.GetLatest()))
+			if (!File.Exists(_suppliedFeed.GetLatest()))
 				return false;
 
 			return true;

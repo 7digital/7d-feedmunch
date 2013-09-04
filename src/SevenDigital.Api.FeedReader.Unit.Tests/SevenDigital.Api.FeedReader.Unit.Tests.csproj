@@ -60,7 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArtistFeedDownloadTests.cs" />
+    <Compile Include="FeedDownloadTests.cs" />
     <Compile Include="ArtistFeedReaderTests.cs" />
     <Compile Include="DateExtensionTest.cs" />
     <Compile Include="FeedsFileHelperTests.cs" />

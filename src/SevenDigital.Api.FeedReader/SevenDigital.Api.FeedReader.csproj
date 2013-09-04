@@ -52,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Feeds\Artist\ArtistFeed.cs" />
-    <Compile Include="Feeds\Artist\ArtistFeedDownload.cs" />
+    <Compile Include="Feeds\Artist\FeedDownload.cs" />
     <Compile Include="Feeds\Artist\ArtistFeedReader.cs" />
     <Compile Include="Feeds\Artist\ArtistFeedUnpacker.cs" />
     <Compile Include="Configuration\ApiUrl.cs" />
