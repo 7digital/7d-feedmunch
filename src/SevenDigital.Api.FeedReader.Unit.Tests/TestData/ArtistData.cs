@@ -7,17 +7,17 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests.TestData
 {
 	public static class ArtistData
 	{
-		public static string GetArtistCsv()
+		public static string GetCsv()
 		{
 			return CsvSerializer.SerializeToCsv(GetArtists());
 		}
 
-		public static Stream GetArtistCsvStream()
+		public static Stream GetCsvStream()
 		{
 			var memoryStream = new MemoryStream();
 
 			var streamWriter = new StreamWriter(memoryStream);
-			streamWriter.Write(GetArtistCsv());
+			streamWriter.Write(GetCsv());
 			streamWriter.Flush();
 			memoryStream.Position = 0;
 
