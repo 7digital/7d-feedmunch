@@ -17,6 +17,7 @@ namespace DeCsv.Unit.Tests
 			Assert.That(queryRows[0].Country, Is.EqualTo("US"));
 			Assert.That(queryRows[0].Query, Is.EqualTo("Your Song"));
 			Assert.That(queryRows[0].Title, Is.EqualTo("Your Song"));
+			Assert.That(queryRows[0].Date, Is.EqualTo(new DateTime(2008, 03, 01)));
 		}
 
 		[Test]
@@ -28,6 +29,8 @@ namespace DeCsv.Unit.Tests
 			Assert.That(queryRows[0].Country, Is.EqualTo("US"));
 			Assert.That(queryRows[0].Query, Is.EqualTo(""));
 			Assert.That(queryRows[0].Title, Is.EqualTo("Patience"));
+			Assert.That(queryRows[0].Date, Is.EqualTo(new DateTime(2008, 03, 01)));
+
 		}
 
 		[Test]
@@ -39,6 +42,8 @@ namespace DeCsv.Unit.Tests
 			Assert.That(queryRows[0].Country, Is.EqualTo("UK"));
 			Assert.That(queryRows[0].Query, Is.EqualTo("Definately, Maybe"));
 			Assert.That(queryRows[0].Title, Is.EqualTo("Definately, Maybe"));
+			Assert.That(queryRows[0].Date, Is.EqualTo(new DateTime(2008, 03, 01)));
+
 		}
 
 		[Test]

@@ -7,7 +7,7 @@ namespace DeCsv.Unit.Tests
 	public class PropertyConverterTests
 	{
 		[Test]
-		public void Can_deul_with_string_to_bool_transform()
+		public void Can_deal_with_string_to_bool_transform()
 		{
 			var propertyInfo = PropertyConvertor.GetProperty<QueryRow>("Ignore");
 
@@ -35,6 +35,10 @@ namespace DeCsv.Unit.Tests
 			var longProperty = PropertyConvertor.GetProperty<Test>("Long");
 			PropertyConvertor.SetValue(testObject, longProperty, long.MaxValue.ToString());
 			Assert.That(testObject.Long, Is.EqualTo(long.MaxValue));
+
+			var decimalProperty = PropertyConvertor.GetProperty<Test>("Decimal");
+			PropertyConvertor.SetValue(testObject, decimalProperty, decimal.MaxValue.ToString());
+			Assert.That(testObject.Decimal, Is.EqualTo(decimal.MaxValue));
 		}
 
 		[Test]
@@ -51,6 +55,7 @@ namespace DeCsv.Unit.Tests
 			public short Short { get; set; }
 			public int Int { get; set; }
 			public long Long { get; set; }
+			public decimal Decimal { get; set; }
 			public DateTime TImestamp { get; set; }
 		}
 

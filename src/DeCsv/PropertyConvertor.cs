@@ -25,6 +25,18 @@ namespace DeCsv
 			{
 				methodInfo.Invoke(item, new object[] { Convert.ToInt64(value) });
 			}
+			else if (property.PropertyType == typeof(decimal))
+			{
+				methodInfo.Invoke(item, new object[] { Convert.ToDecimal(value) });
+			}
+			else if (property.PropertyType == typeof(float))
+			{
+				methodInfo.Invoke(item, new object[] { Convert.ToSingle(value) });
+			}
+			else if (property.PropertyType == typeof(double))
+			{
+				methodInfo.Invoke(item, new object[] { Convert.ToDouble(value) });
+			}
 			else if (property.PropertyType == typeof(DateTime))
 			{
 				methodInfo.Invoke(item, new object[] { Convert.ToDateTime(value) });
