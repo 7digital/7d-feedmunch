@@ -9,7 +9,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 	[TestFixture]
 	public class TrackFeedReaderTests
 	{
-		[Test, Ignore]
+		[Test]
 		public void Can_read_from_stub_feed()
 		{
 			var csvStream = TrackData.GetCsvStream();

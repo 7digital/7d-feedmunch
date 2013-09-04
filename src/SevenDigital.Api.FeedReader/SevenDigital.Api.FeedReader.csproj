@@ -32,9 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DeCsv, Version=10.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DeCsv, Version=12.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DeCsv.1.0.10\lib\net40\DeCsv.dll</HintPath>
+      <HintPath>..\..\packages\DeCsv.1.0.12\lib\net40\DeCsv.dll</HintPath>
     </Reference>
     <Reference Include="SevenDigital.Api.Schema">
       <HintPath>..\..\packages\SevenDigital.Api.Wrapper.2.0.11\lib\net40\SevenDigital.Api.Schema.dll</HintPath>
