@@ -32,9 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DeCsv, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DeCsv, Version=10.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DeCsv.1.0.5\lib\net40\DeCsv.dll</HintPath>
+      <HintPath>..\..\packages\DeCsv.1.0.10\lib\net40\DeCsv.dll</HintPath>
     </Reference>
     <Reference Include="SevenDigital.Api.Schema">
       <HintPath>..\..\packages\SevenDigital.Api.Wrapper.2.0.11\lib\net40\SevenDigital.Api.Schema.dll</HintPath>
@@ -62,6 +62,9 @@
     <Compile Include="FeedsFileHelper.cs" />
     <Compile Include="FeedsHelper.cs" />
     <Compile Include="FeedsUrlCreator.cs" />
+    <Compile Include="Feeds\Schema\Track.cs" />
+    <Compile Include="Feeds\Track\TrackFeed.cs" />
+    <Compile Include="Feeds\Track\TrackFeedReader.cs" />
     <Compile Include="FeedType.cs" />
     <Compile Include="Http\IWebClientWrapper.cs" />
     <Compile Include="Http\WebClientWrapper.cs" />
