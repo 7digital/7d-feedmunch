@@ -8,6 +8,7 @@ namespace SevenDigital.Api.FeedReader
 		public const DayOfWeek FULL_FEED_DAY_OF_WEEK = DayOfWeek.Monday;
 
 		public abstract string GetLatest();
+		public abstract FeedCatalogueType FeedType();
 
 		protected string GetPreviousFullFeedDate()
 		{

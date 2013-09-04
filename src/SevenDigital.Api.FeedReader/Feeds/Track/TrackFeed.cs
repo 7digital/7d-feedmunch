@@ -4,17 +4,15 @@ namespace SevenDigital.Api.FeedReader.Feeds.Track
 {
 	public class TrackFeed : Feed
 	{
-		private readonly IFileHelper _fileHelper;
-
-		public TrackFeed(IFileHelper fileHelper)
-		{
-			_fileHelper = fileHelper;
-		}
-
 		public override string GetLatest()
 		{
 			var feedsDate = GetPreviousFullFeedDate();
-			return Path.Combine(_fileHelper.GetOrCreateFeedsFolder(), feedsDate + "-track-feed.gz");
+			return feedsDate + "-track-feed.gz";
+		}
+
+		public override FeedCatalogueType FeedType()
+		{
+			return FeedCatalogueType.Track;
 		}
 	}
 }

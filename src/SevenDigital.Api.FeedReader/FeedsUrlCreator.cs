@@ -10,7 +10,7 @@ namespace SevenDigital.Api.FeedReader
 		private readonly IApiUri _apiUrl;
 		private readonly IOAuthCredentials _oauthConsumerCreds;
 
-		private const string ARTIST_FEED_ENDPOINT = "/feed/artist/{0}";
+		private const string FEED_ENDPOINT = "/feed/{0}/{1}";
 		private const string REQUIRED_PARAMS_QUERYSTRING = "?country={0}&date={1}";
 
 		public FeedsUrlCreator(IUrlSigner urlSigner, IApiUri apiUrl, IOAuthCredentials oauthConsumerCreds )
@@ -20,11 +20,11 @@ namespace SevenDigital.Api.FeedReader
 			_oauthConsumerCreds = oauthConsumerCreds;
 		}
 
-		public string SignUrlForLatestArtistFeed(FeedType type, string countryCode)
+		public string SignUrlForLatestFeed(FeedCatalogueType feedCatalogueType, FeedType type, string countryCode)
 		{
 			RequireString("countryCode", countryCode);
 
-			var endpoint = string.Format(ARTIST_FEED_ENDPOINT, type.ToString().ToLower());
+			var endpoint = string.Format(FEED_ENDPOINT, feedCatalogueType.ToString().ToLower(), type.ToString().ToLower());
 			var querystring = string.Format(REQUIRED_PARAMS_QUERYSTRING, countryCode, FeedsHelper.GetPreviousFullFeedDate());
 			var url = string.Concat(_apiUrl.Uri, endpoint, querystring);
 
@@ -36,5 +36,12 @@ namespace SevenDigital.Api.FeedReader
 			if(string.IsNullOrEmpty(value))
 				throw new ArgumentNullException(paramName);
 		}
+	}
+
+	public enum FeedCatalogueType
+	{
+		Artist,
+		Release,
+		Track
 	}
 }

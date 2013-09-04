@@ -7,20 +7,23 @@ namespace SevenDigital.Api.FeedReader.Feeds
 	{
 		private readonly IFeedsUrlCreator _feedsUrlCreator;
 		private readonly IWebClientWrapper _webClient;
+		private readonly IFileHelper _fileHelper;
 
-		public FeedDownload(IFeedsUrlCreator feedsUrlCreator, IWebClientWrapper webClient)
+		public FeedDownload(IFeedsUrlCreator feedsUrlCreator, IWebClientWrapper webClient, IFileHelper fileHelper)
 		{
 			_feedsUrlCreator = feedsUrlCreator;
 			_webClient = webClient;
+			_fileHelper = fileHelper;
 		}
 
 		public void SaveLocally(Feed suppliedFeed)
 		{
 			if (FeedAlreadyExists(suppliedFeed)) return;
 
-			var signedFeedsUrl = _feedsUrlCreator.SignUrlForLatestArtistFeed(FeedType.Full, "GB");
+			var signedFeedsUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.FeedType(), FeedType.Full, "GB");
 
-			_webClient.DownloadFile(signedFeedsUrl, suppliedFeed.GetLatest());
+			var fileName = Path.Combine(_fileHelper.GetOrCreateFeedsFolder(), suppliedFeed.GetLatest());
+			_webClient.DownloadFile(signedFeedsUrl, fileName);
 		}
 
 		public bool FeedAlreadyExists(Feed suppliedFeed)

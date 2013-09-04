@@ -4,17 +4,15 @@ namespace SevenDigital.Api.FeedReader.Feeds.Artist
 {
 	public class ArtistFeed : Feed
 	{
-		private readonly IFileHelper _fileHelper;
-
-		public ArtistFeed(IFileHelper fileHelper)
-		{
-			_fileHelper = fileHelper;
-		}
-
 		public override string GetLatest()
 		{
 			var feedsDate = GetPreviousFullFeedDate();
-			return Path.Combine(_fileHelper.GetOrCreateFeedsFolder(), feedsDate + "-artist-feed.gz");
+			return feedsDate + "-artist-feed.gz";
+		}
+
+		public override FeedCatalogueType FeedType()
+		{
+			return FeedCatalogueType.Artist;
 		}
 	}
 }
