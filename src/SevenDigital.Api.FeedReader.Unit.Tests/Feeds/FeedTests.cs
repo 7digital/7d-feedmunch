@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SevenDigital.Api.FeedReader.Feeds;
-using SevenDigital.Api.FeedReader.Feeds.Artist;
-using SevenDigital.Api.FeedReader.Feeds.Release;
-using SevenDigital.Api.FeedReader.Feeds.Track;
 
 namespace SevenDigital.Api.FeedReader.Unit.Tests.Feeds
 {
