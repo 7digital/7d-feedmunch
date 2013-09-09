@@ -14,7 +14,7 @@ namespace SevenDigital.Api.FeedReader.Feeds.Artist
 
 		public IEnumerable<Schema.Artist> ReadIntoList()
 		{
-			var decompressedStream = _feedUnpacker.GetDecompressedStream();
+			var decompressedStream = _feedUnpacker.GetDecompressedStream(new ArtistFeed());
 			return CsvDeserialize.DeSerialize<Schema.Artist>(decompressedStream);
 		}
 	}

@@ -15,7 +15,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 			var csvStream = TrackData.GetCsvStream();
 			var feedUnpacker = MockRepository.GenerateStub<IFeedUnpacker>();
 
-			feedUnpacker.Stub(x => x.GetDecompressedStream()).IgnoreArguments().Return(csvStream);
+			feedUnpacker.Stub(x => x.GetDecompressedStream(new TrackFeed())).IgnoreArguments().Return(csvStream);
 			var artistFeedReader = new TrackFeedReader(feedUnpacker);
 
 			var readFromFeeds = artistFeedReader.ReadIntoList();

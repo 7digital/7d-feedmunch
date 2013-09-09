@@ -5,19 +5,19 @@ namespace SevenDigital.Api.FeedReader.Feeds
 {
 	public class FeedUnpacker : IFeedUnpacker
 	{
-		private readonly Feed _feed;
+		private readonly IFileHelper _fileHelper;
 
-		public FeedUnpacker(Feed feed)
+		public FeedUnpacker(IFileHelper fileHelper)
 		{
-			_feed = feed;
+			_fileHelper = fileHelper;
 		}
 
-		public Stream GetDecompressedStream()
+		public Stream GetDecompressedStream(Feed feed)
 		{
 			FileStream fileStream = null;
 			try
 			{
-				fileStream = new FileStream(_feed.GetLatest(), FileMode.Open, FileAccess.Read);
+				fileStream = new FileStream(BuildFullFilepath(feed), FileMode.Open, FileAccess.Read);
 				return new GZipStream(fileStream, CompressionMode.Decompress);
 			}
 			catch
@@ -28,6 +28,11 @@ namespace SevenDigital.Api.FeedReader.Feeds
 				}
 				throw;
 			}
+		}
+
+		private string BuildFullFilepath(Feed suppliedFeed)
+		{
+			return Path.Combine(_fileHelper.GetOrCreateFeedsFolder(), suppliedFeed.GetLatest());
 		}
 	}
 }
