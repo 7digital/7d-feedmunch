@@ -9,11 +9,22 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 	[TestFixture]
 	public class FeedDownloadTests
 	{
+		private IFeedsUrlCreator _feedsUrlCreator;
+		private IFileHelper _fileHelper;
+
+		[SetUp]
+		public void SetUp()
+		{
+			_feedsUrlCreator = MockRepository.GenerateStub<IFeedsUrlCreator>();
+			_fileHelper = MockRepository.GenerateStub<IFileHelper>();
+			_fileHelper.Stub(x => x.GetOrCreateFeedsFolder()).Return("testFolderName");
+		}
+
 		[Test]
 		public void _returns_true_if_feed_exists()
 		{
 			var artistFeed = FeedThatExists();
-			var artistFeedDownload = new FeedDownload(null, null, null);
+			var artistFeedDownload = new FeedDownload(null, null, _fileHelper);
 			Assert.That(artistFeedDownload.FeedAlreadyExists(artistFeed));
 		}
 
@@ -22,19 +33,17 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 		{
 			var artistFeed = FeedThatExists();
 
-			var feedsUrlCreator = MockRepository.GenerateStub<IFeedsUrlCreator>();
-
-			var artistFeedDownload = new FeedDownload(feedsUrlCreator, null, null);
+			var artistFeedDownload = new FeedDownload(_feedsUrlCreator, null, _fileHelper);
 			artistFeedDownload.SaveLocally(artistFeed);
 
-			feedsUrlCreator.AssertWasNotCalled(x => x.SignUrlForLatestFeed(FeedCatalogueType.Artist, FeedType.Full, "GB"));
+			_feedsUrlCreator.AssertWasNotCalled(x => x.SignUrlForLatestFeed(FeedCatalogueType.Artist, FeedType.Full, "GB"));
 		}
 
 		[Test]
 		public void _returns_false_if_feed_doesnt_exists()
 		{
 			var artistFeed = FeedThatDoesNotExist();
-			var artistFeedDownload = new FeedDownload(null, null, null);
+			var artistFeedDownload = new FeedDownload(null, null, _fileHelper);
 			Assert.That(artistFeedDownload.FeedAlreadyExists(artistFeed), Is.False);
 		}
 

@@ -22,16 +22,19 @@ namespace SevenDigital.Api.FeedReader.Feeds
 
 			var signedFeedsUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.FeedType(), FeedType.Full, "GB");
 
-			var fileName = Path.Combine(_fileHelper.GetOrCreateFeedsFolder(), suppliedFeed.GetLatest());
+			var fileName = BuildFullFilepath(suppliedFeed);
 			_webClient.DownloadFile(signedFeedsUrl, fileName);
 		}
 
 		public bool FeedAlreadyExists(Feed suppliedFeed)
 		{
-			if (!File.Exists(suppliedFeed.GetLatest()))
-				return false;
+			var fileName = BuildFullFilepath(suppliedFeed);
+			return File.Exists(fileName);
+		}
 
-			return true;
+		private string BuildFullFilepath(Feed suppliedFeed)
+		{
+			return Path.Combine(_fileHelper.GetOrCreateFeedsFolder(), suppliedFeed.GetLatest());
 		}
 	}
 }
