@@ -1,9 +1,14 @@
-﻿using System.IO;
-using SevenDigital.Api.FeedReader.Http;
+﻿using SevenDigital.Api.FeedReader.Http;
 
 namespace SevenDigital.Api.FeedReader.Feeds
 {
-	public class FeedDownload
+	public interface IFeedDownload
+	{
+		void SaveLocally(Feed suppliedFeed);
+		bool FeedAlreadyExists(Feed suppliedFeed);
+	}
+
+	public class FeedDownload : IFeedDownload
 	{
 		private readonly IFeedsUrlCreator _feedsUrlCreator;
 		private readonly IWebClientWrapper _webClient;
