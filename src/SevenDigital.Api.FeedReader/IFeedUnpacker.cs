@@ -4,6 +4,6 @@ namespace SevenDigital.Api.FeedReader
 {
 	public interface IFeedUnpacker
 	{
-		Stream GetDecompressedStream();
+		Stream GetDecompressedStream(Feed feed);
 	}
 }
