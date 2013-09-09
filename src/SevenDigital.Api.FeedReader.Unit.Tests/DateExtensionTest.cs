@@ -33,5 +33,13 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 			Assert.That(dateTime.PreviousDayOfWeek(DayOfWeek.Saturday), Is.EqualTo(new DateTime(2012, 12, 29)));
 			Assert.That(dateTime.PreviousDayOfWeek(DayOfWeek.Sunday), Is.EqualTo(new DateTime(2012, 12, 30)));
 		}
+
+		[Test]
+		public void Previous_returns_expected_dates_no_day_specified()
+		{
+			var dateTime = new DateTime(2013, 01, 01);
+
+			Assert.That(dateTime.PreviousDayOfWeek(), Is.EqualTo(new DateTime(2012, 12, 31)));;
+		}
 	}
 }

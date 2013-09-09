@@ -2,7 +2,7 @@
 
 namespace SevenDigital.Api.FeedReader.Feeds.Track
 {
-	public class TrackFeed : Feed
+	public class TrackFullFeed : Feed
 	{
 		public override string GetLatest()
 		{
@@ -10,9 +10,14 @@ namespace SevenDigital.Api.FeedReader.Feeds.Track
 			return feedsDate + "-track-feed.gz";
 		}
 
-		public override FeedCatalogueType FeedType()
+		public override FeedCatalogueType FeedCatalogueType()
 		{
-			return FeedCatalogueType.Track;
+			return FeedReader.FeedCatalogueType.Track;
+		}
+
+		public override FeedType FeedType()
+		{
+			return FeedReader.FeedType.Full;
 		}
 	}
 }

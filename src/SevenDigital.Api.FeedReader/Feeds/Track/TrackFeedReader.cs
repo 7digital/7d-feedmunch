@@ -14,7 +14,7 @@ namespace SevenDigital.Api.FeedReader.Feeds.Track
 
 		public IEnumerable<Schema.Track> ReadIntoList()
 		{
-			var decompressedStream = _feedUnpacker.GetDecompressedStream(new TrackFeed());
+			var decompressedStream = _feedUnpacker.GetDecompressedStream(new TrackFullFeed());
 			return CsvDeserialize.DeSerialize<Schema.Track>(decompressedStream);
 		}
 	}

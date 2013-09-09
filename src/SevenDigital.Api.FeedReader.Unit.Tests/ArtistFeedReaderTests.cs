@@ -15,7 +15,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 			var artistCsvStream = ArtistData.GetCsvStream();
 			var artistFeedFetcher = MockRepository.GenerateStub<IFeedUnpacker>();
 
-			artistFeedFetcher.Stub(x => x.GetDecompressedStream(new ArtistFeed())).IgnoreArguments().Return(artistCsvStream);
+			artistFeedFetcher.Stub(x => x.GetDecompressedStream(new ArtistFullFeed())).IgnoreArguments().Return(artistCsvStream);
 			var artistFeedReader = new ArtistFeedReader(artistFeedFetcher);
 
 			var readFromFeeds = artistFeedReader.ReadIntoList();

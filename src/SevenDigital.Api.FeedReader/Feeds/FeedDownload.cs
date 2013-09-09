@@ -20,7 +20,7 @@ namespace SevenDigital.Api.FeedReader.Feeds
 		{
 			if (FeedAlreadyExists(suppliedFeed)) return;
 
-			var signedFeedsUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.FeedType(), FeedType.Full, "GB");
+			var signedFeedsUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.FeedCatalogueType(), FeedType.Full, "GB");
 
 			var fileName = BuildFullFilepath(suppliedFeed);
 			_webClient.DownloadFile(signedFeedsUrl, fileName);

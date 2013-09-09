@@ -51,7 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Feeds\Artist\ArtistFeed.cs" />
+    <Compile Include="Feeds\Artist\ArtistFullFeed.cs" />
+    <Compile Include="Feeds\Artist\ArtistIncrementalFeed.cs" />
+    <Compile Include="Feeds\AvailableFeeds.cs" />
     <Compile Include="Feeds\FeedDownload.cs" />
     <Compile Include="Feeds\Artist\ArtistFeedReader.cs" />
     <Compile Include="Feeds\FeedUnpacker.cs" />
@@ -63,8 +65,13 @@
     <Compile Include="FeedsHelper.cs" />
     <Compile Include="FeedsUrlCreator.cs" />
     <Compile Include="Feeds\Schema\Track.cs" />
-    <Compile Include="Feeds\Track\TrackFeed.cs" />
+    <Compile Include="Feeds\Release\ReleaseFullFeed.cs" />
+    <Compile Include="Feeds\Release\ReleaseIncrementalFeed.cs" />
+    <Compile Include="Feeds\Release\Release.cs" />
+    <Compile Include="Feeds\Release\ReleaseFeedReader.cs" />
+    <Compile Include="Feeds\Track\TrackFullFeed.cs" />
     <Compile Include="Feeds\Track\TrackFeedReader.cs" />
+    <Compile Include="Feeds\Track\TrackIncrementalFeed.cs" />
     <Compile Include="FeedType.cs" />
     <Compile Include="Http\IWebClientWrapper.cs" />
     <Compile Include="Http\WebClientWrapper.cs" />

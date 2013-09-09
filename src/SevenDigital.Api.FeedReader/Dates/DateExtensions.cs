@@ -21,5 +21,10 @@ namespace SevenDigital.Api.FeedReader.Dates
 				target -= 7;
 			return from.AddDays(target - start);
 		}
+
+		public static DateTime PreviousDayOfWeek(this DateTime from)
+		{
+			return from.AddDays(-1);
+		}
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace SevenDigital.Api.FeedReader.Feeds.Artist
 {
-	public class ArtistFeed : Feed
+	public class ArtistFullFeed : Feed
 	{
 		public override string GetLatest()
 		{
@@ -10,9 +10,14 @@ namespace SevenDigital.Api.FeedReader.Feeds.Artist
 			return feedsDate + "-artist-feed.gz";
 		}
 
-		public override FeedCatalogueType FeedType()
+		public override FeedCatalogueType FeedCatalogueType()
 		{
-			return FeedCatalogueType.Artist;
+			return FeedReader.FeedCatalogueType.Artist;
+		}
+
+		public override FeedType FeedType()
+		{
+			return FeedReader.FeedType.Full;
 		}
 	}
 }
