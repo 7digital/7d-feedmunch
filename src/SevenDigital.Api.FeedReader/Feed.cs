@@ -5,11 +5,23 @@ namespace SevenDigital.Api.FeedReader
 {
 	public abstract class Feed
 	{
+		private string _countryCode = "GB";
 		public const DayOfWeek FULL_FEED_DAY_OF_WEEK = DayOfWeek.Monday;
+		
+		public string GetLatest()
+		{
+			var feedsDate = GetPreviousIncrementalFeedDate();
+			return feedsDate + "-" + CountryCode.ToLower() + "-" + FeedCatalogueType().ToString().ToLower() + "-" + FeedType().ToString().ToLower() + "-feed.gz";
+		}
 
-		public abstract string GetLatest();
 		public abstract FeedCatalogueType FeedCatalogueType();
 		public abstract FeedType FeedType();
+
+		public string CountryCode
+		{
+			get { return _countryCode; }
+			set { _countryCode = value; }
+		}
 
 		protected string GetPreviousFullFeedDate()
 		{

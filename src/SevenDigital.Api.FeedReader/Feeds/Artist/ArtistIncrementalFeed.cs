@@ -2,12 +2,6 @@
 {
 	public class ArtistIncrementalFeed : Feed
 	{
-		public override string GetLatest()
-		{
-			var feedsDate = GetPreviousFullFeedDate();
-			return feedsDate + "-artist-inc-feed.gz";
-		}
-
 		public override FeedCatalogueType FeedCatalogueType()
 		{
 			return FeedReader.FeedCatalogueType.Artist;

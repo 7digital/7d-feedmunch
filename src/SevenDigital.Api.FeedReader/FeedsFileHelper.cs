@@ -23,6 +23,17 @@ namespace SevenDigital.Api.FeedReader
 			return GetOrCreateDirectoryAtRoot(_feedsFolder);
 		}
 
+		public bool FeedExists(Feed suppliedFeed)
+		{
+			var filePath = BuildFullFilepath(suppliedFeed);
+			return File.Exists(filePath);
+		}
+
+		public string BuildFullFilepath(Feed suppliedFeed)
+		{
+			return Path.Combine(GetOrCreateFeedsFolder(), suppliedFeed.GetLatest());
+		}
+
 		private static void TryCreateDirectory(string directory)
 		{
 			if (!Directory.Exists(directory))

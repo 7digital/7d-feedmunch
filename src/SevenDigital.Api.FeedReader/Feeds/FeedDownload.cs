@@ -20,21 +20,15 @@ namespace SevenDigital.Api.FeedReader.Feeds
 		{
 			if (FeedAlreadyExists(suppliedFeed)) return;
 
-			var signedFeedsUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.FeedCatalogueType(), suppliedFeed.FeedType(), "GB");
+			var signedFeedsUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.FeedCatalogueType(), suppliedFeed.FeedType(), suppliedFeed.CountryCode);
 
-			var fileName = BuildFullFilepath(suppliedFeed);
+			var fileName = _fileHelper.BuildFullFilepath(suppliedFeed);
 			_webClient.DownloadFile(signedFeedsUrl, fileName);
 		}
 
 		public bool FeedAlreadyExists(Feed suppliedFeed)
 		{
-			var fileName = BuildFullFilepath(suppliedFeed);
-			return File.Exists(fileName);
-		}
-
-		private string BuildFullFilepath(Feed suppliedFeed)
-		{
-			return Path.Combine(_fileHelper.GetOrCreateFeedsFolder(), suppliedFeed.GetLatest());
+			return _fileHelper.FeedExists(suppliedFeed);
 		}
 	}
 }
