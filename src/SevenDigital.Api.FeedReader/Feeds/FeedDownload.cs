@@ -6,6 +6,7 @@ namespace SevenDigital.Api.FeedReader.Feeds
 	{
 		void SaveLocally(Feed suppliedFeed);
 		bool FeedAlreadyExists(Feed suppliedFeed);
+		string CurrentSignedUrl { get; }
 	}
 
 	public class FeedDownload : IFeedDownload
@@ -25,15 +26,17 @@ namespace SevenDigital.Api.FeedReader.Feeds
 		{
 			if (FeedAlreadyExists(suppliedFeed)) return;
 
-			var signedFeedsUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.FeedCatalogueType(), suppliedFeed.FeedType(), suppliedFeed.CountryCode);
+			CurrentSignedUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.FeedCatalogueType(), suppliedFeed.FeedType(), suppliedFeed.CountryCode);
 
 			var fileName = _fileHelper.BuildFullFilepath(suppliedFeed);
-			_webClient.DownloadFile(signedFeedsUrl, fileName);
+			_webClient.DownloadFile(CurrentSignedUrl, fileName);
 		}
 
 		public bool FeedAlreadyExists(Feed suppliedFeed)
 		{
 			return _fileHelper.FeedExists(suppliedFeed);
 		}
+
+		public string CurrentSignedUrl { get; private set; }
 	}
 }

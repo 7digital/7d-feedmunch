@@ -72,6 +72,8 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 			var artistFeedDownload = new FeedDownload(feedsUrlCreator, webClientWrapper, fileHelper);
 			artistFeedDownload.SaveLocally(artistFeed);
 
+			Assert.That(artistFeedDownload.CurrentSignedUrl, Is.EqualTo(expectedSignedFeedsUrl));
+
 			feedsUrlCreator.AssertWasCalled(x => x.SignUrlForLatestFeed(FeedCatalogueType.Artist, FeedType.Full, "GB"));
 
 			webClientWrapper.AssertWasCalled(x => x.DownloadFile(Arg<string>.Is.Equal(expectedSignedFeedsUrl), Arg<string>.Is.Anything));
