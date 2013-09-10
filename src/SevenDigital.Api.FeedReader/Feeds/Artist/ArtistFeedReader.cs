@@ -12,9 +12,9 @@ namespace SevenDigital.Api.FeedReader.Feeds.Artist
 			_feedUnpacker = feedUnpacker;
 		}
 
-		public IEnumerable<Schema.Artist> ReadIntoList()
+		public IEnumerable<Schema.Artist> ReadIntoList(Feed feed)
 		{
-			var decompressedStream = _feedUnpacker.GetDecompressedStream(new ArtistFullFeed());
+			var decompressedStream = _feedUnpacker.GetDecompressedStream(feed);
 			return CsvDeserialize.DeSerialize<Schema.Artist>(decompressedStream);
 		}
 	}

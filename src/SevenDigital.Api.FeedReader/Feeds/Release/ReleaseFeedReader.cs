@@ -12,9 +12,9 @@ namespace SevenDigital.Api.FeedReader.Feeds.Release
 			_feedUnpacker = feedUnpacker;
 		}
 
-		public IEnumerable<Release> ReadIntoList()
+		public IEnumerable<Release> ReadIntoList(Feed feed)
 		{
-			var decompressedStream = _feedUnpacker.GetDecompressedStream(new ReleaseFullFeed());
+			var decompressedStream = _feedUnpacker.GetDecompressedStream(feed);
 			return CsvDeserialize.DeSerialize<Release>(decompressedStream);
 		}
 	}

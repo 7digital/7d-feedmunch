@@ -15,10 +15,11 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 			var csvStream = TrackData.GetCsvStream();
 			var feedUnpacker = MockRepository.GenerateStub<IFeedUnpacker>();
 
-			feedUnpacker.Stub(x => x.GetDecompressedStream(new TrackFullFeed())).IgnoreArguments().Return(csvStream);
-			var artistFeedReader = new TrackFeedReader(feedUnpacker);
+			var trackFullFeed = new TrackFullFeed();
+			feedUnpacker.Stub(x => x.GetDecompressedStream(trackFullFeed)).IgnoreArguments().Return(csvStream);
+			var trackFeedReader = new TrackFeedReader(feedUnpacker);
 
-			var readFromFeeds = artistFeedReader.ReadIntoList();
+			var readFromFeeds = trackFeedReader.ReadIntoList(trackFullFeed);
 
 			Assert.That(readFromFeeds.Count(), Is.EqualTo(2));
 

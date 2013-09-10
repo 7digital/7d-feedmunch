@@ -4,6 +4,6 @@ namespace SevenDigital.Api.FeedReader
 {
 	public interface IFeedReader<T>
 	{
-		IEnumerable<T> ReadIntoList();
+		IEnumerable<T> ReadIntoList(Feed feed);
 	}
 }
