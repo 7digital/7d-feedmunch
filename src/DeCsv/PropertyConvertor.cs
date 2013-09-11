@@ -11,7 +11,7 @@ namespace DeCsv
 
 			if (property.PropertyType == typeof(Boolean))
 			{
-				methodInfo.Invoke(item, new object[] { Convert.ToBoolean(value) });
+				methodInfo.Invoke(item, new object[] { TryConvert.ToBoolean(value) });
 			}
 			else if (property.PropertyType == typeof(int))
 			{

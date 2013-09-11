@@ -39,6 +39,11 @@ namespace DeCsv
 			return TryTo(() => Convert.ToDateTime(value), DateTime.MinValue);
 		}
 
+		public static bool ToBoolean<T>(T value)
+		{
+			return TryTo(() => Convert.ToBoolean(value), false);
+		}
+
 		private static TOut TryTo<TOut>(Func<TOut> to, TOut defaultValue)
 		{
 			try

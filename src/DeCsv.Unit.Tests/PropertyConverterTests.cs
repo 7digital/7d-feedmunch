@@ -20,6 +20,16 @@ namespace DeCsv.Unit.Tests
 		}
 
 		[Test]
+		public void Can_deal_with_empty_string_to_bool_transform()
+		{
+			var propertyInfo = PropertyConvertor.GetProperty<QueryRow>("Ignore");
+
+			var queryRow = new QueryRow();
+			PropertyConvertor.SetValue(queryRow, propertyInfo, "");
+			Assert.That(queryRow.Ignore, Is.False);
+		}
+
+		[Test]
 		public void Can_deal_with_numeric_transforms()
 		{
 			var fakeObjectToConvertTo = new Test();
