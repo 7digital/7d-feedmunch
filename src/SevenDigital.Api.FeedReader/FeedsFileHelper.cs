@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 
 namespace SevenDigital.Api.FeedReader
@@ -14,7 +15,9 @@ namespace SevenDigital.Api.FeedReader
 
 		public string GetOrCreateDirectoryAtRoot(string directoryName)
 		{
-			var directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), directoryName);
+			var path = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+
+			var directory = Path.Combine(path, directoryName);
 			TryCreateDirectory(directory);
 			return directory;
 		}
