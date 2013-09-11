@@ -33,18 +33,6 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 		}
 
 		[Test]
-		public void _does_not_try_to_save_if_feed_exists()
-		{
-			var artistFeed = new ArtistFullFeed();
-			_fileHelper.Stub(x => x.FeedExists(artistFeed)).Return(true);
-
-			var artistFeedDownload = new FeedDownload(_feedsUrlCreator, _webClient, _fileHelper);
-			artistFeedDownload.SaveLocally(artistFeed);
-
-			_feedsUrlCreator.AssertWasNotCalled(x => x.SignUrlForLatestFeed(FeedCatalogueType.Artist, FeedType.Full, "GB"));
-		}
-
-		[Test]
 		public void _returns_false_if_feed_doesnt_exists()
 		{
 			var artistFeed = new ArtistFullFeed();

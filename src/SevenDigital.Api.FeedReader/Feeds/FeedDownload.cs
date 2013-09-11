@@ -1,4 +1,6 @@
-﻿using SevenDigital.Api.FeedReader.Http;
+﻿using System.IO;
+using System.Net;
+using SevenDigital.Api.FeedReader.Http;
 
 namespace SevenDigital.Api.FeedReader.Feeds
 {
@@ -24,8 +26,6 @@ namespace SevenDigital.Api.FeedReader.Feeds
 
 		public void SaveLocally(Feed suppliedFeed)
 		{
-			if (FeedAlreadyExists(suppliedFeed)) return;
-
 			CurrentSignedUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.FeedCatalogueType(), suppliedFeed.FeedType(), suppliedFeed.CountryCode);
 
 			var fileName = _fileHelper.BuildFullFilepath(suppliedFeed);
