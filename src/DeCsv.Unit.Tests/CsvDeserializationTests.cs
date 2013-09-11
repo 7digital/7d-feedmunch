@@ -47,6 +47,15 @@ namespace DeCsv.Unit.Tests
 		}
 
 		[Test]
+		public void Should_deserialize_csv_that_contains_blank_price()
+		{
+			var queryRows = CsvDeserialize.DeSerialize<QueryRow>(TestData.TestCsvBlankPrice).ToList();
+			Assert.That(queryRows.Count, Is.EqualTo(1));
+			Assert.That(queryRows[0].Price, Is.EqualTo(0));
+
+		}
+
+		[Test]
 		public void Should_throw_meaningful_execption_if_header_row_doesnt_match_type()
 		{
 			var testCsv = TestData.TestCsv.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Skip(1).ToArray();

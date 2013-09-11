@@ -15,31 +15,31 @@ namespace DeCsv
 			}
 			else if (property.PropertyType == typeof(int))
 			{
-				methodInfo.Invoke(item, new object[] { Convert.ToInt32(value) });
+				methodInfo.Invoke(item, new object[] { TryConvert.ToInt32(value) });
 			}
 			else if (property.PropertyType == typeof(short))
 			{
-				methodInfo.Invoke(item, new object[] { Convert.ToInt16(value) });
+				methodInfo.Invoke(item, new object[] { TryConvert.ToInt16(value) });
 			}
 			else if (property.PropertyType == typeof(long))
 			{
-				methodInfo.Invoke(item, new object[] { Convert.ToInt64(value) });
+				methodInfo.Invoke(item, new object[] { TryConvert.ToInt64(value) });
 			}
 			else if (property.PropertyType == typeof(decimal))
 			{
-				methodInfo.Invoke(item, new object[] { Convert.ToDecimal(value) });
+				methodInfo.Invoke(item, new object[] { TryConvert.ToDecimal(value) });
 			}
 			else if (property.PropertyType == typeof(float))
 			{
-				methodInfo.Invoke(item, new object[] { Convert.ToSingle(value) });
+				methodInfo.Invoke(item, new object[] { TryConvert.ToSingle(value) });
 			}
 			else if (property.PropertyType == typeof(double))
 			{
-				methodInfo.Invoke(item, new object[] { Convert.ToDouble(value) });
+				methodInfo.Invoke(item, new object[] { TryConvert.ToDouble(value) });
 			}
 			else if (property.PropertyType == typeof(DateTime))
 			{
-				methodInfo.Invoke(item, new object[] { Convert.ToDateTime(value) });
+				methodInfo.Invoke(item, new object[] { TryConvert.ToDateTime(value) });
 			}
 			else
 			{
