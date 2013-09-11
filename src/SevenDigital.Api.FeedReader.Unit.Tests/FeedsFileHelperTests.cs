@@ -15,8 +15,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 			TryDeleteDirectory(expected);
 
 			var orCreateFeedsDirectory = feedsFileHelper.GetOrCreateFeedsFolder();
-			Assert.That(orCreateFeedsDirectory, Is.EqualTo(expected));
-			Assert.That(Directory.Exists(expected));
+			Assert.That(Directory.Exists(orCreateFeedsDirectory));
 		}
 
 		private static void TryDeleteDirectory(string expected)

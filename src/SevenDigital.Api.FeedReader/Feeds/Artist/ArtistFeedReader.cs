@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO.Compression;
 using DeCsv;
 
 namespace SevenDigital.Api.FeedReader.Feeds.Artist
