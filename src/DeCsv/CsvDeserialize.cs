@@ -71,7 +71,12 @@ namespace DeCsv
 
 			if (strings.Count > entitySchema.Count)
 			{
-				throw new CsvDeserializationException("Row length is greater than header row length");
+				throw new CsvDeserializationException("Row length is greater than header row length")
+				{
+					HeaderFields = entitySchema.Select(x=>x.Name),
+					RowFields = strings,
+					RowRaw = row
+				};
 			}
 
 			if (strings.Count < entitySchema.Count)

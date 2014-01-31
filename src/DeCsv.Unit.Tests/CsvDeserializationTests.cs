@@ -83,6 +83,12 @@ namespace DeCsv.Unit.Tests
 			var csvDeserializationException = Assert.Throws<CsvDeserializationException>(() => CsvDeserialize.DeSerialize<QueryRow>(TestData.TestCsvNotMatching).ToList());
 
 			Assert.That(csvDeserializationException.Message, Is.EqualTo("Row length is greater than header row length"));
+
+			Assert.That(csvDeserializationException.RowRaw, Is.EqualTo("UK,Definately, Maybe,Oasis,Definately, Maybe,false,2008-03-01T00:00:00Z,0.99"));
+			Assert.That(csvDeserializationException.RowFields.Count(), Is.EqualTo(9));
+			Assert.That(csvDeserializationException.HeaderFields.Count(), Is.EqualTo(7));
+			string actual = csvDeserializationException.ToString();
+			Assert.That(actual, Is.EqualTo("Row length is greater than header row length Rows: UK,Definately, Maybe,Oasis,Definately, Maybe,false,2008-03-01T00:00:00Z,0.99 Headers:Country,Query,Artist,Title,Ignore,Date,Price"));
 		}
 
 		[Test]
