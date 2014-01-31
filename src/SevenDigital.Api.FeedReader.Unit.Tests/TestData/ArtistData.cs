@@ -28,30 +28,30 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests.TestData
 		{
 			var keane = new Artist
 			{
-				ArtistId = 1,
-				Name = "Keane",
-				Popularity = "0.64",
-				Tags = "2000s",
-				Image = "http://cdn.7static.com/static/img/artistimages/00/000/000/0000000001_<$size$>.jpg",
-				Url = "http://www.7digital.com/artist//artists/keane/"
+				artistId = 1,
+				name = "Keane",
+				popularity = "0.64",
+				tags = "2000s",
+				image = "http://cdn.7static.com/static/img/artistimages/00/000/000/0000000001_<$size$>.jpg",
+				url = "http://www.7digital.com/artist//artists/keane/"
 			};
 			var blink = new Artist
 			{
-				ArtistId = 2,
-				Name = "Blink 182",
-				Popularity = "0.6",
-				Tags = "1990s,2000s,hard-rock-metal",
-				Image = "http://cdn.7static.com/static/img/artistimages/00/000/000/0000000002_<$size$>.jpg",
-				Url = "http://www.7digital.com/artist//artists/blink182/"
+				artistId = 2,
+				name = "Blink 182",
+				popularity = "0.6",
+				tags = "1990s,2000s,hard-rock-metal",
+				image = "http://cdn.7static.com/static/img/artistimages/00/000/000/0000000002_<$size$>.jpg",
+				url = "http://www.7digital.com/artist//artists/blink182/"
 			};
 			var amy = new Artist
 			{
-				ArtistId = 3,
-				Name = "Amy Winehouse",
-				Popularity = "0.69",
-				Tags = "singer-songwriter,2000s",
-				Image = "http://cdn.7static.com/static/img/artistimages/00/000/000/0000000003_<$size$>.jpg",
-				Url = "http://www.7digital.com/artist//artists/amy-winehouse/"
+				artistId = 3,
+				name = "Amy Winehouse",
+				popularity = "0.69",
+				tags = "singer-songwriter,2000s",
+				image = "http://cdn.7static.com/static/img/artistimages/00/000/000/0000000003_<$size$>.jpg",
+				url = "http://www.7digital.com/artist//artists/amy-winehouse/"
 			};
 
 			return new List<Artist>

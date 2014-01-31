@@ -5,6 +5,6 @@
 
 	public class ReleaseIncremental : Release
 	{
-		public string Action { get; set; }
+		public string action { get; set; }
 	}
 }
