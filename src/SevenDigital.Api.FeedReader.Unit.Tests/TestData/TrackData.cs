@@ -27,7 +27,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests.TestData
 
 		public static List<Track> GetTracks()
 		{
-			var salsaPassion = new Track()
+			var salsaPassion = new Track
 			{
 				ArtistAppearsAs = "Salsa Passion",
 				ArtistId = 323122,
@@ -49,7 +49,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests.TestData
 				Version = ""
 			};
 
-			var smoothSailing = new Track()
+			var smoothSailing = new Track
 			{
 				ArtistAppearsAs = "Queensof the Stone Age",
 				ArtistId = 5845,

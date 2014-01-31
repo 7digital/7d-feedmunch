@@ -1,14 +1,14 @@
-﻿using System.IO;
-using System.Net;
+﻿using System.Threading.Tasks;
 using SevenDigital.Api.FeedReader.Http;
 
 namespace SevenDigital.Api.FeedReader.Feeds
 {
 	public interface IFeedDownload
 	{
-		void SaveLocally(Feed suppliedFeed);
+		Task SaveLocally(Feed suppliedFeed);
 		bool FeedAlreadyExists(Feed suppliedFeed);
 		string CurrentSignedUrl { get; }
+		string CurrentFileName { get; }
 	}
 
 	public class FeedDownload : IFeedDownload
@@ -24,12 +24,19 @@ namespace SevenDigital.Api.FeedReader.Feeds
 			_fileHelper = fileHelper;
 		}
 
-		public void SaveLocally(Feed suppliedFeed)
+		public async Task SaveLocally(Feed suppliedFeed)
 		{
 			CurrentSignedUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.FeedCatalogueType(), suppliedFeed.FeedType(), suppliedFeed.CountryCode);
+			CurrentFileName = _fileHelper.BuildFullFilepath(suppliedFeed);
 
-			var fileName = _fileHelper.BuildFullFilepath(suppliedFeed);
-			_webClient.DownloadFile(CurrentSignedUrl, fileName);
+			if (FeedAlreadyExists(suppliedFeed))
+			{
+				await _webClient.ResumeDownloadFile(CurrentSignedUrl, CurrentFileName);
+			}
+			else
+			{
+				await _webClient.DownloadFile(CurrentSignedUrl, CurrentFileName);
+			}
 		}
 
 		public bool FeedAlreadyExists(Feed suppliedFeed)
@@ -38,5 +45,6 @@ namespace SevenDigital.Api.FeedReader.Feeds
 		}
 
 		public string CurrentSignedUrl { get; private set; }
+		public string CurrentFileName { get; private set; }
 	}
 }

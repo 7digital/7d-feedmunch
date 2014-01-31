@@ -1,66 +1,52 @@
-﻿using System.IO;
-using System.Net;
+﻿using System;
+using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SevenDigital.Api.FeedReader.Http
 {
 	public class WebClientWrapper : IWebClientWrapper
 	{
-		public void DownloadFile(string address, string fileName)
+		public async Task DownloadFile(string address, string fileName)
 		{
-			new WebClient().DownloadFile(address, fileName);
+			var httpClient = new HttpClient
+			{
+				Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite)
+			};
+
+			await DownloadFileAsync(httpClient, address, fileName);
 		}
 
-		public HttpStatusCode Head(string url)
+		public async Task ResumeDownloadFile(string address, string fileName)
 		{
-			var request = WebRequest.Create(url);
-			request.Method = "HEAD";
-			try
+			var fileInfo = new FileInfo(fileName);
+			var length = fileInfo.Length;
+			var startRange = length;
+
+			var httpClient = new HttpClient
 			{
-				using (var response = (HttpWebResponse) request.GetResponse())
+				Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite)
+			};
+			httpClient.DefaultRequestHeaders.Range = new RangeHeaderValue(startRange, null);
+
+			await DownloadFileAsync(httpClient, address, fileName);
+		}
+
+		private static async Task DownloadFileAsync(HttpClient httpClient, string address, string fileName)
+		{
+			using (httpClient)
+			{
+				var httpResponseMessage = await httpClient.GetAsync(address, HttpCompletionOption.ResponseHeadersRead);
+				using (var fileStream = new FileStream(fileName, FileMode.Append,FileAccess.Write))
 				{
-					return response.StatusCode;
+					using (var httpStream = await httpResponseMessage.Content.ReadAsStreamAsync())
+					{
+						await httpStream.CopyToAsync(fileStream);
+						fileStream.Flush();
+					}
 				}
-			}
-			catch (WebException ex)
-			{
-				using (var httpWebResponse = ((HttpWebResponse) ex.Response))
-				{
-					return httpWebResponse.StatusCode;
-				}
-			}
-		}
-
-		public Stream GetStream(string url)
-		{
-			var request = WebRequest.Create(url);
-			request.Method = "GET";
-			var response = (HttpWebResponse) request.GetResponse();
-			return response.GetResponseStream();
-		}
-
-		public string GetString(string url)
-		{
-			var request = WebRequest.Create(url);
-			request.Method = "GET";
-
-			using (var response = TryGetResponse(request))
-			{
-				using (var streamReader = new StreamReader(response.GetResponseStream()))
-				{
-					return streamReader.ReadToEnd();
-				}
-			}
-		}
-
-		private static HttpWebResponse TryGetResponse(WebRequest request)
-		{
-			try
-			{
-				return (HttpWebResponse) request.GetResponse();
-			}
-			catch (WebException ex)
-			{
-				return (HttpWebResponse)ex.Response;
 			}
 		}
 	}
