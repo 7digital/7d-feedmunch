@@ -35,6 +35,7 @@ namespace SevenDigital.FeedMunch
 
 		public void DoTheWholeThing(Feed feed)
 		{
+			// TODO - need to be able to point at a file on a separate server for int testing - see ArtGrab project
 			if (_feedDownload.FeedAlreadyExists(feed))
 			{
 				FilterFeedAndWrite(feed);
@@ -64,14 +65,19 @@ namespace SevenDigital.FeedMunch
 
 		private void FilterFeedAndWrite(Feed feed)
 		{
+			// Read rows from stream
+			// TODO - trial hard loading this into ram before processing as this may be bottlenecked by disk IO
 			_logEvent.Info("Reading data into list");
 			var rows = _trackFeedReader.ReadIntoList(feed);
 
-			var filteredFeed = rows.Where(track => track.StreamingReleaseDate < DateTime.Now);
+			// TODO - Needs to be customisable via a config value - also, this is typesafe we need to be able to produce filter based on string (dynamic?)
+			var filteredFeed = rows.Where(track => track.streamingReleaseDate < DateTime.Now);
 
+			// TODO - outpput path needs to be a config value
 			_fileHelper.GetOrCreateFeedsFolder();
 			var outputFolder = _fileHelper.GetOrCreateDirectoryAtRoot("feeds/output");
 			var outputFeedPath = Path.Combine(outputFolder, "testfile.tmp");
+
 
 			_logEvent.Info(string.Format("Writing filtered feed out to {0}", outputFeedPath));
 			var timeFilteredFeedWrite = TimerHelper.TimeMe(() =>

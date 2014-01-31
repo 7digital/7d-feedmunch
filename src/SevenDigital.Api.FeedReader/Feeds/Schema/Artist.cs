@@ -2,16 +2,16 @@
 {
 	public class Artist
 	{
-		public int ArtistId { get; set; }
-		public string Name { get; set; }
-		public string Popularity { get; set; }
-		public string Tags { get; set; }
-		public string Image { get; set; }
-		public string Url { get; set; }
+		public int artistId { get; set; }
+		public string name { get; set; }
+		public string popularity { get; set; }
+		public string tags { get; set; }
+		public string image { get; set; }
+		public string url { get; set; }
 	}
 
 	public class ArtistIncremental : Artist
 	{
-		public string Action { get; set; }
+		public string action { get; set; }
 	}
 }
