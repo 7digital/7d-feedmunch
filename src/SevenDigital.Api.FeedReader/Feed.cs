@@ -11,11 +11,11 @@ namespace SevenDigital.Api.FeedReader
 		public string GetLatest()
 		{
 			var feedsDate = GetPreviousFeedDate();
-			return feedsDate + "-" + CountryCode.ToLower() + "-" + FeedCatalogueType().ToString().ToLower() + "-" + FeedType().ToString().ToLower() + "-feed.gz";
+			return feedsDate + "-" + CountryCode.ToLower() + "-" + GetCatalogueType().ToString().ToLower() + "-" + GetFeedType().ToString().ToLower() + "-feed.gz";
 		}
 
-		public abstract FeedCatalogueType FeedCatalogueType();
-		public abstract FeedType FeedType();
+		public abstract FeedCatalogueType GetCatalogueType();
+		public abstract FeedType GetFeedType();
 
 		public string CountryCode
 		{
@@ -25,7 +25,7 @@ namespace SevenDigital.Api.FeedReader
 
 		private string GetPreviousFeedDate()
 		{
-			return FeedType() == FeedReader.FeedType.Full ? GetPreviousFullFeedDate() : GetPreviousIncrementalFeedDate();
+			return GetFeedType() == FeedType.Full ? GetPreviousFullFeedDate() : GetPreviousIncrementalFeedDate();
 		}
 
 		protected string GetPreviousFullFeedDate()

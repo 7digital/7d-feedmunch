@@ -1,6 +1,4 @@
-﻿using SevenDigital.Api.FeedReader;
-using SevenDigital.Api.FeedReader.Feeds;
-using SevenDigital.Api.FeedReader.Feeds.Track;
+﻿using SevenDigital.FeedMunch;
 using StructureMap;
 
 namespace FeedMuncher.IOC.StructureMap
@@ -19,24 +17,9 @@ namespace FeedMuncher.IOC.StructureMap
 
 	public static class FeedMunch
 	{
-		public static FeedDownload Download()
+		public static FluentFeedMunch Fluent()
 		{
-			return ObjectFactory.GetInstance<FeedDownload>();
-		}
-
-		public static FeedUnpacker Unpack()
-		{
-			return ObjectFactory.GetInstance<FeedUnpacker>();
-		}
-
-		public static TrackFeedReader TrackMunch()
-		{
-			return ObjectFactory.GetInstance<TrackFeedReader>();
-		}
-
-		public static IFileHelper File()
-		{
-			return ObjectFactory.GetInstance<IFileHelper>();
+			return ObjectFactory.GetInstance<FluentFeedMunch>();
 		}
 	}
 }

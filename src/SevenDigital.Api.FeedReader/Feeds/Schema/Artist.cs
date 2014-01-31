@@ -9,4 +9,9 @@
 		public string Image { get; set; }
 		public string Url { get; set; }
 	}
+
+	public class ArtistIncremental : Artist
+	{
+		public string Action { get; set; }
+	}
 }

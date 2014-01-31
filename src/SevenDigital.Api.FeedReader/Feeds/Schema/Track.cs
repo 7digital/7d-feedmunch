@@ -22,5 +22,11 @@ namespace SevenDigital.Api.FeedReader.Feeds.Schema
 		public string Url { get; set; }
 		public double  Popularity { get; set; }
 		public DateTime StreamingReleaseDate { get; set; }
+		public int LicensorID { get; set; }
+	}
+
+	public class TrackIncremental : Track
+	{
+		public string Action { get; set; }
 	}
 }
