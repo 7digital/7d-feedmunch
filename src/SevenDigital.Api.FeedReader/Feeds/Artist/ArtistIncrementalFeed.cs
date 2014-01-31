@@ -2,14 +2,14 @@
 {
 	public class ArtistIncrementalFeed : Feed
 	{
-		public override FeedCatalogueType FeedCatalogueType()
+		public override FeedCatalogueType GetCatalogueType()
 		{
-			return FeedReader.FeedCatalogueType.Artist;
+			return FeedCatalogueType.Artist;
 		}
 
-		public override FeedType FeedType()
+		public override FeedType GetFeedType()
 		{
-			return FeedReader.FeedType.Incremental;
+			return FeedType.Incremental;
 		}
 	}
 }

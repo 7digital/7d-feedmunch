@@ -26,7 +26,7 @@ namespace SevenDigital.Api.FeedReader.Feeds
 
 		public async Task SaveLocally(Feed suppliedFeed)
 		{
-			CurrentSignedUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.FeedCatalogueType(), suppliedFeed.FeedType(), suppliedFeed.CountryCode);
+			CurrentSignedUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.GetCatalogueType(), suppliedFeed.GetFeedType(), suppliedFeed.CountryCode);
 			CurrentFileName = _fileHelper.BuildFullFilepath(suppliedFeed);
 
 			if (FeedAlreadyExists(suppliedFeed))

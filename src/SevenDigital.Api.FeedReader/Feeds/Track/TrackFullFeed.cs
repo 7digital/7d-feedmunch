@@ -4,12 +4,12 @@ namespace SevenDigital.Api.FeedReader.Feeds.Track
 {
 	public class TrackFullFeed : Feed
 	{
-		public override FeedCatalogueType FeedCatalogueType()
+		public override FeedCatalogueType GetCatalogueType()
 		{
 			return FeedReader.FeedCatalogueType.Track;
 		}
 
-		public override FeedType FeedType()
+		public override FeedType GetFeedType()
 		{
 			return FeedReader.FeedType.Full;
 		}

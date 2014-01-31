@@ -2,12 +2,12 @@
 {
 	public class ReleaseIncrementalFeed : Feed
 	{
-		public override FeedCatalogueType FeedCatalogueType()
+		public override FeedCatalogueType GetCatalogueType()
 		{
 			return FeedReader.FeedCatalogueType.Release;
 		}
 
-		public override FeedType FeedType()
+		public override FeedType GetFeedType()
 		{
 			return FeedReader.FeedType.Incremental;
 		}

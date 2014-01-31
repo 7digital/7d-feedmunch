@@ -2,4 +2,9 @@
 {
 	public class Release
 	{}
+
+	public class ReleaseIncremental : Release
+	{
+		public string Action { get; set; }
+	}
 }
