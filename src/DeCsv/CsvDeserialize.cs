@@ -67,12 +67,24 @@ namespace DeCsv
 		{
 			var entity = Activator.CreateInstance<TEntity>();
 
-			var strings = row.SplitCsvRowHandlingQuotes(DELIMETER).ToArray();
+			var strings = row.SplitCsvRowHandlingQuotes(DELIMETER).ToList();
 
-			if (strings.Length != entitySchema.Count)
-				throw new CsvDeserializationException("Row length does not match header row length");
+			if (strings.Count > entitySchema.Count)
+			{
+				throw new CsvDeserializationException("Row length is greater than header row length");
+			}
 
-			For(0, strings.Length, i => PropertyConvertor.SetValue(entity, entitySchema[i], strings[i]));
+			if (strings.Count < entitySchema.Count)
+			{
+				var shouldBe = entitySchema.Count;
+				var actual = strings.Count;
+				var diff = shouldBe - actual;
+				for (var count = 0; count < diff; count++)
+				{
+					strings.Add("");
+				}
+			}
+			For(0, strings.Count, i => PropertyConvertor.SetValue(entity, entitySchema[i], strings[i]));
 
 			return entity;
 		}

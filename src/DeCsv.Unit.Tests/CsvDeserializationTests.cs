@@ -47,6 +47,19 @@ namespace DeCsv.Unit.Tests
 		}
 
 		[Test]
+		public void Should_deserialize_csv_thats_missing_final_comma()
+		{
+			var queryRows = CsvDeserialize.DeSerialize<QueryRow>(TestData.TestCsvMissingFinalComma).ToList();
+			Assert.That(queryRows.Count, Is.EqualTo(2));
+			Assert.That(queryRows[0].Artist, Is.EqualTo("Elton John"));
+			Assert.That(queryRows[0].Country, Is.EqualTo("US"));
+			Assert.That(queryRows[0].Query, Is.EqualTo("Your Song"));
+			Assert.That(queryRows[0].Title, Is.EqualTo("Your Song"));
+			Assert.That(queryRows[0].Date, Is.EqualTo(new DateTime(2008, 03, 01)));
+			Assert.That(queryRows[1].Price, Is.EqualTo(0));
+		}
+
+		[Test]
 		public void Should_deserialize_csv_that_contains_blank_price()
 		{
 			var queryRows = CsvDeserialize.DeSerialize<QueryRow>(TestData.TestCsvBlankPrice).ToList();
@@ -65,11 +78,17 @@ namespace DeCsv.Unit.Tests
 		}
 
 		[Test]
-		public void Should_throw_meaningful_exception_if_row_columns_does_not_match_header_columns()
+		public void Should_throw_meaningful_exception_if_row_columns_length_greater_than_header_columns()
 		{
 			var csvDeserializationException = Assert.Throws<CsvDeserializationException>(() => CsvDeserialize.DeSerialize<QueryRow>(TestData.TestCsvNotMatching).ToList());
 
-			Assert.That(csvDeserializationException.Message, Is.EqualTo("Row length does not match header row length"));
+			Assert.That(csvDeserializationException.Message, Is.EqualTo("Row length is greater than header row length"));
+		}
+
+		[Test]
+		public void Should_not_throw_exception_if_row_columns_length_less_than_header_columns()
+		{
+			Assert.DoesNotThrow(() => CsvDeserialize.DeSerialize<QueryRow>(TestData.TestCsvRowLessThanHeader).ToList());
 		}
 
 		[Test]
