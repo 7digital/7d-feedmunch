@@ -3,7 +3,7 @@ using DeCsv;
 
 namespace SevenDigital.Api.FeedReader.Feeds.Release
 {
-	public class ReleaseFeedReader : IFeedReader<Release>
+	public class ReleaseFeedReader : IFeedReader<Schema.Release>
 	{
 		private readonly IFeedUnpacker _feedUnpacker;
 
@@ -12,10 +12,10 @@ namespace SevenDigital.Api.FeedReader.Feeds.Release
 			_feedUnpacker = feedUnpacker;
 		}
 
-		public IEnumerable<Release> ReadIntoList(Feed feed)
+		public IEnumerable<Schema.Release> ReadIntoList(Feed feed)
 		{
 			var decompressedStream = _feedUnpacker.GetDecompressedStream(feed);
-			return CsvDeserialize.DeSerialize<Release>(decompressedStream);
+			return CsvDeserialize.DeSerialize<Schema.Release>(decompressedStream);
 		}
 	}
 }

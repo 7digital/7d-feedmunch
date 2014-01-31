@@ -1,21 +1,20 @@
 ﻿using System;
-using SevenDigital.Api.Wrapper;
-using SevenDigital.Api.Wrapper.EndpointResolution.OAuth;
+using System.Collections.Generic;
+using System.Text;
+using OAuth;
+using SevenDigital.Api.FeedReader.Configuration;
 
 namespace SevenDigital.Api.FeedReader
 {
 	public class FeedsUrlCreator : IFeedsUrlCreator
 	{
-		private readonly IUrlSigner _urlSigner;
-		private readonly IApiUri _apiUrl;
-		private readonly IOAuthCredentials _oauthConsumerCreds;
+		private readonly ApiUrl _apiUrl;
+		private readonly OAuthConsumerCreds _oauthConsumerCreds;
 
 		private const string FEED_ENDPOINT = "/feed/{0}/{1}";
-		private const string REQUIRED_PARAMS_QUERYSTRING = "?country={0}&date={1}";
 
-		public FeedsUrlCreator(IUrlSigner urlSigner, IApiUri apiUrl, IOAuthCredentials oauthConsumerCreds )
+		public FeedsUrlCreator(ApiUrl apiUrl, OAuthConsumerCreds oauthConsumerCreds)
 		{
-			_urlSigner = urlSigner;
 			_apiUrl = apiUrl;
 			_oauthConsumerCreds = oauthConsumerCreds;
 		}
@@ -25,10 +24,25 @@ namespace SevenDigital.Api.FeedReader
 			RequireString("countryCode", countryCode);
 
 			var endpoint = string.Format(FEED_ENDPOINT, feedCatalogueType.ToString().ToLower(), type.ToString().ToLower());
-			var querystring = string.Format(REQUIRED_PARAMS_QUERYSTRING, countryCode, FeedsHelper.GetPreviousFullFeedDate());
-			var url = string.Concat(_apiUrl.Uri, endpoint, querystring);
 
-			return _urlSigner.SignGetUrl(url, "", "", _oauthConsumerCreds);
+			string requestUrl = string.Concat(_apiUrl.Uri, endpoint);
+			var oAuthRequest = new OAuthRequest
+			{
+				Type = OAuthRequestType.ProtectedResource,
+				RequestUrl = requestUrl,
+				Method = "GET",
+				ConsumerKey = _oauthConsumerCreds.ConsumerKey,
+				ConsumerSecret = _oauthConsumerCreds.ConsumerSecret
+			};
+
+			var parameters = new Dictionary<string,string>
+			{
+				{ "country", countryCode},
+				{ "date", FeedsHelper.GetPreviousFullFeedDate()}
+			};
+
+			var authorizationQuery = oAuthRequest.GetAuthorizationQuery(parameters);
+			return string.Format("{0}?{1}{2}", requestUrl, authorizationQuery, parameters.ToQueryString());
 		}
 
 		private static void RequireString(string paramName, string value)
@@ -43,5 +57,19 @@ namespace SevenDigital.Api.FeedReader
 		Artist,
 		Release,
 		Track
+	}
+
+	public static class DictionaryExtensions
+	{
+		public static string ToQueryString(this IDictionary<string, string> collection)
+		{
+			var sb = new StringBuilder();
+			foreach (var key in collection.Keys)
+			{
+				var parameter = OAuthTools.UrlEncodeStrict(collection[key]);
+				sb.AppendFormat("{0}={1}&", key, parameter);
+			}
+			return sb.ToString().TrimEnd('&');
+		}
 	}
 }

@@ -1,8 +1,6 @@
-﻿using SevenDigital.Api.Wrapper;
-
-namespace SevenDigital.Api.FeedReader.Configuration
+﻿namespace SevenDigital.Api.FeedReader.Configuration
 {
-	public class OAuthConsumerCreds : IOAuthCredentials
+	public class OAuthConsumerCreds
 	{
 		private readonly string _key;
 		private readonly string _secret;
