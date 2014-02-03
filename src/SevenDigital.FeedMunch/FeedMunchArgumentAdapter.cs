@@ -4,7 +4,7 @@ namespace SevenDigital.FeedMunch
 {
 	public class FeedMunchArgumentAdapter
 	{
-		public FeedMunchConfig ToConfig(string[] args)
+		public FeedMunchConfig FromConsoleArgs(string[] args)
 		{
 			return Configuration.Configure<FeedMunchConfig>().CreateAndBind(args);
 		}

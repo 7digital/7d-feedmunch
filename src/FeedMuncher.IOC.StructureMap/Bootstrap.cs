@@ -17,19 +17,14 @@ namespace FeedMuncher.IOC.StructureMap
 
 	public static class FeedMunch
 	{
-		public static FluentFeedMunch Fluent()
+		public static FluentFeedMunch Download
 		{
-			return ObjectFactory.GetInstance<FluentFeedMunch>();
+			get { return ObjectFactory.GetInstance<FluentFeedMunch>(); }
 		}
 
-		public static FeedMunchArgumentAdapter Arguments()
+		public static FeedMunchArgumentAdapter Configure
 		{
-			return ObjectFactory.GetInstance<FeedMunchArgumentAdapter>();
-		}
-
-		public static IEventAdapter Logger()
-		{
-			return ObjectFactory.GetInstance<IEventAdapter>();
+			get { return ObjectFactory.GetInstance<FeedMunchArgumentAdapter>(); }
 		}
 	}
 }

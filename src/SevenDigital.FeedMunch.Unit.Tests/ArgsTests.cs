@@ -19,7 +19,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 			};
 
 			var feedMunchArgumentAdapter = new FeedMunchArgumentAdapter();
-			var feedMunchConfig = feedMunchArgumentAdapter.ToConfig(args);
+			var feedMunchConfig = feedMunchArgumentAdapter.FromConsoleArgs(args);
 
 			Assert.That(feedMunchConfig.Catalog, Is.EqualTo(FeedCatalogueType.Artist));
 			Assert.That(feedMunchConfig.Feed, Is.EqualTo(FeedType.Full));
@@ -41,7 +41,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 			};
 
 			var feedMunchArgumentAdapter = new FeedMunchArgumentAdapter();
-			var feedMunchConfig = feedMunchArgumentAdapter.ToConfig(args);
+			var feedMunchConfig = feedMunchArgumentAdapter.FromConsoleArgs(args);
 
 			Assert.That(feedMunchConfig.Catalog, Is.EqualTo(FeedCatalogueType.Track));
 			Assert.That(feedMunchConfig.Feed, Is.EqualTo(FeedType.Incremental));
@@ -63,7 +63,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 			};
 			
 			var feedMunchArgumentAdapter = new FeedMunchArgumentAdapter();
-			var feedMunchConfig = feedMunchArgumentAdapter.ToConfig(args);
+			var feedMunchConfig = feedMunchArgumentAdapter.FromConsoleArgs(args);
 
 			Assert.That(feedMunchConfig.Catalog, Is.EqualTo(FeedCatalogueType.Release));
 			Assert.That(feedMunchConfig.Feed, Is.EqualTo(FeedType.Full));

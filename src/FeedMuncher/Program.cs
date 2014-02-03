@@ -8,12 +8,10 @@ namespace FeedMuncher
 		static void Main(string[] args)
 		{
 			Bootstrap.ConfigureDependencies();
-			
-			var argumentAdapter = FeedMunch.Arguments();
-			var feedMunchConfig = argumentAdapter.ToConfig(args);
 
-			var feedDownload = FeedMunch.Fluent();
-			feedDownload
+			var feedMunchConfig = FeedMunch.Configure.FromConsoleArgs(args);
+
+			FeedMunch.Download
 				.WithConfig(feedMunchConfig)
 				.Invoke();
 
