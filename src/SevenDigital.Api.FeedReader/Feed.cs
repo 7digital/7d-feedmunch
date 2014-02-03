@@ -7,7 +7,7 @@ namespace SevenDigital.Api.FeedReader
 	{
 		private readonly FeedType _type;
 		private readonly FeedCatalogueType _catalogueType;
-		private string _countryCode = "34";
+		private int _shopId = 34;
 		public const DayOfWeek FULL_FEED_DAY_OF_WEEK = DayOfWeek.Monday;
 
 		public Feed(FeedType type, FeedCatalogueType catalogueType)
@@ -16,21 +16,20 @@ namespace SevenDigital.Api.FeedReader
 			_catalogueType = catalogueType;
 		}
 
-		public string CountryCode
+		public int ShopId
 		{
-			get { return _countryCode; }
-			set { _countryCode = value; }
+			get { return _shopId; }
+			set { _shopId = value; }
 		}
 
 		public FeedWriteMethod WriteMethod { get; set; }
 		public FeedType FeedType { get { return _type; } }
 		public FeedCatalogueType CatalogueType { get { return _catalogueType; } }
 
-
 		public string GetLatest()
 		{
 			var feedsDate = GetPreviousFeedDate();
-			return feedsDate + "-" + CountryCode.ToLower() + "-" + _catalogueType.ToString().ToLower() + "-" + _type.ToString().ToLower() + "-feed.gz";
+			return feedsDate + "-" + ShopId + "-" + _catalogueType.ToString().ToLower() + "-" + _type.ToString().ToLower() + "-feed.gz";
 		}
 
 		private string GetPreviousFeedDate()
@@ -38,12 +37,12 @@ namespace SevenDigital.Api.FeedReader
 			return _type == FeedType.Full ? GetPreviousFullFeedDate() : GetPreviousIncrementalFeedDate();
 		}
 
-		protected string GetPreviousFullFeedDate()
+		private static string GetPreviousFullFeedDate()
 		{
 			return DateTime.Now.PreviousDayOfWeek(FULL_FEED_DAY_OF_WEEK).ToString("yyyyMMdd");
 		}
 
-		protected string GetPreviousIncrementalFeedDate()
+		private static string GetPreviousIncrementalFeedDate()
 		{
 			return DateTime.Now.PreviousDayOfWeek().ToString("yyyyMMdd");
 		}

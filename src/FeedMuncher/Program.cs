@@ -15,7 +15,7 @@ namespace FeedMuncher
 			var feedDownload = FeedMunch.Fluent();
 			feedDownload
 				.WithConfig(feedMunchConfig)
-				.Invoke(); // DO IT - THE WHOLE THING!! (This will be split into a fluent api, just had to move it out of here, was hurting my head!)
+				.Invoke();
 
 			Console.Read();
 		}
