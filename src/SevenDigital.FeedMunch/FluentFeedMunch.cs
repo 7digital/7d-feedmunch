@@ -68,10 +68,12 @@ namespace SevenDigital.FeedMunch
 		{
 			var rows = ReadAllRows(feed);
 			var filteredFeed = FilterRows(rows);
-			var outputFeedPath = GenerateOutputFeedLocation("./tempfile.tmp");
+			var outputFeedPath = GenerateOutputFeedLocation(Config.Output);
 
 			_logEvent.Info(string.Format("Writing filtered feed out to {0}", outputFeedPath));
+
 			var timeFilteredFeedWrite = TimerHelper.TimeMe(() => TryOutputFIlteredFeed(outputFeedPath, filteredFeed));
+
 			_logEvent.Info(string.Format("Took {0} milliseconds to output filtered feed", timeFilteredFeedWrite.ElapsedMilliseconds));
 		}
 
@@ -100,9 +102,8 @@ namespace SevenDigital.FeedMunch
 
 			var filename = Path.GetFileNameWithoutExtension(output);
 			var dirs = Path.GetDirectoryName(output);
-			var outputFolder = _fileHelper.GetOrCreateOutputFolder(dirs); 
-			var outputFeedPath = Path.Combine(outputFolder, filename + ".tmp");
-			return outputFeedPath;
+			var outputFolder = _fileHelper.GetOrCreateOutputFolder(dirs);
+			return Path.Combine(outputFolder, filename + ".tmp");
 		}
 
 		private IEnumerable<Track> ReadAllRows(Feed feed)
