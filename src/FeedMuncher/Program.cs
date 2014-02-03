@@ -1,5 +1,4 @@
-﻿using System;
-using FeedMuncher.IOC.StructureMap;
+﻿using FeedMuncher.IOC.StructureMap;
 
 namespace FeedMuncher
 {
@@ -15,7 +14,6 @@ namespace FeedMuncher
 				.WithConfig(feedMunchConfig)
 				.Invoke();
 
-			Console.Read();
 		}
 	}
 }
