@@ -23,6 +23,8 @@ namespace SevenDigital.Api.FeedReader
 			set { _countryCode = value; }
 		}
 
+		public FeedWriteMethod WriteMethod { get; set; }
+
 		private string GetPreviousFeedDate()
 		{
 			return GetFeedType() == FeedType.Full ? GetPreviousFullFeedDate() : GetPreviousIncrementalFeedDate();
@@ -37,5 +39,12 @@ namespace SevenDigital.Api.FeedReader
 		{
 			return DateTime.Now.PreviousDayOfWeek().ToString("yyyyMMdd");
 		}
+	}
+
+	public enum FeedWriteMethod
+	{
+		ResumeIfExists = 0, // Resumes feed download as if feed is a partial
+		ForceOverwriteIfExists = 1, // Overwrites existing feed if feed filename the same
+		IgnoreIfExists = 2 // Ignores download existing feed found if filename the same
 	}
 }

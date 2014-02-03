@@ -21,5 +21,10 @@ namespace FeedMuncher.IOC.StructureMap
 		{
 			return ObjectFactory.GetInstance<FluentFeedMunch>();
 		}
+
+		public static FeedMunchArgumentAdapter Arguments()
+		{
+			return ObjectFactory.GetInstance<FeedMunchArgumentAdapter>();
+		}
 	}
 }

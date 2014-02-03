@@ -49,5 +49,28 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 			Assert.That(feedMunchConfig.Output, Is.EqualTo("./blah"));
 			Assert.That(feedMunchConfig.Shop, Is.EqualTo(1106));
 		}
+
+		[Test]
+		public void Args_are_case_insenstitive()
+		{
+			var args = new[]
+			{
+				"/feeEd", "full", 
+				"/caTalog", "Release", 
+				"/fiLter", "licensorId != 1", 
+				"/ouTput", "./blah", 
+				"/sHop", "34"
+			};
+			
+			var feedMunchArgumentAdapter = new FeedMunchArgumentAdapter();
+			var feedMunchConfig = feedMunchArgumentAdapter.ToConfig(args);
+
+			Assert.That(feedMunchConfig.Catalog, Is.EqualTo(FeedCatalogueType.Release));
+			Assert.That(feedMunchConfig.Feed, Is.EqualTo(FeedType.Full));
+			Assert.That(feedMunchConfig.Filter, Is.EqualTo("licensorId != 1"));
+			Assert.That(feedMunchConfig.Output, Is.EqualTo("./blah"));
+			Assert.That(feedMunchConfig.Shop, Is.EqualTo(34));
+		}
+
 	}
 }
