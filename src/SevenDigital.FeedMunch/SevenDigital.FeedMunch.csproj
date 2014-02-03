@@ -53,6 +53,8 @@
     <Compile Include="EventAdapter.cs" />
     <Compile Include="FeedMunchArgumentAdapter.cs" />
     <Compile Include="FeedMunchConfig.cs" />
+    <Compile Include="Filter.cs" />
+    <Compile Include="FilterOperator.cs" />
     <Compile Include="FluentFeedMunch.cs" />
     <Compile Include="IEventAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

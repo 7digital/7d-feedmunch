@@ -72,12 +72,12 @@ namespace SevenDigital.FeedMunch
 
 			_logEvent.Info(string.Format("Writing filtered feed out to {0}", outputFeedPath));
 
-			var timeFilteredFeedWrite = TimerHelper.TimeMe(() => TryOutputFIlteredFeed(outputFeedPath, filteredFeed));
+			var timeFilteredFeedWrite = TimerHelper.TimeMe(() => TryOutputFilteredFeed(outputFeedPath, filteredFeed));
 
 			_logEvent.Info(string.Format("Took {0} milliseconds to output filtered feed", timeFilteredFeedWrite.ElapsedMilliseconds));
 		}
 
-		private static void TryOutputFIlteredFeed(string outputFeedPath, IEnumerable<Track> filteredFeed)
+		private static void TryOutputFilteredFeed(string outputFeedPath, IEnumerable<Track> filteredFeed)
 		{
 			try
 			{
