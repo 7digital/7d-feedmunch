@@ -44,7 +44,7 @@ namespace SevenDigital.FeedMunch
 
 			_logEvent.Info(string.Format("Downloading to {0}", _feedDownload.CurrentFileName));
 
-			var feed = new Feed(Config.Feed, FeedCatalogueType.Track) { CountryCode = Config.Shop.ToString()};
+			var feed = new Feed(Config.Feed, FeedCatalogueType.Track) { ShopId = Config.Shop};
 
 			var saveLocally = _feedDownload.SaveLocally(feed);
 
