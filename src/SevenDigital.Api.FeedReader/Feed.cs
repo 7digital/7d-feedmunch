@@ -3,19 +3,18 @@ using SevenDigital.Api.FeedReader.Dates;
 
 namespace SevenDigital.Api.FeedReader
 {
-	public abstract class Feed
+	public class Feed
 	{
-		private string _countryCode = "GB";
+		private readonly FeedType _type;
+		private readonly FeedCatalogueType _catalogueType;
+		private string _countryCode = "34";
 		public const DayOfWeek FULL_FEED_DAY_OF_WEEK = DayOfWeek.Monday;
-		
-		public string GetLatest()
-		{
-			var feedsDate = GetPreviousFeedDate();
-			return feedsDate + "-" + CountryCode.ToLower() + "-" + GetCatalogueType().ToString().ToLower() + "-" + GetFeedType().ToString().ToLower() + "-feed.gz";
-		}
 
-		public abstract FeedCatalogueType GetCatalogueType();
-		public abstract FeedType GetFeedType();
+		public Feed(FeedType type, FeedCatalogueType catalogueType)
+		{
+			_type = type;
+			_catalogueType = catalogueType;
+		}
 
 		public string CountryCode
 		{
@@ -24,10 +23,19 @@ namespace SevenDigital.Api.FeedReader
 		}
 
 		public FeedWriteMethod WriteMethod { get; set; }
+		public FeedType FeedType { get { return _type; } }
+		public FeedCatalogueType CatalogueType { get { return _catalogueType; } }
+
+
+		public string GetLatest()
+		{
+			var feedsDate = GetPreviousFeedDate();
+			return feedsDate + "-" + CountryCode.ToLower() + "-" + _catalogueType.ToString().ToLower() + "-" + _type.ToString().ToLower() + "-feed.gz";
+		}
 
 		private string GetPreviousFeedDate()
 		{
-			return GetFeedType() == FeedType.Full ? GetPreviousFullFeedDate() : GetPreviousIncrementalFeedDate();
+			return _type == FeedType.Full ? GetPreviousFullFeedDate() : GetPreviousIncrementalFeedDate();
 		}
 
 		protected string GetPreviousFullFeedDate()

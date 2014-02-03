@@ -14,10 +14,6 @@ using CsvSerializer = ServiceStack.Text.CsvSerializer;
 
 namespace SevenDigital.FeedMunch
 {
-	/// <summary>
-	/// WIP - The idea for this class is that will eventually be the Fluent "Facade" for downloading and filtering feeds
-	/// Began as a spike so need to pull apart this logic to test
-	/// </summary>
 	public class FluentFeedMunch
 	{
 		private readonly IFeedDownload _feedDownload;
@@ -41,34 +37,29 @@ namespace SevenDigital.FeedMunch
 			return this;
 		}
 
-		public void Invoke(Feed feed)
+		public void Invoke()
 		{
-			if (_feedDownload.FeedAlreadyExists(feed))
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+
+			_logEvent.Info(string.Format("Downloading to {0}", _feedDownload.CurrentFileName));
+
+			var feed = new Feed(Config.Feed, Config.Catalog) { CountryCode = Config.Shop.ToString()};
+
+			var saveLocally = _feedDownload.SaveLocally(feed);
+
+			var timer = ConsoleFilePolling.GenerateFileSizePollingTimer(_feedDownload.CurrentFileName, 300);
+			
+			saveLocally.ContinueWith(task =>
 			{
+				_logEvent.Info("Finished downloading");
+				stopwatch.Stop();
+				_logEvent.Info(String.Format("Took {0} milliseconds to download", stopwatch.ElapsedMilliseconds));
+				
 				FilterFeedAndWrite(feed);
-			}
-			else
-			{
-				var stopwatch = new Stopwatch();
-				stopwatch.Start();
-
-				_logEvent.Info(string.Format("Downloading to {0}", _feedDownload.CurrentFileName));
-
-				var saveLocally = _feedDownload.SaveLocally(feed);
-
-				var timer = ConsoleFilePolling.GenerateFileSizePollingTimer(_feedDownload.CurrentFileName, 300);
-
-				saveLocally.ContinueWith(task =>
-				{
-					_logEvent.Info("Finished downloading");
-					stopwatch.Stop();
-					_logEvent.Info(String.Format("Took {0} milliseconds to download", stopwatch.ElapsedMilliseconds));
-					
-					FilterFeedAndWrite(feed);
-					
-					timer.Dispose();
-				}, TaskContinuationOptions.LongRunning);
-			}
+				
+				timer.Dispose();
+			}, TaskContinuationOptions.LongRunning);
 		}
 
 		private void FilterFeedAndWrite(Feed feed)
@@ -119,7 +110,7 @@ namespace SevenDigital.FeedMunch
 			return _trackFeedReader.ReadIntoList(feed);
 		}
 
-		private IEnumerable<Track> FilterRows(IEnumerable<Track> rows)
+		private static IEnumerable<Track> FilterRows(IEnumerable<Track> rows)
 		{
 			// TODO - Needs to be customisable via a config value - also, this is typesafe we need to be able to produce filter based on string (dynamic?)
 			return rows.Where(track => track.streamingReleaseDate < DateTime.Now);

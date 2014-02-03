@@ -16,6 +16,11 @@ namespace SevenDigital.Api.FeedReader.Http
 				Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite)
 			};
 
+			if (File.Exists(fileName))
+			{
+				File.Delete(fileName);
+			}
+
 			await DownloadFileAsync(httpClient, address, fileName);
 		}
 
@@ -39,7 +44,7 @@ namespace SevenDigital.Api.FeedReader.Http
 			using (httpClient)
 			{
 				var httpResponseMessage = await httpClient.GetAsync(address, HttpCompletionOption.ResponseHeadersRead);
-				using (var fileStream = new FileStream(fileName, FileMode.Append,FileAccess.Write))
+				using (var fileStream = new FileStream(fileName, FileMode.Append, FileAccess.Write))
 				{
 					using (var httpStream = await httpResponseMessage.Content.ReadAsStreamAsync())
 					{

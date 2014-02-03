@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using Rhino.Mocks;
+using SevenDigital.Api.FeedReader.Feeds;
 using SevenDigital.Api.FeedReader.Feeds.Artist;
 using SevenDigital.Api.FeedReader.Unit.Tests.TestData;
 
@@ -15,7 +16,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 			var artistCsvStream = ArtistData.GetCsvStream();
 			var artistFeedFetcher = MockRepository.GenerateStub<IFeedUnpacker>();
 
-			var artistFullFeed = new ArtistFullFeed();
+			var artistFullFeed = AvailableFeeds.ArtistFull;
 			artistFeedFetcher.Stub(x => x.GetDecompressedStream(artistFullFeed)).IgnoreArguments().Return(artistCsvStream);
 			var artistFeedReader = new ArtistFeedReader(artistFeedFetcher);
 

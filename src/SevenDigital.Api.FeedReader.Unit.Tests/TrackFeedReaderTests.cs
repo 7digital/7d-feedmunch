@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using Rhino.Mocks;
+using SevenDigital.Api.FeedReader.Feeds;
 using SevenDigital.Api.FeedReader.Feeds.Track;
 using SevenDigital.Api.FeedReader.Unit.Tests.TestData;
 
@@ -15,7 +16,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 			var csvStream = TrackData.GetCsvStream();
 			var feedUnpacker = MockRepository.GenerateStub<IFeedUnpacker>();
 
-			var trackFullFeed = new TrackFullFeed();
+			var trackFullFeed = AvailableFeeds.TrackFull;
 			feedUnpacker.Stub(x => x.GetDecompressedStream(trackFullFeed)).IgnoreArguments().Return(csvStream);
 			var trackFeedReader = new TrackFeedReader(feedUnpacker);
 
