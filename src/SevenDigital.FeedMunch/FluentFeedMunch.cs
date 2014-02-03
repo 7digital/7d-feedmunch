@@ -42,7 +42,7 @@ namespace SevenDigital.FeedMunch
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
 
-			var feed = new Feed(Config.Feed, FeedCatalogueType.Track) { ShopId = Config.Shop};
+			var feed = new Feed(Config.Feed, FeedCatalogueType.Track) { ShopId = Config.Shop };
 
 			_logEvent.Info(feed.ToString());
 
@@ -68,7 +68,7 @@ namespace SevenDigital.FeedMunch
 		{
 			var rows = ReadAllRows(feed);
 			var filteredFeed = FilterRows(rows);
-			var outputFeedPath = GenerateOutputFeedLocation();
+			var outputFeedPath = GenerateOutputFeedLocation("./tempfile.tmp");
 
 			_logEvent.Info(string.Format("Writing filtered feed out to {0}", outputFeedPath));
 			var timeFilteredFeedWrite = TimerHelper.TimeMe(() => TryOutputFIlteredFeed(outputFeedPath, filteredFeed));
@@ -94,11 +94,14 @@ namespace SevenDigital.FeedMunch
 			}
 		}
 
-		private string GenerateOutputFeedLocation()
+		private string GenerateOutputFeedLocation(string output)
 		{
 			_fileHelper.GetOrCreateFeedsFolder();
-			var outputFolder = _fileHelper.GetOrCreateDirectoryAtRoot("feeds/output");
-			var outputFeedPath = Path.Combine(outputFolder, "testfile.tmp");
+
+			var filename = Path.GetFileNameWithoutExtension(output);
+			var dirs = Path.GetDirectoryName(output);
+			var outputFolder = _fileHelper.GetOrCreateOutputFolder(dirs); 
+			var outputFeedPath = Path.Combine(outputFolder, filename + ".tmp");
 			return outputFeedPath;
 		}
 
