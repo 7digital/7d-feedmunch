@@ -26,16 +26,20 @@ namespace SevenDigital.Api.FeedReader.Feeds
 
 		public async Task SaveLocally(Feed suppliedFeed)
 		{
-			CurrentSignedUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.GetCatalogueType(), suppliedFeed.GetFeedType(), suppliedFeed.CountryCode);
+			CurrentSignedUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.CatalogueType, suppliedFeed.FeedType, suppliedFeed.CountryCode);
 			CurrentFileName = _fileHelper.BuildFullFilepath(suppliedFeed);
 
-			if (FeedAlreadyExists(suppliedFeed) && suppliedFeed.WriteMethod == FeedWriteMethod.ResumeIfExists)
+			var feedAlreadyExists = FeedAlreadyExists(suppliedFeed);
+
+			if (feedAlreadyExists && suppliedFeed.WriteMethod == FeedWriteMethod.ResumeIfExists)
 			{
 				await _webClient.ResumeDownloadFile(CurrentSignedUrl, CurrentFileName);
 			} 
-			else if (FeedAlreadyExists(suppliedFeed) && suppliedFeed.WriteMethod == FeedWriteMethod.ForceOverwriteIfExists)
-			{}
-			else
+			else if (feedAlreadyExists && suppliedFeed.WriteMethod == FeedWriteMethod.ForceOverwriteIfExists)
+			{
+				await _webClient.DownloadFile(CurrentSignedUrl, CurrentFileName);
+			}
+			else if (!feedAlreadyExists)
 			{
 				await _webClient.DownloadFile(CurrentSignedUrl, CurrentFileName);
 			}

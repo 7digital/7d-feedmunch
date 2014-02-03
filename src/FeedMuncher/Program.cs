@@ -1,7 +1,5 @@
 ﻿using System;
 using FeedMuncher.IOC.StructureMap;
-using SevenDigital.Api.FeedReader.Feeds.Track;
-using SevenDigital.FeedMunch;
 
 namespace FeedMuncher
 {
@@ -11,20 +9,13 @@ namespace FeedMuncher
 		{
 			Bootstrap.ConfigureDependencies();
 			
-			var fullTrackFeed = new TrackFullFeed
-			{
-				CountryCode = "34"
-			};
-
-			Args.Configuration.Configure<FeedMunchConfig>().CreateAndBind(args);
-
 			var argumentAdapter = FeedMunch.Arguments();
 			var feedMunchConfig = argumentAdapter.ToConfig(args);
 
 			var feedDownload = FeedMunch.Fluent();
 			feedDownload
 				.WithConfig(feedMunchConfig)
-				.Invoke(fullTrackFeed); // DO IT - THE WHOLE THING!! (This will be split into a fluent api, just had to move it out of here, was hurting my head!)
+				.Invoke(); // DO IT - THE WHOLE THING!! (This will be split into a fluent api, just had to move it out of here, was hurting my head!)
 
 			Console.Read();
 		}

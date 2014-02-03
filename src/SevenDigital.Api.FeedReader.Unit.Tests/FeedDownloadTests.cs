@@ -25,7 +25,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 		[Test]
 		public void _returns_true_if_feed_exists()
 		{
-			var artistFeed = new ArtistFullFeed();
+			var artistFeed = AvailableFeeds.ArtistFull;
 			_fileHelper.Stub(x => x.FeedExists(artistFeed)).Return(true);
 
 			var artistFeedDownload = new FeedDownload(_feedsUrlCreator, _webClient, _fileHelper);
@@ -35,7 +35,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 		[Test]
 		public void _returns_false_if_feed_doesnt_exists()
 		{
-			var artistFeed = new ArtistFullFeed();
+			var artistFeed = AvailableFeeds.ArtistFull;
 			_fileHelper.Stub(x => x.FeedExists(artistFeed)).Return(false);
 			var artistFeedDownload = new FeedDownload(_feedsUrlCreator, _webClient, _fileHelper);
 			Assert.That(artistFeedDownload.FeedAlreadyExists(artistFeed), Is.False);
@@ -46,11 +46,11 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 		{
 			const string expectedSignedFeedsUrl = "testSignedUrl";
 
-			var artistFeed = new ArtistFullFeed();
+			var artistFeed = AvailableFeeds.ArtistFull;
 			_fileHelper.Stub(x => x.FeedExists(artistFeed)).Return(true);
 
 			var feedsUrlCreator = MockRepository.GenerateStub<IFeedsUrlCreator>();
-			feedsUrlCreator.Stub(x => x.SignUrlForLatestFeed(FeedCatalogueType.Artist, FeedType.Full, "GB")).Return(expectedSignedFeedsUrl);
+			feedsUrlCreator.Stub(x => x.SignUrlForLatestFeed(FeedCatalogueType.Artist, FeedType.Full, "34")).Return(expectedSignedFeedsUrl);
 
 			var webClientWrapper = MockRepository.GenerateStub<IWebClientWrapper>();
 
@@ -62,7 +62,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 
 			Assert.That(artistFeedDownload.CurrentSignedUrl, Is.EqualTo(expectedSignedFeedsUrl));
 
-			feedsUrlCreator.AssertWasCalled(x => x.SignUrlForLatestFeed(FeedCatalogueType.Artist, FeedType.Full, "GB"));
+			feedsUrlCreator.AssertWasCalled(x => x.SignUrlForLatestFeed(FeedCatalogueType.Artist, FeedType.Full, "34"));
 
 			webClientWrapper.AssertWasCalled(x => x.DownloadFile(Arg<string>.Is.Equal(expectedSignedFeedsUrl), Arg<string>.Is.Anything));
 		}
