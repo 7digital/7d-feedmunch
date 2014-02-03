@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using DeCsv;
 using SevenDigital.Api.FeedReader;
 using SevenDigital.Api.FeedReader.Feeds;
+using SevenDigital.Api.FeedReader.Feeds.Schema;
 using SevenDigital.Api.FeedReader.Feeds.Track;
 using CsvSerializer = ServiceStack.Text.CsvSerializer;
 
@@ -23,7 +25,7 @@ namespace SevenDigital.FeedMunch
 		private readonly IFileHelper _fileHelper;
 		private readonly IEventAdapter _logEvent;
 
-		public FeedMunchConfig Config { get; set; }
+		public FeedMunchConfig Config { get; private set; }
 
 		public FluentFeedMunch(IFeedDownload feedDownload, TrackFeedReader trackFeedReader, IFileHelper fileHelper, IEventAdapter logEvent)
 		{
@@ -33,9 +35,14 @@ namespace SevenDigital.FeedMunch
 			_logEvent = logEvent;
 		}
 
-		public void DoTheWholeThing(Feed feed)
+		public FluentFeedMunch WithConfig(FeedMunchConfig config)
 		{
-			// TODO - need to be able to point at a file on a separate server for int testing - see ArtGrab project
+			Config = config;
+			return this;
+		}
+
+		public void Invoke(Feed feed)
+		{
 			if (_feedDownload.FeedAlreadyExists(feed))
 			{
 				FilterFeedAndWrite(feed);
@@ -56,8 +63,9 @@ namespace SevenDigital.FeedMunch
 					_logEvent.Info("Finished downloading");
 					stopwatch.Stop();
 					_logEvent.Info(String.Format("Took {0} milliseconds to download", stopwatch.ElapsedMilliseconds));
-
+					
 					FilterFeedAndWrite(feed);
+					
 					timer.Dispose();
 				}, TaskContinuationOptions.LongRunning);
 			}
@@ -65,39 +73,56 @@ namespace SevenDigital.FeedMunch
 
 		private void FilterFeedAndWrite(Feed feed)
 		{
-			// Read rows from stream
-			// TODO - trial hard loading this into ram before processing as this may be bottlenecked by disk IO
-			_logEvent.Info("Reading data into list");
-			var rows = _trackFeedReader.ReadIntoList(feed);
+			var rows = ReadAllRows(feed);
 
-			// TODO - Needs to be customisable via a config value - also, this is typesafe we need to be able to produce filter based on string (dynamic?)
-			var filteredFeed = rows.Where(track => track.streamingReleaseDate < DateTime.Now);
+			var filteredFeed = FilterRows(rows);
 
-			// TODO - output path needs to be a config value
+			var outputFeedPath = GenerateOutputFeedLocation();
+
+			_logEvent.Info(string.Format("Writing filtered feed out to {0}", outputFeedPath));
+			var timeFilteredFeedWrite = TimerHelper.TimeMe(() => TryOutputFIlteredFeed(outputFeedPath, filteredFeed));
+			_logEvent.Info(string.Format("Took {0} milliseconds to output filtered feed", timeFilteredFeedWrite.ElapsedMilliseconds));
+		}
+
+		private static void TryOutputFIlteredFeed(string outputFeedPath, IEnumerable<Track> filteredFeed)
+		{
+			try
+			{
+				using (var compressedFileStream = File.Create(outputFeedPath))
+				{
+					using (var compressionStream = new GZipStream(compressedFileStream, CompressionMode.Compress))
+					{
+						CsvSerializer.SerializeToStream(filteredFeed, compressionStream);
+					}
+				}
+				TryChangeExtension(outputFeedPath, ".tmp", ".gz");
+			}
+			catch (CsvDeserializationException ex)
+			{
+				Console.WriteLine(ex.ToString());
+			}
+		}
+
+		private string GenerateOutputFeedLocation()
+		{
 			_fileHelper.GetOrCreateFeedsFolder();
 			var outputFolder = _fileHelper.GetOrCreateDirectoryAtRoot("feeds/output");
 			var outputFeedPath = Path.Combine(outputFolder, "testfile.tmp");
+			return outputFeedPath;
+		}
 
-			_logEvent.Info(string.Format("Writing filtered feed out to {0}", outputFeedPath));
-			var timeFilteredFeedWrite = TimerHelper.TimeMe(() =>
-			{
-				try
-				{
-					using (var compressedFileStream = File.Create(outputFeedPath))
-					{
-						using (var compressionStream = new GZipStream(compressedFileStream, CompressionMode.Compress))
-						{
-							CsvSerializer.SerializeToStream(filteredFeed, compressionStream);
-						}
-					}
-					TryChangeExtension(outputFeedPath, ".tmp", ".gz");
-				}
-				catch (CsvDeserializationException ex)
-				{
-					Console.WriteLine( ex.ToString());
-				}
-			});
-			_logEvent.Info(string.Format("Took {0} milliseconds to output filtered feed", timeFilteredFeedWrite.ElapsedMilliseconds));
+		private IEnumerable<Track> ReadAllRows(Feed feed)
+		{
+			// TODO - trial hard loading this into ram before processing as this may be bottlenecked by disk IO
+			// TODO - Specify row numbers
+			_logEvent.Info("Reading data into list");
+			return _trackFeedReader.ReadIntoList(feed);
+		}
+
+		private IEnumerable<Track> FilterRows(IEnumerable<Track> rows)
+		{
+			// TODO - Needs to be customisable via a config value - also, this is typesafe we need to be able to produce filter based on string (dynamic?)
+			return rows.Where(track => track.streamingReleaseDate < DateTime.Now);
 		}
 
 		private static void TryChangeExtension(string path, string from, string to)

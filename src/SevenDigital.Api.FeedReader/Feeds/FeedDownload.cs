@@ -29,10 +29,12 @@ namespace SevenDigital.Api.FeedReader.Feeds
 			CurrentSignedUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.GetCatalogueType(), suppliedFeed.GetFeedType(), suppliedFeed.CountryCode);
 			CurrentFileName = _fileHelper.BuildFullFilepath(suppliedFeed);
 
-			if (FeedAlreadyExists(suppliedFeed))
+			if (FeedAlreadyExists(suppliedFeed) && suppliedFeed.WriteMethod == FeedWriteMethod.ResumeIfExists)
 			{
 				await _webClient.ResumeDownloadFile(CurrentSignedUrl, CurrentFileName);
-			}
+			} 
+			else if (FeedAlreadyExists(suppliedFeed) && suppliedFeed.WriteMethod == FeedWriteMethod.ForceOverwriteIfExists)
+			{}
 			else
 			{
 				await _webClient.DownloadFile(CurrentSignedUrl, CurrentFileName);
