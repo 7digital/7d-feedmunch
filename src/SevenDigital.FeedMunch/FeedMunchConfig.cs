@@ -9,6 +9,7 @@ namespace SevenDigital.FeedMunch
 		public FeedMunchConfig()
 		{
 			Shop = 34;
+			Output = "./tempfile.tmp";
 		}
 
 		[Description("Either Full or Incremental")]
