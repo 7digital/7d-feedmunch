@@ -28,3 +28,5 @@ logs
 #nuget
 packages/*
 !packages/repositories.config
+
+credentials.txt
