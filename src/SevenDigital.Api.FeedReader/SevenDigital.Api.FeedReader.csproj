@@ -65,6 +65,7 @@
     <Compile Include="Feeds\Release\ReleaseFeedReader.cs" />
     <Compile Include="Feeds\Track\TrackFeedReader.cs" />
     <Compile Include="FeedType.cs" />
+    <Compile Include="FeedWriteMethod.cs" />
     <Compile Include="Http\IWebClientWrapper.cs" />
     <Compile Include="Http\WebClientWrapper.cs" />
     <Compile Include="IFeedReader.cs" />

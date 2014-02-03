@@ -32,6 +32,11 @@ namespace SevenDigital.Api.FeedReader
 			return feedsDate + "-" + ShopId + "-" + _catalogueType.ToString().ToLower() + "-" + _type.ToString().ToLower() + "-feed.gz";
 		}
 
+		public override string ToString()
+		{
+			return string.Format("FeedType: {0} FeedCatalogue: {1} Filter: {2} ShopId: {3}", FeedType, CatalogueType );
+		}
+
 		private string GetPreviousFeedDate()
 		{
 			return _type == FeedType.Full ? GetPreviousFullFeedDate() : GetPreviousIncrementalFeedDate();
@@ -46,12 +51,5 @@ namespace SevenDigital.Api.FeedReader
 		{
 			return DateTime.Now.PreviousDayOfWeek().ToString("yyyyMMdd");
 		}
-	}
-
-	public enum FeedWriteMethod
-	{
-		ResumeIfExists = 0, // Resumes feed download as if feed is a partial
-		ForceOverwriteIfExists = 1, // Overwrites existing feed if feed filename the same
-		IgnoreIfExists = 2 // Ignores download existing feed found if filename the same
 	}
 }
