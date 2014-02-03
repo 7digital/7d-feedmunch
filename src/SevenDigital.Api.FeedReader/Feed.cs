@@ -34,7 +34,7 @@ namespace SevenDigital.Api.FeedReader
 
 		public override string ToString()
 		{
-			return string.Format("FeedType: {0} FeedCatalogue: {1} Filter: {2} ShopId: {3}", FeedType, CatalogueType );
+			return string.Format("FeedType: {0} FeedCatalogue: {1} ShopId: {2}", FeedType, CatalogueType, ShopId );
 		}
 
 		private string GetPreviousFeedDate()

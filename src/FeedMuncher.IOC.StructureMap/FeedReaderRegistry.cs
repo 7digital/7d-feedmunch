@@ -19,7 +19,7 @@ namespace FeedMuncher.IOC.StructureMap
 			});
 			
 			For<OAuthConsumerCreds>().Use(new OAuthConsumerCreds("7dwwyz5uxp56", "5g62wtq9znyffsmm"));
-			For<IFileHelper>().Use<FeedsFileHelper>().Ctor<string>("feedsFolder").Is("feeds");
+			For<IFileHelper>().Use<FeedsFileHelper>().Ctor<string>("feedsFolder").Is("feeds").Ctor<string>("outputFolder").Is("output");
 		}
 	}
 }
