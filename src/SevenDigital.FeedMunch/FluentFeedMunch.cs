@@ -73,11 +73,10 @@ namespace SevenDigital.FeedMunch
 			// TODO - Needs to be customisable via a config value - also, this is typesafe we need to be able to produce filter based on string (dynamic?)
 			var filteredFeed = rows.Where(track => track.streamingReleaseDate < DateTime.Now);
 
-			// TODO - outpput path needs to be a config value
+			// TODO - output path needs to be a config value
 			_fileHelper.GetOrCreateFeedsFolder();
 			var outputFolder = _fileHelper.GetOrCreateDirectoryAtRoot("feeds/output");
 			var outputFeedPath = Path.Combine(outputFolder, "testfile.tmp");
-
 
 			_logEvent.Info(string.Format("Writing filtered feed out to {0}", outputFeedPath));
 			var timeFilteredFeedWrite = TimerHelper.TimeMe(() =>
