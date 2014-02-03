@@ -42,11 +42,13 @@ namespace SevenDigital.FeedMunch
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
 
-			_logEvent.Info(string.Format("Downloading to {0}", _feedDownload.CurrentFileName));
-
 			var feed = new Feed(Config.Feed, FeedCatalogueType.Track) { ShopId = Config.Shop};
 
+			_logEvent.Info(feed.ToString());
+
 			var saveLocally = _feedDownload.SaveLocally(feed);
+
+			_logEvent.Info(string.Format("Downloading to {0}", _feedDownload.CurrentFileName));
 
 			var timer = ConsoleFilePolling.GenerateFileSizePollingTimer(_feedDownload.CurrentFileName, 300);
 			
@@ -65,9 +67,7 @@ namespace SevenDigital.FeedMunch
 		private void FilterFeedAndWrite(Feed feed)
 		{
 			var rows = ReadAllRows(feed);
-
 			var filteredFeed = FilterRows(rows);
-
 			var outputFeedPath = GenerateOutputFeedLocation();
 
 			_logEvent.Info(string.Format("Writing filtered feed out to {0}", outputFeedPath));
