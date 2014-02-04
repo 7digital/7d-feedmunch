@@ -99,19 +99,20 @@ namespace SevenDigital.FeedMunch
 		private string GenerateOutputFeedLocation(string output)
 		{
 			_fileHelper.GetOrCreateFeedsFolder();
-
 			var filename = Path.GetFileNameWithoutExtension(output);
-			var dirs = Path.GetDirectoryName(output);
-			var outputFolder = _fileHelper.GetOrCreateOutputFolder(dirs);
-			return Path.Combine(outputFolder, filename + ".tmp");
+			var directoryPath = Path.GetDirectoryName(output);
+			var outputDirectory = _fileHelper.GetOrCreateOutputFolder(directoryPath);
+			return Path.Combine(outputDirectory, filename + ".tmp");
 		}
 
 		private IEnumerable<Track> ReadAllRows(Feed feed)
 		{
 			// TODO - trial hard loading this into ram before processing as this may be bottlenecked by disk IO
-			// TODO - Specify row numbers
 			_logEvent.Info("Reading data into list");
-			return _trackFeedReader.ReadIntoList(feed);
+			var readIntoList = _trackFeedReader.ReadIntoList(feed);
+			return Config.Limit > 0 
+				? readIntoList.Take(Config.Limit) 
+				: readIntoList;
 		}
 
 		private IEnumerable<Track> FilterRows(IEnumerable<Track> rows)
