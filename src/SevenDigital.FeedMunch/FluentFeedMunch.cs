@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using DeCsv;
 using SevenDigital.Api.FeedReader;
 using SevenDigital.Api.FeedReader.Feeds;
-using SevenDigital.Api.FeedReader.Feeds.Track;
+using SevenDigital.Api.FeedReader.Feeds.Schema;
 using CsvSerializer = ServiceStack.Text.CsvSerializer;
 
 namespace SevenDigital.FeedMunch
@@ -16,16 +16,16 @@ namespace SevenDigital.FeedMunch
 	public class FluentFeedMunch
 	{
 		private readonly IFeedDownload _feedDownload;
-		private readonly FeedReader _feedReader;
+		private readonly GenericFeedReader _genericFeedReader;
 		private readonly IFileHelper _fileHelper;
 		private readonly IEventAdapter _logEvent;
 
 		public FeedMunchConfig Config { get; private set; }
 
-		public FluentFeedMunch(IFeedDownload feedDownload, FeedReader feedReader, IFileHelper fileHelper, IEventAdapter logEvent)
+		public FluentFeedMunch(IFeedDownload feedDownload, GenericFeedReader genericFeedReader, IFileHelper fileHelper, IEventAdapter logEvent)
 		{
 			_feedDownload = feedDownload;
-			_feedReader = feedReader;
+			_genericFeedReader = genericFeedReader;
 			_fileHelper = fileHelper;
 			_logEvent = logEvent;
 		}
@@ -46,27 +46,33 @@ namespace SevenDigital.FeedMunch
 			_logEvent.Info(feed.ToString());
 
 			var saveLocally = _feedDownload.SaveLocally(feed);
-
+			
 			_logEvent.Info(string.Format("Downloading to {0}", _feedDownload.CurrentFileName));
 
-			var timer = ConsoleFilePolling.GenerateFileSizePollingTimer(_feedDownload.CurrentFileName, 300);
+			//var timer = ConsoleFilePolling.GenerateFileSizePollingTimer(_feedDownload.CurrentFileName, 300);
 			
 			saveLocally.ContinueWith(task =>
 			{
+				if (task.Exception != null)
+				{
+					_logEvent.Info("An error occured downloading the feed");
+					_logEvent.Info(task.Exception.InnerExceptions.First().Message);
+					return;
+				}
+
 				_logEvent.Info("Finished downloading");
 				stopwatch.Stop();
 				_logEvent.Info(String.Format("Took {0} milliseconds to download", stopwatch.ElapsedMilliseconds));
 				
 				FilterFeedAndWrite(feed);
 				
-				timer.Dispose();
+				//timer.Dispose();
 			}, TaskContinuationOptions.LongRunning);
 		}
 
 		private void FilterFeedAndWrite(Feed feed)
 		{
-			var rows = ReadAllRows(feed);
-			var filteredFeed = FilterRows(rows);
+			var filteredFeed = ReadAndFilter(feed);
 			var outputFeedPath = GenerateOutputFeedLocation(Config.Output);
 
 			_logEvent.Info(string.Format("Writing filtered feed out to {0}", outputFeedPath));
@@ -104,21 +110,13 @@ namespace SevenDigital.FeedMunch
 			return Path.Combine(outputDirectory, filename + ".tmp");
 		}
 
-		private IEnumerable<object> ReadAllRows(Feed feed)
+		private dynamic ReadAndFilterAllRows<T>(Feed feed)
 		{
-			// TODO - trial hard loading this into ram before processing as this may be bottlenecked by disk IO
-
 			_logEvent.Info("Reading data into list");
-			var readIntoList = _feedReader.ReadIntoList(feed);
-			return Config.Limit > 0 
-				? readIntoList.Take(Config.Limit) 
-				: readIntoList;
-		}
-
-		private IEnumerable<object> FilterRows(IEnumerable<object> rows)
-		{
+			var readIntoList = _genericFeedReader.ReadIntoList<T>(feed);
+			var rows = Config.Limit > 0 ? readIntoList.Take(Config.Limit) : readIntoList;
 			var filter = new Filter(Config.Filter);
-			return rows.Where(filter.ApplyToRow);
+			return rows.Where(row => filter.ApplyToRow(row));
 		}
 
 		private static void TryChangeExtension(string path, string from, string to)
@@ -129,6 +127,32 @@ namespace SevenDigital.FeedMunch
 				File.Delete(completedFilePath);
 			}
 			File.Move(path, completedFilePath);
+		}
+
+		private dynamic ReadAndFilter(Feed feed)
+		{
+			if (feed.CatalogueType == FeedCatalogueType.Artist && feed.FeedType == FeedType.Full)
+			{
+				return ReadAndFilterAllRows<Artist>(feed);
+			}
+			if (feed.CatalogueType == FeedCatalogueType.Artist && feed.FeedType == FeedType.Incremental)
+			{
+				return ReadAndFilterAllRows<ArtistIncremental>(feed);
+			}
+			if (feed.CatalogueType == FeedCatalogueType.Release && feed.FeedType == FeedType.Full)
+			{
+				return ReadAndFilterAllRows<Release>(feed);
+			}
+			if (feed.CatalogueType == FeedCatalogueType.Release && feed.FeedType == FeedType.Incremental)
+			{
+				return ReadAndFilterAllRows<ReleaseIncremental>(feed);
+			}
+			if (feed.CatalogueType == FeedCatalogueType.Track && feed.FeedType == FeedType.Full)
+			{
+				return ReadAndFilterAllRows<Track>(feed);
+			}
+			return ReadAndFilterAllRows<TrackIncremental>(feed);
+
 		}
 	}
 }

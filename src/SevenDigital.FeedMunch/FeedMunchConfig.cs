@@ -28,5 +28,8 @@ namespace SevenDigital.FeedMunch
 
 		[Description("/limit allows you to specifiy a  number of rows to limit the download to, currently only 0-row number, defaults to 0 which is all rows")]
 		public int Limit { get; set; }
+
+		[Description("/existing allows you to specify a local gz feeds file")]
+		public string Existing { get; set; }
 	}
 }

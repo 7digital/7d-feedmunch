@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace SevenDigital.Api.FeedReader.Http
 {
@@ -45,10 +46,11 @@ namespace SevenDigital.Api.FeedReader.Http
 			using (httpClient)
 			{
 				var httpResponseMessage = await httpClient.GetAsync(address, HttpCompletionOption.ResponseHeadersRead);
-				if (httpResponseMessage.StatusCode != HttpStatusCode.OK)
-				{
-					throw new HttpRequestException("Booooooom");
-				}
+				httpResponseMessage.EnsureSuccessStatusCode();
+				//if (httpResponseMessage.StatusCode != HttpStatusCode.OK)
+				//{
+				//	throw new HttpException((int)httpResponseMessage.StatusCode, "Download failed " + httpResponseMessage.);
+				//}
 				using (var fileStream = new FileStream(fileName, FileMode.Append, FileAccess.Write))
 				{
 					using (var httpStream = await httpResponseMessage.Content.ReadAsStreamAsync())

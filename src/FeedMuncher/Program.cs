@@ -11,6 +11,8 @@ namespace FeedMuncher
 
 			var feedMunchConfig = FeedMunch.Configure.FromConsoleArgs(args);
 
+
+
 			FeedMunch.Download
 				.WithConfig(feedMunchConfig)
 				.Invoke(); // TODO return filepath?
