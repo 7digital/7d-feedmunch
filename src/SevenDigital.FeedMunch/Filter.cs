@@ -19,6 +19,13 @@ namespace SevenDigital.FeedMunch
 
 		private void Parse(string rawFilter)
 		{
+			if (string.IsNullOrEmpty(rawFilter))
+			{
+				FieldName = string.Empty;
+				Values = new string[]{};
+				return;
+			}
+
 			var strings = rawFilter.Split(new[] {"!="}, StringSplitOptions.RemoveEmptyEntries);
 			if (strings.Length == 1)
 			{
@@ -38,6 +45,11 @@ namespace SevenDigital.FeedMunch
 		public bool ApplyToRow(object row)
 		{
 			var fieldAsProperty = row.GetType().GetProperty(FieldName);
+			if (fieldAsProperty == null)
+			{
+				return true;
+			}
+
 			var getMethod = fieldAsProperty.GetGetMethod();
 
 			var propertyValue = getMethod.Invoke(row, null);

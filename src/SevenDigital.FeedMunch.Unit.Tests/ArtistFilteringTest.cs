@@ -62,6 +62,16 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 			Assert.That(filteredArtists[0].name, Is.EqualTo("hitler"));
 		}
 
+		[Test]
+		public void Can_create_a_blank_filter()
+		{
+			var filter = new Filter("");
+
+			var filteredArtists = _artists.Where(filter.ApplyToRow).ToList();
+
+			Assert.That(filteredArtists.Count, Is.EqualTo(3));
+		}
+		
 		private static IEnumerable<Artist> Artists()
 		{
 			var gandhi = new Artist

@@ -114,10 +114,10 @@ namespace SevenDigital.FeedMunch
 			return _trackFeedReader.ReadIntoList(feed);
 		}
 
-		private static IEnumerable<Track> FilterRows(IEnumerable<Track> rows)
+		private IEnumerable<Track> FilterRows(IEnumerable<Track> rows)
 		{
-			// TODO - Needs to be customisable via a config value - also, this is typesafe we need to be able to produce filter based on string (dynamic?)
-			return rows.Where(track => track.streamingReleaseDate < DateTime.Now);
+			var filter = new Filter(Config.Filter);
+			return rows.Where(filter.ApplyToRow);
 		}
 
 		private static void TryChangeExtension(string path, string from, string to)
