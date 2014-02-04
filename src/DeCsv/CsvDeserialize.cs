@@ -42,7 +42,7 @@ namespace DeCsv
 		/// <exception cref="CsvDeserializationException"></exception>
 		public static IEnumerable<TEntity> DeSerialize<TEntity>(Stream stream)
 		{
-			using (var streamReader = new StreamReader(stream, Encoding.Default))
+			using (var streamReader = new StreamReader(stream, Encoding.UTF8))
 			{
 				var properties = new PropertyInfo[] { };
 				string row;
