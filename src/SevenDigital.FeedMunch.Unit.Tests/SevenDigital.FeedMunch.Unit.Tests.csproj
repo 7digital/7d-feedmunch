@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgsTests.cs" />
+    <Compile Include="ArtistFilteringTest.cs" />
     <Compile Include="FilterParseTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
