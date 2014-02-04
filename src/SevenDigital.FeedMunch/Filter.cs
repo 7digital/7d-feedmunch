@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SevenDigital.FeedMunch
 {
@@ -32,6 +33,18 @@ namespace SevenDigital.FeedMunch
 
 			FieldName = strings[0];
 			Values = strings[1].Split(VALUE_DELIMETER);
+		}
+
+		public bool ApplyFilterToRow(object row)
+		{
+			var fieldAsProperty = row.GetType().GetProperty(FieldName);
+			var getMethod = fieldAsProperty.GetGetMethod();
+
+			var propertyValue = getMethod.Invoke(row, null);
+
+			return Operator == FilterOperator.Equals
+				? Values.Any(x => x == (string)propertyValue)
+				: Values.All(x => x != (string)propertyValue);
 		}
 	}
 }
