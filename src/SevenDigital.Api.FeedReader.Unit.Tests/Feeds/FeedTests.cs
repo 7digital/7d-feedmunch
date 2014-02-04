@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using SevenDigital.Api.FeedReader.Feeds;
-using SevenDigital.Api.FeedReader.Feeds.Artist;
 
 namespace SevenDigital.Api.FeedReader.Unit.Tests.Feeds
 {

@@ -42,6 +42,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,7 +52,6 @@
   <ItemGroup>
     <Compile Include="Feeds\AvailableFeeds.cs" />
     <Compile Include="Feeds\FeedDownload.cs" />
-    <Compile Include="Feeds\Artist\ArtistFeedReader.cs" />
     <Compile Include="Feeds\FeedUnpacker.cs" />
     <Compile Include="Configuration\ApiUrl.cs" />
     <Compile Include="Configuration\OAuthConsumerCreds.cs" />
@@ -60,10 +60,9 @@
     <Compile Include="FeedsFileHelper.cs" />
     <Compile Include="FeedsHelper.cs" />
     <Compile Include="FeedsUrlCreator.cs" />
+    <Compile Include="Feeds\GenericFeedReader.cs" />
     <Compile Include="Feeds\Schema\Track.cs" />
     <Compile Include="Feeds\Schema\Release.cs" />
-    <Compile Include="Feeds\Release\ReleaseFeedReader.cs" />
-    <Compile Include="Feeds\Track\TrackFeedReader.cs" />
     <Compile Include="FeedType.cs" />
     <Compile Include="FeedWriteMethod.cs" />
     <Compile Include="Http\IWebClientWrapper.cs" />
@@ -84,6 +83,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
