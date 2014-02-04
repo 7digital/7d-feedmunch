@@ -54,6 +54,7 @@
     <Compile Include="ArtistFilteringTest.cs" />
     <Compile Include="FilterParseTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrackFilteringTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

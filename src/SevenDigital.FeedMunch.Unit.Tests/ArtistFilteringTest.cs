@@ -21,7 +21,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 		{
 			var filter = new Filter("name=mandela");
 
-			var filteredArtists = _artists.Where(filter.ApplyFilterToRow).ToList();
+			var filteredArtists = _artists.Where(filter.ApplyToRow).ToList();
 
 			Assert.That(filteredArtists.Count, Is.EqualTo(1));
 			Assert.That(filteredArtists[0].name, Is.EqualTo("mandela"));
@@ -32,7 +32,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 		{
 			var filter = new Filter("tags=india,south-africa");
 
-			var filteredArtists = _artists.Where(filter.ApplyFilterToRow).ToList();
+			var filteredArtists = _artists.Where(filter.ApplyToRow).ToList();
 
 			Assert.That(filteredArtists.Count, Is.EqualTo(2));
 			Assert.That(filteredArtists[0].name, Is.EqualTo("gandhi"));
@@ -44,7 +44,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 		{
 			var filter = new Filter("tags!=third-reich");
 
-			var filteredArtists = _artists.Where(filter.ApplyFilterToRow).ToList();
+			var filteredArtists = _artists.Where(filter.ApplyToRow).ToList();
 
 			Assert.That(filteredArtists.Count, Is.EqualTo(2));
 			Assert.That(filteredArtists[0].name, Is.EqualTo("gandhi"));
@@ -56,7 +56,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 		{
 			var filter = new Filter("tags!=india,south-africa");
 
-			var filteredArtists = _artists.Where(filter.ApplyFilterToRow).ToList();
+			var filteredArtists = _artists.Where(filter.ApplyToRow).ToList();
 
 			Assert.That(filteredArtists.Count, Is.EqualTo(1));
 			Assert.That(filteredArtists[0].name, Is.EqualTo("hitler"));

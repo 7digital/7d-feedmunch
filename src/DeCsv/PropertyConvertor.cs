@@ -50,8 +50,7 @@ namespace DeCsv
 		public static PropertyInfo GetProperty<T>(string propertyName)
 		{
 			var type = typeof(T);
-			var propertyInfo = type.GetProperty(propertyName)
-			                   ?? type.GetProperty(propertyName.UppercaseFirst());
+			var propertyInfo = type.GetProperty(propertyName) ?? type.GetProperty(propertyName.UppercaseFirst());
 
 			if (propertyInfo == null)
 				throw new CsvDeserializationException(String.Format("PropertyName \"{0}\" is not a property of type {1}", propertyName, type));
