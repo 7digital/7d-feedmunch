@@ -35,7 +35,7 @@ namespace SevenDigital.FeedMunch
 			Values = strings[1].Split(VALUE_DELIMETER);
 		}
 
-		public bool ApplyFilterToRow(object row)
+		public bool ApplyToRow(object row)
 		{
 			var fieldAsProperty = row.GetType().GetProperty(FieldName);
 			var getMethod = fieldAsProperty.GetGetMethod();
@@ -43,8 +43,8 @@ namespace SevenDigital.FeedMunch
 			var propertyValue = getMethod.Invoke(row, null);
 
 			return Operator == FilterOperator.Equals
-				? Values.Any(x => x == (string)propertyValue)
-				: Values.All(x => x != (string)propertyValue);
+				? Values.Any(x => x == propertyValue.ToString())
+				: Values.All(x => x != propertyValue.ToString());
 		}
 	}
 }
