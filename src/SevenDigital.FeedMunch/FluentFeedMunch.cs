@@ -4,12 +4,10 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using DeCsv;
 using SevenDigital.Api.FeedReader;
 using SevenDigital.Api.FeedReader.Feeds;
-using SevenDigital.Api.FeedReader.Feeds.Schema;
 using CsvSerializer = ServiceStack.Text.CsvSerializer;
 
 namespace SevenDigital.FeedMunch
@@ -37,7 +35,7 @@ namespace SevenDigital.FeedMunch
 			return this;
 		}
 
-		public void Invoke()
+		public void Invoke<T>()
 		{
 			var feed = new Feed(Config.Feed, Config.Catalog) { Country = Config.Country };
 			_logEvent.Info(feed.ToString());
@@ -45,7 +43,7 @@ namespace SevenDigital.FeedMunch
 			if (!string.IsNullOrEmpty(Config.Existing))
 			{
 				feed.ExistingPath = Config.Existing;
-				FilterFeedAndWrite(feed);
+				FilterFeedAndWrite<T>(feed);
 				return;
 			}
 
@@ -71,15 +69,15 @@ namespace SevenDigital.FeedMunch
 				stopwatch.Stop();
 				_logEvent.Info(String.Format("Took {0} milliseconds to download", stopwatch.ElapsedMilliseconds));
 				
-				FilterFeedAndWrite(feed);
+				FilterFeedAndWrite<T>(feed);
 				
 				//timer.Dispose();
 			}, TaskContinuationOptions.LongRunning);
 		}
 
-		private void FilterFeedAndWrite(Feed feed)
+		private void FilterFeedAndWrite<T>(Feed feed)
 		{
-			var filteredFeed = ReadAndFilterAllRows(feed);
+			var filteredFeed = ReadAndFilterAllRows<T>(feed);
 			var outputFeedPath = GenerateOutputFeedLocation(Config.Output);
 
 			_logEvent.Info(string.Format("Writing filtered feed out to {0}", outputFeedPath));
@@ -89,7 +87,7 @@ namespace SevenDigital.FeedMunch
 			_logEvent.Info(string.Format("Took {0} milliseconds to output filtered feed", timeFilteredFeedWrite.ElapsedMilliseconds));
 		}
 
-		private static void TryOutputFilteredFeed(string outputFeedPath, IEnumerable<Track> filteredFeed)
+		private static void TryOutputFilteredFeed<T>(string outputFeedPath, IEnumerable<T> filteredFeed)
 		{
 			try
 			{
@@ -117,13 +115,13 @@ namespace SevenDigital.FeedMunch
 			return Path.Combine(outputDirectory, filename + ".tmp");
 		}
 
-		private IEnumerable<Track> ReadAndFilterAllRows(Feed feed)
+		private IEnumerable<T> ReadAndFilterAllRows<T>(Feed feed)
 		{
 			_logEvent.Info("Reading data into list");
-			var readIntoList = _genericFeedReader.ReadIntoList<Track>(feed);
+			var readIntoList = _genericFeedReader.ReadIntoList<T>(feed);
 			var rows = Config.Limit > 0 ? readIntoList.Take(Config.Limit) : readIntoList;
 			var filter = new Filter(Config.Filter);
-			return rows.Where(filter.ApplyToRow);
+			return rows.Where(row => filter.ApplyToRow(row));
 		}
 
 		private static void TryChangeExtension(string path, string from, string to)
