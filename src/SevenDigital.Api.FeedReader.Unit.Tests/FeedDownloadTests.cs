@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using Rhino.Mocks;
 using SevenDigital.Api.FeedReader.Feeds;
-using SevenDigital.Api.FeedReader.Feeds.Artist;
 using SevenDigital.Api.FeedReader.Http;
 
 namespace SevenDigital.Api.FeedReader.Unit.Tests
@@ -50,7 +49,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 			_fileHelper.Stub(x => x.FeedExists(artistFeed)).Return(true);
 
 			var feedsUrlCreator = MockRepository.GenerateStub<IFeedsUrlCreator>();
-			feedsUrlCreator.Stub(x => x.SignUrlForLatestFeed(FeedCatalogueType.Artist, FeedType.Full, "34")).Return(expectedSignedFeedsUrl);
+			feedsUrlCreator.Stub(x => x.SignUrlForLatestFeed(FeedCatalogueType.Artist, FeedType.Full, "GB")).Return(expectedSignedFeedsUrl);
 
 			var webClientWrapper = MockRepository.GenerateStub<IWebClientWrapper>();
 
@@ -62,7 +61,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 
 			Assert.That(artistFeedDownload.CurrentSignedUrl, Is.EqualTo(expectedSignedFeedsUrl));
 
-			feedsUrlCreator.AssertWasCalled(x => x.SignUrlForLatestFeed(FeedCatalogueType.Artist, FeedType.Full, "34"));
+			feedsUrlCreator.AssertWasCalled(x => x.SignUrlForLatestFeed(FeedCatalogueType.Artist, FeedType.Full, "GB"));
 
 			webClientWrapper.AssertWasCalled(x => x.DownloadFile(Arg<string>.Is.Equal(expectedSignedFeedsUrl), Arg<string>.Is.Anything));
 		}

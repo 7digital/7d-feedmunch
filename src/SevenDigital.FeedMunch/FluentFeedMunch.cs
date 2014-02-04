@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using DeCsv;
 using SevenDigital.Api.FeedReader;
 using SevenDigital.Api.FeedReader.Feeds;
-using SevenDigital.Api.FeedReader.Feeds.Schema;
 using SevenDigital.Api.FeedReader.Feeds.Track;
 using CsvSerializer = ServiceStack.Text.CsvSerializer;
 
@@ -17,16 +16,16 @@ namespace SevenDigital.FeedMunch
 	public class FluentFeedMunch
 	{
 		private readonly IFeedDownload _feedDownload;
-		private readonly TrackFeedReader _trackFeedReader;
+		private readonly FeedReader _feedReader;
 		private readonly IFileHelper _fileHelper;
 		private readonly IEventAdapter _logEvent;
 
 		public FeedMunchConfig Config { get; private set; }
 
-		public FluentFeedMunch(IFeedDownload feedDownload, TrackFeedReader trackFeedReader, IFileHelper fileHelper, IEventAdapter logEvent)
+		public FluentFeedMunch(IFeedDownload feedDownload, FeedReader feedReader, IFileHelper fileHelper, IEventAdapter logEvent)
 		{
 			_feedDownload = feedDownload;
-			_trackFeedReader = trackFeedReader;
+			_feedReader = feedReader;
 			_fileHelper = fileHelper;
 			_logEvent = logEvent;
 		}
@@ -42,7 +41,7 @@ namespace SevenDigital.FeedMunch
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
 
-			var feed = new Feed(Config.Feed, FeedCatalogueType.Track) { ShopId = Config.Shop };
+			var feed = new Feed(Config.Feed, Config.Catalog) { Country = Config.Country };
 
 			_logEvent.Info(feed.ToString());
 
@@ -77,7 +76,7 @@ namespace SevenDigital.FeedMunch
 			_logEvent.Info(string.Format("Took {0} milliseconds to output filtered feed", timeFilteredFeedWrite.ElapsedMilliseconds));
 		}
 
-		private static void TryOutputFilteredFeed(string outputFeedPath, IEnumerable<Track> filteredFeed)
+		private static void TryOutputFilteredFeed(string outputFeedPath, IEnumerable<object> filteredFeed)
 		{
 			try
 			{
@@ -105,17 +104,18 @@ namespace SevenDigital.FeedMunch
 			return Path.Combine(outputDirectory, filename + ".tmp");
 		}
 
-		private IEnumerable<Track> ReadAllRows(Feed feed)
+		private IEnumerable<object> ReadAllRows(Feed feed)
 		{
 			// TODO - trial hard loading this into ram before processing as this may be bottlenecked by disk IO
+
 			_logEvent.Info("Reading data into list");
-			var readIntoList = _trackFeedReader.ReadIntoList(feed);
+			var readIntoList = _feedReader.ReadIntoList(feed);
 			return Config.Limit > 0 
 				? readIntoList.Take(Config.Limit) 
 				: readIntoList;
 		}
 
-		private IEnumerable<Track> FilterRows(IEnumerable<Track> rows)
+		private IEnumerable<object> FilterRows(IEnumerable<object> rows)
 		{
 			var filter = new Filter(Config.Filter);
 			return rows.Where(filter.ApplyToRow);

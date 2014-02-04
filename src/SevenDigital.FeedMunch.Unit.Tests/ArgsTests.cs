@@ -15,7 +15,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 				"/catalog", "artist", 
 				"/filter", "licensorId != 1", 
 				"/output", "./blah", 
-				"/shop", "34"
+				"/country", "GB"
 			};
 
 			var feedMunchArgumentAdapter = new FeedMunchArgumentAdapter();
@@ -25,11 +25,11 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 			Assert.That(feedMunchConfig.Feed, Is.EqualTo(FeedType.Full));
 			Assert.That(feedMunchConfig.Filter, Is.EqualTo("licensorId != 1"));
 			Assert.That(feedMunchConfig.Output, Is.EqualTo("./blah"));
-			Assert.That(feedMunchConfig.Shop, Is.EqualTo(34));
+			Assert.That(feedMunchConfig.Country, Is.EqualTo("GB"));
 		}
 
 		[Test]
-		public void Incremental_Track_feed_for_shop_1106_with_no_filter()
+		public void Incremental_Track_feed_for_country_US_with_no_filter()
 		{
 			var args = new[]
 			{
@@ -37,7 +37,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 				"/catalog", "track", 
 				"/filter", "", 
 				"/output", "./blah", 
-				"/shop", "1106"
+				"/country", "US"
 			};
 
 			var feedMunchArgumentAdapter = new FeedMunchArgumentAdapter();
@@ -47,7 +47,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 			Assert.That(feedMunchConfig.Feed, Is.EqualTo(FeedType.Incremental));
 			Assert.That(feedMunchConfig.Filter, Is.EqualTo(""));
 			Assert.That(feedMunchConfig.Output, Is.EqualTo("./blah"));
-			Assert.That(feedMunchConfig.Shop, Is.EqualTo(1106));
+			Assert.That(feedMunchConfig.Country, Is.EqualTo("US"));
 		}
 
 		[Test]
@@ -59,7 +59,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 				"/caTalog", "Release", 
 				"/fiLter", "licensorId != 1", 
 				"/ouTput", "./blah", 
-				"/sHop", "34"
+				"/cOuNtry", "GB"
 			};
 			
 			var feedMunchArgumentAdapter = new FeedMunchArgumentAdapter();
@@ -69,7 +69,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 			Assert.That(feedMunchConfig.Feed, Is.EqualTo(FeedType.Full));
 			Assert.That(feedMunchConfig.Filter, Is.EqualTo("licensorId != 1"));
 			Assert.That(feedMunchConfig.Output, Is.EqualTo("./blah"));
-			Assert.That(feedMunchConfig.Shop, Is.EqualTo(34));
+			Assert.That(feedMunchConfig.Country, Is.EqualTo("GB"));
 		}
 
 	}

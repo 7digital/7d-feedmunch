@@ -7,7 +7,7 @@ namespace SevenDigital.Api.FeedReader
 	{
 		private readonly FeedType _type;
 		private readonly FeedCatalogueType _catalogueType;
-		private int _shopId = 34;
+		private string _country = "GB";
 		public const DayOfWeek FULL_FEED_DAY_OF_WEEK = DayOfWeek.Monday;
 
 		public Feed(FeedType type, FeedCatalogueType catalogueType)
@@ -16,10 +16,10 @@ namespace SevenDigital.Api.FeedReader
 			_catalogueType = catalogueType;
 		}
 
-		public int ShopId
+		public string Country
 		{
-			get { return _shopId; }
-			set { _shopId = value; }
+			get { return _country; }
+			set { _country = value; }
 		}
 
 		public FeedWriteMethod WriteMethod { get; set; }
@@ -29,12 +29,12 @@ namespace SevenDigital.Api.FeedReader
 		public string GetLatest()
 		{
 			var feedsDate = GetPreviousFeedDate();
-			return feedsDate + "-" + ShopId + "-" + _catalogueType.ToString().ToLower() + "-" + _type.ToString().ToLower() + "-feed.gz";
+			return feedsDate + "-" + Country + "-" + _catalogueType.ToString().ToLower() + "-" + _type.ToString().ToLower() + "-feed.gz";
 		}
 
 		public override string ToString()
 		{
-			return string.Format("FeedType: {0} FeedCatalogue: {1} ShopId: {2}", FeedType, CatalogueType, ShopId );
+			return string.Format("FeedType: {0} FeedCatalogue: {1} Country: {2}", FeedType, CatalogueType, Country );
 		}
 
 		private string GetPreviousFeedDate()
