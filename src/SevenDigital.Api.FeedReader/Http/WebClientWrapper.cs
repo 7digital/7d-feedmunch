@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -44,6 +45,10 @@ namespace SevenDigital.Api.FeedReader.Http
 			using (httpClient)
 			{
 				var httpResponseMessage = await httpClient.GetAsync(address, HttpCompletionOption.ResponseHeadersRead);
+				if (httpResponseMessage.StatusCode != HttpStatusCode.OK)
+				{
+					throw new HttpRequestException("Booooooom");
+				}
 				using (var fileStream = new FileStream(fileName, FileMode.Append, FileAccess.Write))
 				{
 					using (var httpStream = await httpResponseMessage.Content.ReadAsStreamAsync())

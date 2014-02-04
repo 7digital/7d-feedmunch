@@ -25,7 +25,7 @@ namespace SevenDigital.Api.FeedReader
 
 			var endpoint = string.Format(FEED_ENDPOINT, feedCatalogueType.ToString().ToLower(), type.ToString().ToLower());
 
-			string requestUrl = string.Concat(_apiUrl.Uri, endpoint);
+			var requestUrl = string.Concat(_apiUrl.Uri, endpoint);
 			var oAuthRequest = new OAuthRequest
 			{
 				Type = OAuthRequestType.ProtectedResource,
@@ -47,8 +47,10 @@ namespace SevenDigital.Api.FeedReader
 
 		private static void RequireString(string paramName, string value)
 		{
-			if(string.IsNullOrEmpty(value))
+			if (string.IsNullOrEmpty(value))
+			{
 				throw new ArgumentNullException(paramName);
+			}
 		}
 	}
 

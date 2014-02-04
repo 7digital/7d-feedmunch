@@ -7,7 +7,7 @@ namespace SevenDigital.FeedMunch
 	{
 		public FeedMunchConfig()
 		{
-			Shop = 34;
+			Country = "GB";
 			Output = "./tempfile.tmp";
 		}
 
@@ -24,7 +24,7 @@ namespace SevenDigital.FeedMunch
 		public string Output { get; set; }
 
 		[Description("")]
-		public int Shop { get; set; }
+		public string Country { get; set; }
 
 		[Description("/limit allows you to specifiy a  number of rows to limit the download to, currently only 0-row number, defaults to 0 which is all rows")]
 		public int Limit { get; set; }
