@@ -24,7 +24,13 @@ namespace SevenDigital.Api.FeedReader
 
 		public FeedWriteMethod WriteMethod { get; set; }
 		public FeedType FeedType { get { return _type; } }
-		public FeedCatalogueType CatalogueType { get { return _catalogueType; } }
+
+		public FeedCatalogueType CatalogueType
+		{
+			get { return _catalogueType; }
+		}
+
+		public string ExistingPath { get; set; }
 
 		public string GetLatest()
 		{

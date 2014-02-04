@@ -11,7 +11,13 @@ namespace FeedMuncher
 
 			var feedMunchConfig = FeedMunch.Configure.FromConsoleArgs(args);
 
-
+			//var feedMunchConfig = new FeedMunchConfig
+			//{
+			//	Catalog = FeedCatalogueType.Track,
+			//	Existing = @"H:\New folder\00034_track_full_20140130_licensor.gz",
+			//	Limit = 100,
+			//	Filter="licensorID=1"
+			//};
 
 			FeedMunch.Download
 				.WithConfig(feedMunchConfig)

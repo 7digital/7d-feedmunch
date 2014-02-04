@@ -32,6 +32,11 @@ namespace SevenDigital.Api.FeedReader.Feeds
 
 		private string BuildFullFilepath(Feed suppliedFeed)
 		{
+			if (!string.IsNullOrEmpty(suppliedFeed.ExistingPath))
+			{
+				return suppliedFeed.ExistingPath;
+			}
+
 			return Path.Combine(_fileHelper.GetOrCreateFeedsFolder(), suppliedFeed.GetLatest());
 		}
 	}

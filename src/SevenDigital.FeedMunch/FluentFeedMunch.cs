@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using DeCsv;
 using SevenDigital.Api.FeedReader;
@@ -38,12 +39,18 @@ namespace SevenDigital.FeedMunch
 
 		public void Invoke()
 		{
+			var feed = new Feed(Config.Feed, Config.Catalog) { Country = Config.Country };
+			_logEvent.Info(feed.ToString());
+
+			if (!string.IsNullOrEmpty(Config.Existing))
+			{
+				feed.ExistingPath = Config.Existing;
+				FilterFeedAndWrite(feed);
+				return;
+			}
+
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
-
-			var feed = new Feed(Config.Feed, Config.Catalog) { Country = Config.Country };
-
-			_logEvent.Info(feed.ToString());
 
 			var saveLocally = _feedDownload.SaveLocally(feed);
 			
@@ -72,7 +79,7 @@ namespace SevenDigital.FeedMunch
 
 		private void FilterFeedAndWrite(Feed feed)
 		{
-			var filteredFeed = ReadAndFilter(feed);
+			var filteredFeed = ReadAndFilterAllRows(feed);
 			var outputFeedPath = GenerateOutputFeedLocation(Config.Output);
 
 			_logEvent.Info(string.Format("Writing filtered feed out to {0}", outputFeedPath));
@@ -82,7 +89,7 @@ namespace SevenDigital.FeedMunch
 			_logEvent.Info(string.Format("Took {0} milliseconds to output filtered feed", timeFilteredFeedWrite.ElapsedMilliseconds));
 		}
 
-		private static void TryOutputFilteredFeed(string outputFeedPath, IEnumerable<object> filteredFeed)
+		private static void TryOutputFilteredFeed(string outputFeedPath, IEnumerable<Track> filteredFeed)
 		{
 			try
 			{
@@ -110,13 +117,13 @@ namespace SevenDigital.FeedMunch
 			return Path.Combine(outputDirectory, filename + ".tmp");
 		}
 
-		private dynamic ReadAndFilterAllRows<T>(Feed feed)
+		private IEnumerable<Track> ReadAndFilterAllRows(Feed feed)
 		{
 			_logEvent.Info("Reading data into list");
-			var readIntoList = _genericFeedReader.ReadIntoList<T>(feed);
+			var readIntoList = _genericFeedReader.ReadIntoList<Track>(feed);
 			var rows = Config.Limit > 0 ? readIntoList.Take(Config.Limit) : readIntoList;
 			var filter = new Filter(Config.Filter);
-			return rows.Where(row => filter.ApplyToRow(row));
+			return rows.Where(filter.ApplyToRow);
 		}
 
 		private static void TryChangeExtension(string path, string from, string to)
@@ -127,32 +134,6 @@ namespace SevenDigital.FeedMunch
 				File.Delete(completedFilePath);
 			}
 			File.Move(path, completedFilePath);
-		}
-
-		private dynamic ReadAndFilter(Feed feed)
-		{
-			if (feed.CatalogueType == FeedCatalogueType.Artist && feed.FeedType == FeedType.Full)
-			{
-				return ReadAndFilterAllRows<Artist>(feed);
-			}
-			if (feed.CatalogueType == FeedCatalogueType.Artist && feed.FeedType == FeedType.Incremental)
-			{
-				return ReadAndFilterAllRows<ArtistIncremental>(feed);
-			}
-			if (feed.CatalogueType == FeedCatalogueType.Release && feed.FeedType == FeedType.Full)
-			{
-				return ReadAndFilterAllRows<Release>(feed);
-			}
-			if (feed.CatalogueType == FeedCatalogueType.Release && feed.FeedType == FeedType.Incremental)
-			{
-				return ReadAndFilterAllRows<ReleaseIncremental>(feed);
-			}
-			if (feed.CatalogueType == FeedCatalogueType.Track && feed.FeedType == FeedType.Full)
-			{
-				return ReadAndFilterAllRows<Track>(feed);
-			}
-			return ReadAndFilterAllRows<TrackIncremental>(feed);
-
 		}
 	}
 }
