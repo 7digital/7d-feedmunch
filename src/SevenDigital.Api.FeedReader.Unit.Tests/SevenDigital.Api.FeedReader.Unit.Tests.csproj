@@ -61,6 +61,7 @@
     <Compile Include="ArtistFeedReaderTests.cs" />
     <Compile Include="DateExtensionTest.cs" />
     <Compile Include="FeedsFileHelperTests.cs" />
+    <Compile Include="FeedsHelperTests.cs" />
     <Compile Include="Feeds\FeedTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestData\ArtistData.cs" />

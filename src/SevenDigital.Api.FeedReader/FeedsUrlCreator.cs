@@ -38,7 +38,7 @@ namespace SevenDigital.Api.FeedReader
 			var parameters = new Dictionary<string,string>
 			{
 				{ "country", countryCode},
-				{ "date", FeedsHelper.GetPreviousFullFeedDate()}
+				{ "date", FeedsHelper.GetCurrentFullFeedDate(DateTime.Now)} // TODO - re card # 
 			};
 
 			var authorizationQuery = oAuthRequest.GetAuthorizationQuery(parameters);
