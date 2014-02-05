@@ -33,7 +33,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 		{
 			var args = new[]
 			{
-				"/feed", "incremental", 
+				"/feed", "updates", 
 				"/catalog", "track", 
 				"/filter", "", 
 				"/output", "./blah", 
