@@ -1,7 +1,8 @@
 ﻿namespace SevenDigital.FeedMunch
 {
-	public interface IEventAdapter
+	public interface ILogAdapter
 	{
 		void Info(string message);
+		void Error(string message);
 	}
 }
