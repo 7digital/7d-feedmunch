@@ -23,6 +23,15 @@ namespace SevenDigital.Api.FeedReader
 			return directory;
 		}
 
+		public string GenerateOutputFeedLocation(string output)
+		{
+			GetOrCreateFeedsFolder();
+			var filename = Path.GetFileNameWithoutExtension(output);
+			var directoryPath = Path.GetDirectoryName(output);
+			var outputDirectory = GetOrCreateOutputFolder(directoryPath);
+			return Path.Combine(outputDirectory, filename + ".tmp");
+		}
+
 		public string GetOrCreateFeedsFolder()
 		{
 			return GetOrCreateDirectoryAtRoot(_feedsFolder);
