@@ -58,6 +58,7 @@
     <Compile Include="FilterOperator.cs" />
     <Compile Include="FluentFeedMunch.cs" />
     <Compile Include="IEventAdapter.cs" />
+    <Compile Include="IFluentFeedMunch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TimerHelper.cs" />
   </ItemGroup>

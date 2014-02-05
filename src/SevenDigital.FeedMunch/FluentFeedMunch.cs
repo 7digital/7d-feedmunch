@@ -12,7 +12,7 @@ using CsvSerializer = ServiceStack.Text.CsvSerializer;
 
 namespace SevenDigital.FeedMunch
 {
-	public class FluentFeedMunch
+	public class FluentFeedMunch : IFluentFeedMunch
 	{
 		private readonly IFeedDownload _feedDownload;
 		private readonly GenericFeedReader _genericFeedReader;
@@ -20,6 +20,8 @@ namespace SevenDigital.FeedMunch
 		private readonly ILogAdapter _logLog;
 
 		public FeedMunchConfig Config { get; private set; }
+		public Filter Filter { get; private set; }
+		public Feed FeedDescription { get; private set; }
 
 		public FluentFeedMunch(IFeedDownload feedDownload, GenericFeedReader genericFeedReader, IFileHelper fileHelper, ILogAdapter logLog)
 		{
@@ -27,35 +29,52 @@ namespace SevenDigital.FeedMunch
 			_genericFeedReader = genericFeedReader;
 			_fileHelper = fileHelper;
 			_logLog = logLog;
+
+			Init(new FeedMunchConfig());
 		}
 
-		public FluentFeedMunch WithConfig(FeedMunchConfig config)
+		public IFluentFeedMunch WithConfig(FeedMunchConfig config)
 		{
 			Config = config;
+			Init(Config);
 			return this;
 		}
 
 		public void Invoke<T>()
 		{
-			var feed = new Feed(Config.Feed, Config.Catalog) { Country = Config.Country };
-			_logLog.Info(feed.ToString());
+			var generateOutputFeedLocation = _fileHelper.GenerateOutputFeedLocation(Config.Output);
 
 			if (!string.IsNullOrEmpty(Config.Existing))
 			{
-				UseExistingFeed<T>(feed);
+				FeedDescription.ExistingPath = Config.Existing;
+				FilterFeedAndWrite<T>(generateOutputFeedLocation, FeedDescription);
 			}
 			else
 			{
-				DownloadFromFeedsApi<T>(feed);
+				var stopwatch = new Stopwatch();
+				stopwatch.Start();
+				DownloadFromFeedsApi(() => 
+				{
+					stopwatch.Stop();
+
+					_logLog.Info("Finished downloading");
+					_logLog.Info(String.Format("Took {0} milliseconds to download", stopwatch.ElapsedMilliseconds));
+
+					FilterFeedAndWrite<T>(generateOutputFeedLocation, FeedDescription);
+				});
 			}
 		}
 
-		private void DownloadFromFeedsApi<T>(Feed feed)
+		private void Init(FeedMunchConfig config)
 		{
-			var stopwatch = new Stopwatch();
-			stopwatch.Start();
+			FeedDescription = new Feed(config.Feed, config.Catalog) { Country = config.Country };
+			_logLog.Info(FeedDescription.ToString());
+			Filter = new Filter(config.Filter);
+		}
 
-			var downloadFromFeedsApiTask = _feedDownload.SaveLocally(feed);
+		private void DownloadFromFeedsApi(Action onDownloaded)
+		{
+			var downloadFromFeedsApiTask = _feedDownload.SaveLocally(FeedDescription);
 
 			_logLog.Info(string.Format("Downloading to {0}", _feedDownload.CurrentFileName));
 
@@ -67,29 +86,19 @@ namespace SevenDigital.FeedMunch
 					_logLog.Info(task.Exception.InnerExceptions.First().Message);
 					return;
 				}
-
-				_logLog.Info("Finished downloading");
-				stopwatch.Stop();
-				_logLog.Info(String.Format("Took {0} milliseconds to download", stopwatch.ElapsedMilliseconds));
-
-				FilterFeedAndWrite<T>(feed);
+				onDownloaded();
 			}, TaskContinuationOptions.LongRunning);
 		}
 
-		private void UseExistingFeed<T>(Feed feed)
+		private void FilterFeedAndWrite<T>(string feedOutputLocation, Feed feedDescription)
 		{
-			feed.ExistingPath = Config.Existing;
-			FilterFeedAndWrite<T>(feed);
-		}
+			_logLog.Info("Reading data into list");
+			var rows = _genericFeedReader.ReadIntoList<T>(feedDescription);
+			var filteredFeed = Filter.Filtrate(rows);
 
-		private void FilterFeedAndWrite<T>(Feed feed)
-		{
-			var filteredFeed = ReadAndFilterAllRows<T>(feed);
-			var outputFeedPath = GenerateOutputFeedLocation(Config.Output);
+			_logLog.Info(string.Format("Writing filtered feed out to {0}", feedOutputLocation));
 
-			_logLog.Info(string.Format("Writing filtered feed out to {0}", outputFeedPath));
-
-			var timeFilteredFeedWrite = TimerHelper.TimeMe(() => TryOutputFilteredFeed(outputFeedPath, filteredFeed));
+			var timeFilteredFeedWrite = TimerHelper.TimeMe(() => TryOutputFilteredFeed(feedOutputLocation, filteredFeed));
 
 			_logLog.Info(string.Format("Took {0} milliseconds to output filtered feed", timeFilteredFeedWrite.ElapsedMilliseconds));
 		}
@@ -112,24 +121,6 @@ namespace SevenDigital.FeedMunch
 				_logLog.Info(ex.ToString());
 				throw;
 			}
-		}
-
-		private string GenerateOutputFeedLocation(string output)
-		{
-			_fileHelper.GetOrCreateFeedsFolder();
-			var filename = Path.GetFileNameWithoutExtension(output);
-			var directoryPath = Path.GetDirectoryName(output);
-			var outputDirectory = _fileHelper.GetOrCreateOutputFolder(directoryPath);
-			return Path.Combine(outputDirectory, filename + ".tmp");
-		}
-
-		private IEnumerable<T> ReadAndFilterAllRows<T>(Feed feed)
-		{
-			_logLog.Info("Reading data into list");
-			var readIntoList = _genericFeedReader.ReadIntoList<T>(feed);
-			var rows = Config.Limit > 0 ? readIntoList.Take(Config.Limit) : readIntoList;
-			var filter = new Filter(Config.Filter);
-			return filter.Filtrate(rows);
 		}
 
 		private static void TryChangeExtension(string path, string from, string to)
