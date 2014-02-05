@@ -34,8 +34,8 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 			_feedMunchConfig.Filter = "licensorID=1";
 
 			FeedMuncher.IOC.StructureMap.FeedMunch.Download
-			           .WithConfig(_feedMunchConfig)
-			           .Invoke<TrackIncremental>();
+				.WithConfig(_feedMunchConfig)
+					.Invoke();
 
 			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
 
@@ -48,8 +48,8 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 			_feedMunchConfig.Filter = "licensorID=1,2";
 
 			FeedMuncher.IOC.StructureMap.FeedMunch.Download
-			           .WithConfig(_feedMunchConfig)
-			           .Invoke<TrackIncremental>();
+					   .WithConfig(_feedMunchConfig)
+					   .Invoke();
 
 			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
 
@@ -62,8 +62,8 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 			_feedMunchConfig.Filter = "action=I,U";
 
 			FeedMuncher.IOC.StructureMap.FeedMunch.Download
-			           .WithConfig(_feedMunchConfig)
-			           .Invoke<TrackIncremental>();
+					   .WithConfig(_feedMunchConfig)
+					   .Invoke();
 
 			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
 

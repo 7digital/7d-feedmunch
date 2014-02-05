@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
-using DeCsv;
+using CsvHelper;
 using SevenDigital.Api.FeedReader;
 using SevenDigital.Api.FeedReader.Feeds;
 using CsvSerializer = ServiceStack.Text.CsvSerializer;
@@ -15,7 +14,7 @@ namespace SevenDigital.FeedMunch
 	public class FluentFeedMunch : IFluentFeedMunch
 	{
 		private readonly IFeedDownload _feedDownload;
-		private readonly GenericFeedReader _genericFeedReader;
+		private readonly IFeedUnpacker _feedUnpacker;
 		private readonly IFileHelper _fileHelper;
 		private readonly ILogAdapter _logLog;
 
@@ -23,10 +22,10 @@ namespace SevenDigital.FeedMunch
 		public Filter Filter { get; private set; }
 		public Feed FeedDescription { get; private set; }
 
-		public FluentFeedMunch(IFeedDownload feedDownload, GenericFeedReader genericFeedReader, IFileHelper fileHelper, ILogAdapter logLog)
+		public FluentFeedMunch(IFeedDownload feedDownload, IFeedUnpacker feedUnpacker, IFileHelper fileHelper, ILogAdapter logLog)
 		{
 			_feedDownload = feedDownload;
-			_genericFeedReader = genericFeedReader;
+			_feedUnpacker = feedUnpacker;
 			_fileHelper = fileHelper;
 			_logLog = logLog;
 
@@ -40,14 +39,14 @@ namespace SevenDigital.FeedMunch
 			return this;
 		}
 
-		public void Invoke<T>()
+		public void Invoke()
 		{
 			var generateOutputFeedLocation = _fileHelper.GenerateOutputFeedLocation(Config.Output);
 
 			if (!string.IsNullOrEmpty(Config.Existing))
 			{
 				FeedDescription.ExistingPath = Config.Existing;
-				FilterFeedAndWrite<T>(generateOutputFeedLocation, FeedDescription);
+				FilterFeedAndWrite(generateOutputFeedLocation, FeedDescription);
 			}
 			else
 			{
@@ -60,7 +59,7 @@ namespace SevenDigital.FeedMunch
 					_logLog.Info("Finished downloading");
 					_logLog.Info(String.Format("Took {0} milliseconds to download", stopwatch.ElapsedMilliseconds));
 
-					FilterFeedAndWrite<T>(generateOutputFeedLocation, FeedDescription);
+					FilterFeedAndWrite(generateOutputFeedLocation, FeedDescription);
 				});
 			}
 		}
@@ -90,37 +89,48 @@ namespace SevenDigital.FeedMunch
 			}, TaskContinuationOptions.LongRunning);
 		}
 
-		private void FilterFeedAndWrite<T>(string feedOutputLocation, Feed feedDescription)
+		private void FilterFeedAndWrite(string feedOutputLocation, Feed feedDescription)
 		{
+			var decompressedStream = _feedUnpacker.GetDecompressedStream(feedDescription);
 			_logLog.Info("Reading data into list");
-			var rows = _genericFeedReader.ReadIntoList<T>(feedDescription);
-			var filteredFeed = Filter.Filtrate(rows);
+			using (var sr = new StreamReader(decompressedStream))
+			{
+				var csvReader = new CsvReader(sr);
+				csvReader.Read();
+				var headers = csvReader.FieldHeaders;
+				var filterField = Array.FindIndex(headers, x => x == Filter.FieldName);
 
-			_logLog.Info(string.Format("Writing filtered feed out to {0}", feedOutputLocation));
+				_logLog.Info(string.Format("Writing filtered feed out to {0}", feedOutputLocation));
 
-			var timeFilteredFeedWrite = TimerHelper.TimeMe(() => TryOutputFilteredFeed(feedOutputLocation, filteredFeed));
+				var timeFilteredFeedWrite = TimerHelper.TimeMe(() => TryOutputFilteredFeed(feedOutputLocation, headers, csvReader, filterField));
 
-			_logLog.Info(string.Format("Took {0} milliseconds to output filtered feed", timeFilteredFeedWrite.ElapsedMilliseconds));
+				_logLog.Info(string.Format("Took {0} milliseconds to output filtered feed", timeFilteredFeedWrite.ElapsedMilliseconds));
+			}
 		}
 
-		private void TryOutputFilteredFeed<T>(string outputFeedPath, IEnumerable<T> filteredFeed)
+		private void TryOutputFilteredFeed(string feedOutputLocation, string[] headers, ICsvReader csvReader, int filterField)
 		{
-			try
+			using (var output = File.Create(feedOutputLocation))
 			{
-				using (var compressedFileStream = File.Create(outputFeedPath))
+				using (var gzipOut = new GZipStream(output, CompressionMode.Compress))
 				{
-					using (var compressionStream = new GZipStream(compressedFileStream, CompressionMode.Compress))
+					CsvSerializer.SerializeToStream(headers, gzipOut);
+					while (csvReader.Read())
 					{
-						CsvSerializer.SerializeToStream(filteredFeed, compressionStream);
+						var currentRecord = csvReader.CurrentRecord;
+
+						var shouldWrite = Filter.Operator == FilterOperator.Equals
+											? Filter.Values.Any(x => x == currentRecord[filterField])
+											: Filter.Values.All(x => x != currentRecord[filterField]);
+
+						if (shouldWrite)
+						{
+							CsvSerializer.SerializeToStream(currentRecord, gzipOut);
+						}
 					}
 				}
-				TryChangeExtension(outputFeedPath, ".tmp", ".gz");
 			}
-			catch (CsvDeserializationException ex)
-			{
-				_logLog.Info(ex.ToString());
-				throw;
-			}
+			TryChangeExtension(feedOutputLocation, ".tmp", ".gz");
 		}
 
 		private static void TryChangeExtension(string path, string from, string to)

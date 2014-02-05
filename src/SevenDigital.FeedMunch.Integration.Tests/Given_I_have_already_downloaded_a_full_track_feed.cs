@@ -35,7 +35,7 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 
 			FeedMuncher.IOC.StructureMap.FeedMunch.Download
 				.WithConfig(_feedMunchConfig)
-				.Invoke<Track>();
+				.Invoke();
 
 			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
 
@@ -49,7 +49,7 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 
 			FeedMuncher.IOC.StructureMap.FeedMunch.Download
 				.WithConfig(_feedMunchConfig)
-				.Invoke<Track>();
+				.Invoke();
 
 			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
 
@@ -63,7 +63,7 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 
 			FeedMuncher.IOC.StructureMap.FeedMunch.Download
 				.WithConfig(_feedMunchConfig)
-				.Invoke<Track>();
+				.Invoke();
 
 			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
 
