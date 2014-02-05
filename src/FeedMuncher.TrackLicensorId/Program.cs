@@ -15,17 +15,10 @@ namespace FeedMuncher.TrackLicensorId
 			feedMunchConfig.Catalog = FeedCatalogueType.Track;
 			feedMunchConfig.Filter = "licensorID=" + feedMunchConfig.Filter;
 			
-			// This is currently hard coded to track, was supposed to be infererred from CatalogType - not sure if this is possible
-			var fluentFeedMunch = FeedMunch.Download.WithConfig(feedMunchConfig);
+			FeedMunch.Download
+				.WithConfig(feedMunchConfig)
+				.Invoke();
 
-			if (feedMunchConfig.Feed == FeedType.Updates)
-			{
-				fluentFeedMunch.Invoke<TrackIncremental>();
-			}
-			else
-			{
-				fluentFeedMunch.Invoke<Track>();
-			}
 
 			Console.Read();
 		}

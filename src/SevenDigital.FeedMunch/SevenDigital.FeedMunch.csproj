@@ -38,6 +38,9 @@
     <Reference Include="Args">
       <HintPath>..\..\packages\Args.1.1.1\lib\Net40\Args.dll</HintPath>
     </Reference>
+    <Reference Include="CsvHelper">
+      <HintPath>..\..\packages\CsvHelper.2.4.0\lib\net40-client\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.Text">
       <HintPath>..\..\packages\ServiceStack.Text.3.9.59\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
