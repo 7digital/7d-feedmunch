@@ -51,7 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Given_I_have_already_downloaded_a_feed.cs" />
+    <Compile Include="AssertFiltering.cs" />
+    <Compile Include="Given_I_have_already_downloaded_an_incremental_track_feed.cs" />
+    <Compile Include="Given_I_have_already_downloaded_a_full_track_feed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
