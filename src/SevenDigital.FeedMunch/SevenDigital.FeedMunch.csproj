@@ -50,7 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EventAdapter.cs" />
+    <Compile Include="ConsoleLogAdapter.cs" />
     <Compile Include="FeedMunchArgumentAdapter.cs" />
     <Compile Include="FeedMunchConfig.cs" />
     <Compile Include="Filter.cs" />

@@ -17,16 +17,16 @@ namespace SevenDigital.FeedMunch
 		private readonly IFeedDownload _feedDownload;
 		private readonly GenericFeedReader _genericFeedReader;
 		private readonly IFileHelper _fileHelper;
-		private readonly IEventAdapter _logEvent;
+		private readonly ILogAdapter _logLog;
 
 		public FeedMunchConfig Config { get; private set; }
 
-		public FluentFeedMunch(IFeedDownload feedDownload, GenericFeedReader genericFeedReader, IFileHelper fileHelper, IEventAdapter logEvent)
+		public FluentFeedMunch(IFeedDownload feedDownload, GenericFeedReader genericFeedReader, IFileHelper fileHelper, ILogAdapter logLog)
 		{
 			_feedDownload = feedDownload;
 			_genericFeedReader = genericFeedReader;
 			_fileHelper = fileHelper;
-			_logEvent = logEvent;
+			_logLog = logLog;
 		}
 
 		public FluentFeedMunch WithConfig(FeedMunchConfig config)
@@ -38,41 +38,48 @@ namespace SevenDigital.FeedMunch
 		public void Invoke<T>()
 		{
 			var feed = new Feed(Config.Feed, Config.Catalog) { Country = Config.Country };
-			_logEvent.Info(feed.ToString());
+			_logLog.Info(feed.ToString());
 
 			if (!string.IsNullOrEmpty(Config.Existing))
 			{
-				feed.ExistingPath = Config.Existing;
-				FilterFeedAndWrite<T>(feed);
-				return;
+				UseExistingFeed<T>(feed);
 			}
+			else
+			{
+				DownloadFromFeedsApi<T>(feed);
+			}
+		}
 
+		private void DownloadFromFeedsApi<T>(Feed feed)
+		{
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
 
-			var saveLocally = _feedDownload.SaveLocally(feed);
-			
-			_logEvent.Info(string.Format("Downloading to {0}", _feedDownload.CurrentFileName));
+			var downloadFromFeedsApiTask = _feedDownload.SaveLocally(feed);
 
-			//var timer = ConsoleFilePolling.GenerateFileSizePollingTimer(_feedDownload.CurrentFileName, 300);
-			
-			saveLocally.ContinueWith(task =>
+			_logLog.Info(string.Format("Downloading to {0}", _feedDownload.CurrentFileName));
+
+			downloadFromFeedsApiTask.ContinueWith(task =>
 			{
 				if (task.Exception != null)
 				{
-					_logEvent.Info("An error occured downloading the feed");
-					_logEvent.Info(task.Exception.InnerExceptions.First().Message);
+					_logLog.Info("An error occured downloading the feed");
+					_logLog.Info(task.Exception.InnerExceptions.First().Message);
 					return;
 				}
 
-				_logEvent.Info("Finished downloading");
+				_logLog.Info("Finished downloading");
 				stopwatch.Stop();
-				_logEvent.Info(String.Format("Took {0} milliseconds to download", stopwatch.ElapsedMilliseconds));
-				
+				_logLog.Info(String.Format("Took {0} milliseconds to download", stopwatch.ElapsedMilliseconds));
+
 				FilterFeedAndWrite<T>(feed);
-				
-				//timer.Dispose();
 			}, TaskContinuationOptions.LongRunning);
+		}
+
+		private void UseExistingFeed<T>(Feed feed)
+		{
+			feed.ExistingPath = Config.Existing;
+			FilterFeedAndWrite<T>(feed);
 		}
 
 		private void FilterFeedAndWrite<T>(Feed feed)
@@ -80,14 +87,14 @@ namespace SevenDigital.FeedMunch
 			var filteredFeed = ReadAndFilterAllRows<T>(feed);
 			var outputFeedPath = GenerateOutputFeedLocation(Config.Output);
 
-			_logEvent.Info(string.Format("Writing filtered feed out to {0}", outputFeedPath));
+			_logLog.Info(string.Format("Writing filtered feed out to {0}", outputFeedPath));
 
 			var timeFilteredFeedWrite = TimerHelper.TimeMe(() => TryOutputFilteredFeed(outputFeedPath, filteredFeed));
 
-			_logEvent.Info(string.Format("Took {0} milliseconds to output filtered feed", timeFilteredFeedWrite.ElapsedMilliseconds));
+			_logLog.Info(string.Format("Took {0} milliseconds to output filtered feed", timeFilteredFeedWrite.ElapsedMilliseconds));
 		}
 
-		private static void TryOutputFilteredFeed<T>(string outputFeedPath, IEnumerable<T> filteredFeed)
+		private void TryOutputFilteredFeed<T>(string outputFeedPath, IEnumerable<T> filteredFeed)
 		{
 			try
 			{
@@ -102,7 +109,8 @@ namespace SevenDigital.FeedMunch
 			}
 			catch (CsvDeserializationException ex)
 			{
-				Console.WriteLine(ex.ToString());
+				_logLog.Info(ex.ToString());
+				throw;
 			}
 		}
 
@@ -117,7 +125,7 @@ namespace SevenDigital.FeedMunch
 
 		private IEnumerable<T> ReadAndFilterAllRows<T>(Feed feed)
 		{
-			_logEvent.Info("Reading data into list");
+			_logLog.Info("Reading data into list");
 			var readIntoList = _genericFeedReader.ReadIntoList<T>(feed);
 			var rows = Config.Limit > 0 ? readIntoList.Take(Config.Limit) : readIntoList;
 			var filter = new Filter(Config.Filter);
