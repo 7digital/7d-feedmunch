@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
 using SevenDigital.Api.FeedReader.Feeds.Schema;
 
@@ -21,7 +20,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 		{
 			var filter = new Filter("name=mandela");
 
-			var filteredArtists = _artists.Where(filter.ApplyToRow).ToList();
+			var filteredArtists = filter.FiltrateToList(_artists);
 
 			Assert.That(filteredArtists.Count, Is.EqualTo(1));
 			Assert.That(filteredArtists[0].name, Is.EqualTo("mandela"));
@@ -32,19 +31,19 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 		{
 			var filter = new Filter("tags=india,south-africa");
 
-			var filteredArtists = _artists.Where(filter.ApplyToRow).ToList();
+			var filteredArtists = filter.FiltrateToList(_artists);
 
 			Assert.That(filteredArtists.Count, Is.EqualTo(2));
 			Assert.That(filteredArtists[0].name, Is.EqualTo("gandhi"));
 			Assert.That(filteredArtists[1].name, Is.EqualTo("mandela"));
 		}
-
+		
 		[Test]
 		public void Can_find_row_with_negative_single_value()
 		{
 			var filter = new Filter("tags!=third-reich");
 
-			var filteredArtists = _artists.Where(filter.ApplyToRow).ToList();
+			var filteredArtists = filter.FiltrateToList(_artists);
 
 			Assert.That(filteredArtists.Count, Is.EqualTo(2));
 			Assert.That(filteredArtists[0].name, Is.EqualTo("gandhi"));
@@ -56,7 +55,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 		{
 			var filter = new Filter("tags!=india,south-africa");
 
-			var filteredArtists = _artists.Where(filter.ApplyToRow).ToList();
+			var filteredArtists = filter.FiltrateToList(_artists);
 
 			Assert.That(filteredArtists.Count, Is.EqualTo(1));
 			Assert.That(filteredArtists[0].name, Is.EqualTo("hitler"));
@@ -67,7 +66,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 		{
 			var filter = new Filter("");
 
-			var filteredArtists = _artists.Where(filter.ApplyToRow).ToList();
+			var filteredArtists = filter.FiltrateToList(_artists);
 
 			Assert.That(filteredArtists.Count, Is.EqualTo(3));
 		}

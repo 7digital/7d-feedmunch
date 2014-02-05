@@ -54,6 +54,7 @@
     <Compile Include="FeedMunchArgumentAdapter.cs" />
     <Compile Include="FeedMunchConfig.cs" />
     <Compile Include="Filter.cs" />
+    <Compile Include="FilterExtensions.cs" />
     <Compile Include="FilterOperator.cs" />
     <Compile Include="FluentFeedMunch.cs" />
     <Compile Include="IEventAdapter.cs" />
