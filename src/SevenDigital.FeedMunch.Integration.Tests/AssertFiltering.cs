@@ -7,6 +7,7 @@ using NUnit.Framework;
 
 namespace SevenDigital.FeedMunch.Integration.Tests
 {
+	//TODO - try and replace this with CSVHelper so I can destroy DeCsv
 	public class AssertFiltering
 	{
 		public static void IsAsExpected<T>(string outputFile, Func<T, bool> filteringPredicate)

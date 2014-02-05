@@ -58,7 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FeedDownloadTests.cs" />
-    <Compile Include="ArtistFeedReaderTests.cs" />
     <Compile Include="DateExtensionTest.cs" />
     <Compile Include="FeedsFileHelperTests.cs" />
     <Compile Include="FeedsHelperTests.cs" />
@@ -71,10 +70,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DeCsv\DeCsv.csproj">
-      <Project>{1fa527ba-8469-4628-90ee-05a7699359ac}</Project>
-      <Name>DeCsv</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SevenDigital.Api.FeedReader\SevenDigital.Api.FeedReader.csproj">
       <Project>{B39EBE65-0598-4BA5-B73A-BEB9E1888BD9}</Project>
       <Name>SevenDigital.Api.FeedReader</Name>

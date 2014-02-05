@@ -14,5 +14,12 @@ namespace SevenDigital.FeedMunch
 		{
 			return Filtrate(filter, rows).ToList();
 		}
+
+		public static bool ShouldPass(this Filter filter, string value)
+		{
+			return filter.Operator == FilterOperator.Equals
+					? filter.Values.Any(x => x == value)
+					: filter.Values.All(x => x != value);
+		}
 	}
 }

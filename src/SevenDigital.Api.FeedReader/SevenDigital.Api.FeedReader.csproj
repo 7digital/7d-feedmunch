@@ -60,7 +60,6 @@
     <Compile Include="FeedsFileHelper.cs" />
     <Compile Include="FeedsHelper.cs" />
     <Compile Include="FeedsUrlCreator.cs" />
-    <Compile Include="Feeds\GenericFeedReader.cs" />
     <Compile Include="Feeds\Schema\Track.cs" />
     <Compile Include="Feeds\Schema\Release.cs" />
     <Compile Include="FeedType.cs" />
@@ -73,12 +72,6 @@
     <Compile Include="IFileHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Feeds\Schema\Artist.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DeCsv\DeCsv.csproj">
-      <Project>{1fa527ba-8469-4628-90ee-05a7699359ac}</Project>
-      <Name>DeCsv</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
