@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SevenDigital.FeedMunch
 {
@@ -54,9 +53,7 @@ namespace SevenDigital.FeedMunch
 
 			var propertyValue = getMethod.Invoke(row, null);
 
-			return Operator == FilterOperator.Equals
-				? Values.Any(x => x == propertyValue.ToString())
-				: Values.All(x => x != propertyValue.ToString());
+			return this.ShouldPass(propertyValue.ToString());
 		}
 	}
 }

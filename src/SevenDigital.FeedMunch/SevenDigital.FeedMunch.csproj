@@ -58,6 +58,7 @@
     <Compile Include="FeedMunchConfig.cs" />
     <Compile Include="Filter.cs" />
     <Compile Include="FilterExtensions.cs" />
+    <Compile Include="FilterLogic.cs" />
     <Compile Include="FilterOperator.cs" />
     <Compile Include="FluentFeedMunch.cs" />
     <Compile Include="IEventAdapter.cs" />
@@ -66,10 +67,6 @@
     <Compile Include="TimerHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DeCsv\DeCsv.csproj">
-      <Project>{1FA527BA-8469-4628-90EE-05A7699359AC}</Project>
-      <Name>DeCsv</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SevenDigital.Api.FeedReader\SevenDigital.Api.FeedReader.csproj">
       <Project>{b39ebe65-0598-4ba5-b73a-beb9e1888bd9}</Project>
       <Name>SevenDigital.Api.FeedReader</Name>
