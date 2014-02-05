@@ -3,6 +3,6 @@
 	public enum FeedType
 	{
 		Full,
-		Incremental
+		Updates
 	}
 }

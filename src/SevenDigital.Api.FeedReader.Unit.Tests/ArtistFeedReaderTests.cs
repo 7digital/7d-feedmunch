@@ -72,7 +72,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 			{
 				return typeof(Artist);
 			}
-			if (feed.CatalogueType == FeedCatalogueType.Artist && feed.FeedType == FeedType.Incremental)
+			if (feed.CatalogueType == FeedCatalogueType.Artist && feed.FeedType == FeedType.Updates)
 			{
 				return typeof(ArtistIncremental);
 			}
@@ -80,7 +80,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 			{
 				return typeof(Release);
 			}
-			if (feed.CatalogueType == FeedCatalogueType.Release && feed.FeedType == FeedType.Incremental)
+			if (feed.CatalogueType == FeedCatalogueType.Release && feed.FeedType == FeedType.Updates)
 			{
 				return typeof(ReleaseIncremental);
 			}

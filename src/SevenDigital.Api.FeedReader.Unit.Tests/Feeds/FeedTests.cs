@@ -46,7 +46,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests.Feeds
 			var feed = AvailableFeeds.ArtistIncremental;
 
 			Assert.That(feed.CatalogueType, Is.EqualTo(FeedCatalogueType.Artist));
-			Assert.That(feed.FeedType, Is.EqualTo(FeedType.Incremental));
+			Assert.That(feed.FeedType, Is.EqualTo(FeedType.Updates));
 		}
 
 		[Test]
@@ -64,7 +64,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests.Feeds
 			var feed = AvailableFeeds.TrackIncremental;
 
 			Assert.That(feed.CatalogueType, Is.EqualTo(FeedCatalogueType.Track));
-			Assert.That(feed.FeedType, Is.EqualTo(FeedType.Incremental));
+			Assert.That(feed.FeedType, Is.EqualTo(FeedType.Updates));
 		}
 
 		[Test]
@@ -82,7 +82,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests.Feeds
 			var feed = AvailableFeeds.ReleaseIncremental;
 
 			Assert.That(feed.CatalogueType, Is.EqualTo(FeedCatalogueType.Release));
-			Assert.That(feed.FeedType, Is.EqualTo(FeedType.Incremental));
+			Assert.That(feed.FeedType, Is.EqualTo(FeedType.Updates));
 		}
 	}
 }
