@@ -11,7 +11,7 @@ namespace SevenDigital.FeedMunch
 			Output = "./tempfile.tmp";
 		}
 
-		[Description("Either Full or Incremental")]
+		[Description("Either Full or Updates")]
 		public FeedType Feed { get; set; }
 		
 		[Description("Either Artist, Release or Track")]

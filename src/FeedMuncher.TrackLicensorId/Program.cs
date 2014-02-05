@@ -18,7 +18,7 @@ namespace FeedMuncher.TrackLicensorId
 			// This is currently hard coded to track, was supposed to be infererred from CatalogType - not sure if this is possible
 			var fluentFeedMunch = FeedMunch.Download.WithConfig(feedMunchConfig);
 
-			if (feedMunchConfig.Feed == FeedType.Incremental)
+			if (feedMunchConfig.Feed == FeedType.Updates)
 			{
 				fluentFeedMunch.Invoke<TrackIncremental>();
 			}

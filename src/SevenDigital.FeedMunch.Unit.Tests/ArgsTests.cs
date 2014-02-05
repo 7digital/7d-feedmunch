@@ -44,7 +44,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 			var feedMunchConfig = feedMunchArgumentAdapter.FromConsoleArgs(args);
 
 			Assert.That(feedMunchConfig.Catalog, Is.EqualTo(FeedCatalogueType.Track));
-			Assert.That(feedMunchConfig.Feed, Is.EqualTo(FeedType.Incremental));
+			Assert.That(feedMunchConfig.Feed, Is.EqualTo(FeedType.Updates));
 			Assert.That(feedMunchConfig.Filter, Is.EqualTo(""));
 			Assert.That(feedMunchConfig.Output, Is.EqualTo("./blah"));
 			Assert.That(feedMunchConfig.Country, Is.EqualTo("US"));

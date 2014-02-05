@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SevenDigital.Api.FeedReader.Integration.Tests")]
+[assembly: AssemblyTitle("SevenDigital.FeedMunch.Integration.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("SevenDigital.Api.FeedReader.Integration.Tests")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2013")]
+[assembly: AssemblyProduct("SevenDigital.FeedMunch.Integration.Tests")]
+[assembly: AssemblyCopyright("Copyright © Microsoft 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("0f037e2f-8b2b-437d-a4ba-269e9c290237")]
+[assembly: Guid("0272200d-406d-43f6-af4d-49705bf2e10f")]
 
 // Version information for an assembly consists of the following four values:
 //
