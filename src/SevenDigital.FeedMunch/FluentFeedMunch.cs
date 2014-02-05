@@ -129,7 +129,7 @@ namespace SevenDigital.FeedMunch
 			var readIntoList = _genericFeedReader.ReadIntoList<T>(feed);
 			var rows = Config.Limit > 0 ? readIntoList.Take(Config.Limit) : readIntoList;
 			var filter = new Filter(Config.Filter);
-			return rows.Where(row => filter.ApplyToRow(row));
+			return filter.Filtrate(rows);
 		}
 
 		private static void TryChangeExtension(string path, string from, string to)

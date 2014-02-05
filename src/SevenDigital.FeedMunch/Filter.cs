@@ -42,7 +42,7 @@ namespace SevenDigital.FeedMunch
 			Values = strings[1].Split(VALUE_DELIMETER);
 		}
 
-		public bool ApplyToRow(object row)
+		public bool ApplyToRow<T>(T row)
 		{
 			var fieldAsProperty = row.GetType().GetProperty(FieldName);
 			if (fieldAsProperty == null)
