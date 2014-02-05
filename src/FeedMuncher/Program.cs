@@ -1,8 +1,6 @@
 ﻿using System;
 using FeedMuncher.IOC.StructureMap;
-using SevenDigital.Api.FeedReader;
 using SevenDigital.Api.FeedReader.Feeds.Schema;
-using SevenDigital.FeedMunch;
 
 namespace FeedMuncher
 {
@@ -23,12 +21,13 @@ namespace FeedMuncher
 			//	Filter = "licensorID=1"
 			//};
 
-			// THis is currently hard coded to track, was supposed to be infererred from CatalogType - not sure if this is possible
+			// This is currently hard coded to track, was supposed to be infererred from CatalogType - not sure if this is possible
 			FeedMunch.Download
 				.WithConfig(feedMunchConfig)
 				.Invoke<Track>(); // TODO return filepath? 
-
+#if DEBUG
 			Console.Read();
+#endif
 		}
 	}
 }
