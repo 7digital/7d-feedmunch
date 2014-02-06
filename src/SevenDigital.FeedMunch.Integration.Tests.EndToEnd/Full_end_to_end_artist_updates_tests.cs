@@ -30,7 +30,7 @@ namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 			FeedMuncher.IOC.StructureMap
 			           .FeedMunch.Download
 			           .WithConfig(feedMunchConfig)
-			           .Invoke();
+			           .InvokeAndWriteToGzippedFile();
 
 			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
 

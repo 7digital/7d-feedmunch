@@ -3,6 +3,6 @@
 	public interface IFluentFeedMunch
 	{
 		IFluentFeedMunch WithConfig(FeedMunchConfig config);
-		void Invoke();
+		void InvokeAndWriteToGzippedFile();
 	}
 }
