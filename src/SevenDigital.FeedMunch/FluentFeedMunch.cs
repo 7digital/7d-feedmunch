@@ -2,8 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Threading.Tasks;
 using CsvHelper;
 using SevenDigital.Api.FeedReader;
 using SevenDigital.Api.FeedReader.Feeds;
@@ -36,6 +34,7 @@ namespace SevenDigital.FeedMunch
 		{
 			Config = config;
 			Init(Config);
+			_logLog.Info(FeedDescription.ToString());
 			return this;
 		}
 
@@ -50,48 +49,31 @@ namespace SevenDigital.FeedMunch
 			}
 			else
 			{
-				var stopwatch = new Stopwatch();
-				stopwatch.Start();
-				DownloadFromFeedsApi(() => 
-				{
-					stopwatch.Stop();
-
-					_logLog.Info("Finished downloading");
-					_logLog.Info(String.Format("Took {0} milliseconds to download", stopwatch.ElapsedMilliseconds));
-
-					FilterFeedAndWrite(generateOutputFeedLocation, FeedDescription);
-				});
+				var downloadToStream = _feedDownload.DownloadToStream(FeedDescription).Result;
+				FilterFeedAndWrite(downloadToStream, generateOutputFeedLocation, FeedDescription);
 			}
 		}
 
 		private void Init(FeedMunchConfig config)
 		{
 			FeedDescription = new Feed(config.Feed, config.Catalog) { Country = config.Country };
-			_logLog.Info(FeedDescription.ToString());
 			Filter = new Filter(config.Filter);
-		}
-
-		private void DownloadFromFeedsApi(Action onDownloaded)
-		{
-			var downloadFromFeedsApiTask = _feedDownload.SaveLocally(FeedDescription);
-
-			_logLog.Info(string.Format("Downloading to {0}", _feedDownload.CurrentFileName));
-
-			downloadFromFeedsApiTask.ContinueWith(task =>
-			{
-				if (task.Exception != null)
-				{
-					_logLog.Info("An error occured downloading the feed");
-					_logLog.Info(task.Exception.InnerExceptions.First().Message);
-					return;
-				}
-				onDownloaded();
-			}, TaskContinuationOptions.LongRunning);
 		}
 
 		private void FilterFeedAndWrite(string feedOutputLocation, Feed feedDescription)
 		{
 			var decompressedStream = _feedUnpacker.GetDecompressedStream(feedDescription);
+			FilterStreamAndWriteToFile(decompressedStream, feedOutputLocation);
+		}
+
+		private void FilterFeedAndWrite(Stream inputStream, string feedOutputLocation, Feed feedDescription)
+		{
+			var decompressedStream = _feedUnpacker.GetDecompressedStream(inputStream, feedDescription);
+			FilterStreamAndWriteToFile(decompressedStream, feedOutputLocation);
+		}
+
+		private void FilterStreamAndWriteToFile(Stream decompressedStream, string feedOutputLocation)
+		{
 			_logLog.Info("Reading data into list");
 			using (var sr = new StreamReader(decompressedStream))
 			{
@@ -102,7 +84,8 @@ namespace SevenDigital.FeedMunch
 
 				_logLog.Info(string.Format("Writing filtered feed out to {0}", feedOutputLocation));
 
-				var timeFilteredFeedWrite = TimerHelper.TimeMe(() => OutputFilteredFeed(feedOutputLocation, headers, csvReader, filterField));
+				var timeFilteredFeedWrite =
+					TimerHelper.TimeMe(() => OutputFilteredFeed(feedOutputLocation, headers, csvReader, filterField));
 
 				_logLog.Info(string.Format("Took {0} milliseconds to output filtered feed", timeFilteredFeedWrite.ElapsedMilliseconds));
 			}

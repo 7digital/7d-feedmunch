@@ -30,6 +30,19 @@ namespace SevenDigital.Api.FeedReader.Feeds
 			}
 		}
 
+		public Stream GetDecompressedStream(Stream stream, Feed feed)
+		{
+			try
+			{
+				return new GZipStream(stream, CompressionMode.Decompress);
+			}
+			catch
+			{
+				stream.Close();
+				throw;
+			}
+		}
+
 		private string BuildFullFilepath(Feed suppliedFeed)
 		{
 			if (!string.IsNullOrEmpty(suppliedFeed.ExistingPath))

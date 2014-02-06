@@ -45,7 +45,7 @@ namespace SevenDigital.Api.FeedReader.Http
 		{
 			using (httpClient)
 			{
-				var httpResponseMessage = await httpClient.GetAsync(address, HttpCompletionOption.ResponseHeadersRead);
+				var httpResponseMessage = httpClient.GetAsync(address, HttpCompletionOption.ResponseHeadersRead).Result;
 				httpResponseMessage.EnsureSuccessStatusCode();
 				//if (httpResponseMessage.StatusCode != HttpStatusCode.OK)
 				//{

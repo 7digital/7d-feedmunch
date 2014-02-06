@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Threading.Tasks;
+using NUnit.Framework;
 using Rhino.Mocks;
 using SevenDigital.Api.FeedReader.Feeds;
 using SevenDigital.Api.FeedReader.Http;
@@ -55,9 +56,10 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 
 			var fileHelper = MockRepository.GenerateStub<IFileHelper>();
 			fileHelper.Stub(x=>x.GetOrCreateFeedsFolder()).Return("feeds");
+			fileHelper.Stub(x => x.BuildFullFilepath(null)).IgnoreArguments().Return("");
 
 			var artistFeedDownload = new FeedDownload(feedsUrlCreator, webClientWrapper, fileHelper);
-			artistFeedDownload.SaveLocally(artistFeed);
+			artistFeedDownload.SaveLocallyAsync(artistFeed);
 
 			Assert.That(artistFeedDownload.CurrentSignedUrl, Is.EqualTo(expectedSignedFeedsUrl));
 
