@@ -5,9 +5,9 @@ using StructureMap.Configuration.DSL;
 
 namespace FeedMuncher.IOC.StructureMap
 {
-	public class FeedReaderRegistry : Registry
+	public class FeedMunchRegistry : Registry
 	{
-		public FeedReaderRegistry()
+		public FeedMunchRegistry()
 		{
 			Scan(x =>
 			{

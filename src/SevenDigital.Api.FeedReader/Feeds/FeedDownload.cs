@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,6 +35,7 @@ namespace SevenDigital.Api.FeedReader.Feeds
 			{
 				Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite)
 			};
+			httpClient.DefaultRequestHeaders.Add(HttpRequestHeader.UserAgent.ToString(), "FeedMunch Feed Client");
 			return await httpClient.GetStreamAsync(CurrentSignedUrl);
 		}
 
