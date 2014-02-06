@@ -1,14 +1,19 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.IO;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using SevenDigital.Api.FeedReader.Http;
 
 namespace SevenDigital.Api.FeedReader.Feeds
 {
 	public interface IFeedDownload
 	{
-		Task SaveLocally(Feed suppliedFeed);
+		Task SaveLocallyAsync(Feed suppliedFeed);
 		bool FeedAlreadyExists(Feed suppliedFeed);
 		string CurrentSignedUrl { get; }
 		string CurrentFileName { get; }
+		Task<Stream> DownloadToStream(Feed suppliedFeed);
 	}
 
 	public class FeedDownload : IFeedDownload
@@ -24,7 +29,19 @@ namespace SevenDigital.Api.FeedReader.Feeds
 			_fileHelper = fileHelper;
 		}
 
-		public async Task SaveLocally(Feed suppliedFeed)
+		public async Task<Stream> DownloadToStream(Feed suppliedFeed)
+		{
+			CurrentSignedUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.CatalogueType, suppliedFeed.FeedType, suppliedFeed.Country);
+			CurrentFileName = _fileHelper.BuildFullFilepath(suppliedFeed);
+
+			var httpClient = new HttpClient
+			{
+				Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite)
+			};
+			return await httpClient.GetStreamAsync(CurrentSignedUrl);
+		}
+
+		public async Task SaveLocallyAsync(Feed suppliedFeed)
 		{
 			CurrentSignedUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.CatalogueType, suppliedFeed.FeedType, suppliedFeed.Country);
 			CurrentFileName = _fileHelper.BuildFullFilepath(suppliedFeed);
