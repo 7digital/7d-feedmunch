@@ -8,22 +8,22 @@ namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 {
 	[TestFixture]
 	[Explicit]
-	public class Full_end_to_end_track_updates_tests
+	public class Full_end_to_end_release_updates_tests
 	{
-		private const string OUTPUT_FILE = "trackUpdatesTest";
+		private const string OUTPUT_FILE = "releaseUpdatesTest";
 		private const string EXPECTED_OUTPUT_FILE = "output/" + OUTPUT_FILE + ".gz";
 
 		[Test]
-		public void Can_filter_version_album_version_on_the_fly()
+		public void Can_filter_action_on_the_fly()
 		{
 			Bootstrap.ConfigureDependencies();
 
 			var feedMunchConfig = new FeedMunchConfig
 			{
-				Catalog = FeedCatalogueType.Track,
+				Catalog = FeedCatalogueType.Release,
 				Country = "GB",
 				Feed = FeedType.Updates,
-				Filter = "version=Album Version",
+				Filter = "action=U",
 				Output = OUTPUT_FILE
 			};
 
@@ -34,7 +34,7 @@ namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 
 			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
 
-			AssertFiltering.IsAsExpected<TrackIncremental>(EXPECTED_OUTPUT_FILE, x => x.version == "Album Version");
+			AssertFiltering.IsAsExpected<ReleaseIncremental>(EXPECTED_OUTPUT_FILE, x => x.action == "U");
 		}
 	}
 }
