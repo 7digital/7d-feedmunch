@@ -10,8 +10,8 @@ namespace SevenDigital.Api.Feeds.Filtered
 		public override void ProcessRequest(HttpContextBase context)
 		{
 			var response = context.Response;
-			var segments = new Stack(context.Request.Url.Segments);
 
+			var segments = new Stack(context.Request.Url.Segments);
 			var feedType = ((string)segments.Pop()).TrimEnd('/');
 			var catalogType = ((string)segments.Pop()).TrimEnd('/');
 
