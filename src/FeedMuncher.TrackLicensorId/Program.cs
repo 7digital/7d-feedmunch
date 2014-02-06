@@ -17,7 +17,7 @@ namespace FeedMuncher.TrackLicensorId
 			
 			FeedMunch.Download
 				.WithConfig(feedMunchConfig)
-				.Invoke();
+				.InvokeAndWriteToGzippedFile();
 
 
 			Console.Read();

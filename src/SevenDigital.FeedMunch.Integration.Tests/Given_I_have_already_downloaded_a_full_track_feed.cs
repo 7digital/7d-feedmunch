@@ -36,7 +36,7 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 
 			FeedMuncher.IOC.StructureMap.FeedMunch.Download
 				.WithConfig(_feedMunchConfig)
-				.Invoke();
+				.InvokeAndWriteToGzippedFile();
 
 			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
 
@@ -50,7 +50,7 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 
 			FeedMuncher.IOC.StructureMap.FeedMunch.Download
 				.WithConfig(_feedMunchConfig)
-				.Invoke();
+				.InvokeAndWriteToGzippedFile();
 
 			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
 
@@ -64,7 +64,7 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 
 			FeedMuncher.IOC.StructureMap.FeedMunch.Download
 				.WithConfig(_feedMunchConfig)
-				.Invoke();
+				.InvokeAndWriteToGzippedFile();
 
 			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
 
@@ -79,7 +79,7 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 			var feedMunch = FeedMuncher.IOC.StructureMap.FeedMunch.Download
 				.WithConfig(_feedMunchConfig);
 
-			var argumentException = Assert.Throws<ArgumentException>(feedMunch.Invoke);
+			var argumentException = Assert.Throws<ArgumentException>(feedMunch.InvokeAndWriteToGzippedFile);
 
 			Assert.That(argumentException.Message, Is.EqualTo("Chosen filter field is not valid: \"jabba\", remember field names are case sensitive"));
 		}

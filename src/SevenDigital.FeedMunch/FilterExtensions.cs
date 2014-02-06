@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using CsvHelper;
 
 namespace SevenDigital.FeedMunch
 {
@@ -20,6 +23,33 @@ namespace SevenDigital.FeedMunch
 			return filter.Operator == FilterOperator.Equals
 					? filter.Values.Any(x => x == value)
 					: filter.Values.All(x => x != value);
+		}
+
+		public static void ApplyToStream(this Filter filter, Stream inputStream, Stream outputStream)
+		{
+			using (var sr = new StreamReader(inputStream))
+			{
+				var csvReader = new CsvReader(sr);
+				csvReader.Read();
+
+				var headers = csvReader.FieldHeaders;
+				var filterFieldIndex = Array.FindIndex(headers, x => x == filter.FieldName);
+
+				if (filterFieldIndex < 0)
+				{
+					throw new ArgumentException(String.Format("Chosen filter field is not valid: \"{0}\", remember field names are case sensitive", filter.FieldName));
+				}
+
+				ServiceStack.Text.CsvSerializer.SerializeToStream(headers, outputStream);
+				while (csvReader.Read())
+				{
+					var currentRecord = csvReader.CurrentRecord;
+					if (filter.ShouldPass(currentRecord[filterFieldIndex]))
+					{
+						ServiceStack.Text.CsvSerializer.SerializeToStream(currentRecord, outputStream);
+					}
+				}
+			}
 		}
 	}
 }

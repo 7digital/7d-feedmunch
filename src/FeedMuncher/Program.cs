@@ -12,7 +12,7 @@ namespace FeedMuncher
 			
 			FeedMunch.Download
 				.WithConfig(feedMunchConfig)
-				.Invoke(); // TODO return filepath? 
+				.InvokeAndWriteToGzippedFile(); // TODO return filepath? 
 		}
 	}
 }
