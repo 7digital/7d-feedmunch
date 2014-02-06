@@ -10,25 +10,22 @@ namespace SevenDigital.Api.FeedReader.Feeds
 	public interface IFeedDownload
 	{
 		string CurrentSignedUrl { get; }
-		string CurrentFileName { get; }
 		Task<Stream> DownloadToStream(Feed suppliedFeed);
 	}
 
 	public class FeedDownload : IFeedDownload
 	{
 		private readonly IFeedsUrlCreator _feedsUrlCreator;
-		private readonly IFileHelper _fileHelper;
 
-		public FeedDownload(IFeedsUrlCreator feedsUrlCreator, IFileHelper fileHelper)
+		public FeedDownload(IFeedsUrlCreator feedsUrlCreator)
 		{
 			_feedsUrlCreator = feedsUrlCreator;
-			_fileHelper = fileHelper;
 		}
 
 		public async Task<Stream> DownloadToStream(Feed suppliedFeed)
 		{
 			CurrentSignedUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.CatalogueType, suppliedFeed.FeedType, suppliedFeed.Country);
-			CurrentFileName = _fileHelper.BuildFullFilepath(suppliedFeed);
+			
 
 			var httpClient = new HttpClient
 			{
@@ -39,6 +36,5 @@ namespace SevenDigital.Api.FeedReader.Feeds
 		}
 
 		public string CurrentSignedUrl { get; private set; }
-		public string CurrentFileName { get; private set; }
 	}
 }

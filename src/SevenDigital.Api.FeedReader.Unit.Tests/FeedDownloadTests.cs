@@ -15,20 +15,17 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 		{
 			_feedsUrlCreator = MockRepository.GenerateStub<IFeedsUrlCreator>();
 			_feedsUrlCreator.Stub(x => x.SignUrlForLatestFeed(FeedCatalogueType.Track, FeedType.Full, "GB")).IgnoreArguments().Return("http://localhost");
-			_fileHelper = MockRepository.GenerateStub<IFileHelper>();
-			_fileHelper.Stub(x => x.BuildFullFilepath(null)).IgnoreArguments().Return("testFolderName");
 		}
 
 		[Test]
 		public void Should_set_filename_and_url()
 		{
-			var feedDownload = new FeedDownload(_feedsUrlCreator, _fileHelper);
+			var feedDownload = new FeedDownload(_feedsUrlCreator);
 
 			var suppliedFeed = new Feed(FeedType.Full, FeedCatalogueType.Track);
 
 			var downloadToStream = feedDownload.DownloadToStream(suppliedFeed).Result;
 
-			Assert.That(feedDownload.CurrentFileName, Is.EqualTo("testFolderName"));
 			Assert.That(feedDownload.CurrentSignedUrl, Is.EqualTo("http://localhost"));
 
 			Assert.That(downloadToStream, Is.Not.Null);

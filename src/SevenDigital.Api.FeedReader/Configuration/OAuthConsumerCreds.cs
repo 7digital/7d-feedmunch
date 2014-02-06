@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Web;
 
 namespace SevenDigital.Api.FeedReader.Configuration
 {
@@ -27,6 +28,10 @@ namespace SevenDigital.Api.FeedReader.Configuration
 
 		public static OAuthConsumerCreds GenerateFromFile(string filepath)
 		{
+			if (HttpContext.Current != null)
+			{
+				filepath = HttpContext.Current.Server.MapPath("~/" + filepath);
+			}
 			if (!File.Exists(filepath))
 			{
 				throw new ArgumentException(string.Format("Application expectes a file at {0} containing valid api consumer credentials", filepath));

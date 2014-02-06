@@ -19,7 +19,7 @@ namespace FeedMuncher.IOC.StructureMap
 
 			var oAuthConsumerCreds = OAuthConsumerCreds.GenerateFromFile("credentials.txt");
 			For<OAuthConsumerCreds>().Use(oAuthConsumerCreds);
-			For<IFileHelper>().Use<FeedsFileHelper>().Ctor<string>("feedsFolder").Is("feeds").Ctor<string>("outputFolder").Is("output");
+			For<IFileHelper>().Use<FeedsFileHelper>().Ctor<string>("outputFolder").Is("output");
 		}
 	}
 }
