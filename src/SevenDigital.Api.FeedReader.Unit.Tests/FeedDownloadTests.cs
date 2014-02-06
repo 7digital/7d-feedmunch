@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.IO;
+using System.Threading.Tasks;
+using NUnit.Framework;
 using Rhino.Mocks;
 using SevenDigital.Api.FeedReader.Feeds;
 
@@ -14,27 +16,24 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 		public void SetUp()
 		{
 			_feedsUrlCreator = MockRepository.GenerateStub<IFeedsUrlCreator>();
+			_feedsUrlCreator.Stub(x => x.SignUrlForLatestFeed(FeedCatalogueType.Track, FeedType.Full, "GB")).IgnoreArguments().Return("http://localhost");
 			_fileHelper = MockRepository.GenerateStub<IFileHelper>();
-			_fileHelper.Stub(x => x.GetOrCreateFeedsFolder()).Return("testFolderName");
+			_fileHelper.Stub(x => x.BuildFullFilepath(null)).IgnoreArguments().Return("testFolderName");
 		}
 
 		[Test]
-		public void _returns_true_if_feed_exists()
+		public void Should_set_filename_and_url()
 		{
-			var artistFeed = AvailableFeeds.ArtistFull;
-			_fileHelper.Stub(x => x.FeedExists(artistFeed)).Return(true);
+			var feedDownload = new FeedDownload(_feedsUrlCreator, _fileHelper);
 
-			var artistFeedDownload = new FeedDownload(_feedsUrlCreator, _fileHelper);
-			Assert.That(artistFeedDownload.FeedAlreadyExists(artistFeed));
-		}
+			var suppliedFeed = new Feed(FeedType.Full, FeedCatalogueType.Track);
 
-		[Test]
-		public void _returns_false_if_feed_doesnt_exists()
-		{
-			var artistFeed = AvailableFeeds.ArtistFull;
-			_fileHelper.Stub(x => x.FeedExists(artistFeed)).Return(false);
-			var artistFeedDownload = new FeedDownload(_feedsUrlCreator, _fileHelper);
-			Assert.That(artistFeedDownload.FeedAlreadyExists(artistFeed), Is.False);
+			var downloadToStream = feedDownload.DownloadToStream(suppliedFeed).Result;
+
+			Assert.That(feedDownload.CurrentFileName, Is.EqualTo("testFolderName"));
+			Assert.That(feedDownload.CurrentSignedUrl, Is.EqualTo("http://localhost"));
+
+			Assert.That(downloadToStream, Is.Not.Null);
 		}
 	}
 }
