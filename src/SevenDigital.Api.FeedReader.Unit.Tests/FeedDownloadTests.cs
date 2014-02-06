@@ -1,8 +1,6 @@
-﻿using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Rhino.Mocks;
 using SevenDigital.Api.FeedReader.Feeds;
-using SevenDigital.Api.FeedReader.Http;
 
 namespace SevenDigital.Api.FeedReader.Unit.Tests
 {
@@ -11,7 +9,6 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 	{
 		private IFeedsUrlCreator _feedsUrlCreator;
 		private IFileHelper _fileHelper;
-		private IWebClientWrapper _webClient;
 
 		[SetUp]
 		public void SetUp()
@@ -19,7 +16,6 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 			_feedsUrlCreator = MockRepository.GenerateStub<IFeedsUrlCreator>();
 			_fileHelper = MockRepository.GenerateStub<IFileHelper>();
 			_fileHelper.Stub(x => x.GetOrCreateFeedsFolder()).Return("testFolderName");
-			_webClient = MockRepository.GenerateStub<IWebClientWrapper>();
 		}
 
 		[Test]
@@ -28,7 +24,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 			var artistFeed = AvailableFeeds.ArtistFull;
 			_fileHelper.Stub(x => x.FeedExists(artistFeed)).Return(true);
 
-			var artistFeedDownload = new FeedDownload(_feedsUrlCreator, _webClient, _fileHelper);
+			var artistFeedDownload = new FeedDownload(_feedsUrlCreator, _fileHelper);
 			Assert.That(artistFeedDownload.FeedAlreadyExists(artistFeed));
 		}
 
@@ -37,35 +33,8 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 		{
 			var artistFeed = AvailableFeeds.ArtistFull;
 			_fileHelper.Stub(x => x.FeedExists(artistFeed)).Return(false);
-			var artistFeedDownload = new FeedDownload(_feedsUrlCreator, _webClient, _fileHelper);
+			var artistFeedDownload = new FeedDownload(_feedsUrlCreator, _fileHelper);
 			Assert.That(artistFeedDownload.FeedAlreadyExists(artistFeed), Is.False);
-		}
-
-		[Test]
-		public void _tries_to_save_if_feed_does_not_exist()
-		{
-			const string expectedSignedFeedsUrl = "testSignedUrl";
-
-			var artistFeed = AvailableFeeds.ArtistFull;
-			_fileHelper.Stub(x => x.FeedExists(artistFeed)).Return(true);
-
-			var feedsUrlCreator = MockRepository.GenerateStub<IFeedsUrlCreator>();
-			feedsUrlCreator.Stub(x => x.SignUrlForLatestFeed(FeedCatalogueType.Artist, FeedType.Full, "GB")).Return(expectedSignedFeedsUrl);
-
-			var webClientWrapper = MockRepository.GenerateStub<IWebClientWrapper>();
-
-			var fileHelper = MockRepository.GenerateStub<IFileHelper>();
-			fileHelper.Stub(x=>x.GetOrCreateFeedsFolder()).Return("feeds");
-			fileHelper.Stub(x => x.BuildFullFilepath(null)).IgnoreArguments().Return("");
-
-			var artistFeedDownload = new FeedDownload(feedsUrlCreator, webClientWrapper, fileHelper);
-			artistFeedDownload.SaveLocallyAsync(artistFeed);
-
-			Assert.That(artistFeedDownload.CurrentSignedUrl, Is.EqualTo(expectedSignedFeedsUrl));
-
-			feedsUrlCreator.AssertWasCalled(x => x.SignUrlForLatestFeed(FeedCatalogueType.Artist, FeedType.Full, "GB"));
-
-			webClientWrapper.AssertWasCalled(x => x.DownloadFile(Arg<string>.Is.Equal(expectedSignedFeedsUrl), Arg<string>.Is.Anything));
 		}
 	}
 }

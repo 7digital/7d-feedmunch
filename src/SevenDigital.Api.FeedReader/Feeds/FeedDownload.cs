@@ -9,7 +9,6 @@ namespace SevenDigital.Api.FeedReader.Feeds
 {
 	public interface IFeedDownload
 	{
-		Task SaveLocallyAsync(Feed suppliedFeed);
 		bool FeedAlreadyExists(Feed suppliedFeed);
 		string CurrentSignedUrl { get; }
 		string CurrentFileName { get; }
@@ -19,13 +18,11 @@ namespace SevenDigital.Api.FeedReader.Feeds
 	public class FeedDownload : IFeedDownload
 	{
 		private readonly IFeedsUrlCreator _feedsUrlCreator;
-		private readonly IWebClientWrapper _webClient;
 		private readonly IFileHelper _fileHelper;
 
-		public FeedDownload(IFeedsUrlCreator feedsUrlCreator, IWebClientWrapper webClient, IFileHelper fileHelper)
+		public FeedDownload(IFeedsUrlCreator feedsUrlCreator, IFileHelper fileHelper)
 		{
 			_feedsUrlCreator = feedsUrlCreator;
-			_webClient = webClient;
 			_fileHelper = fileHelper;
 		}
 
@@ -39,27 +36,6 @@ namespace SevenDigital.Api.FeedReader.Feeds
 				Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite)
 			};
 			return await httpClient.GetStreamAsync(CurrentSignedUrl);
-		}
-
-		public async Task SaveLocallyAsync(Feed suppliedFeed)
-		{
-			CurrentSignedUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.CatalogueType, suppliedFeed.FeedType, suppliedFeed.Country);
-			CurrentFileName = _fileHelper.BuildFullFilepath(suppliedFeed);
-
-			var feedAlreadyExists = FeedAlreadyExists(suppliedFeed);
-
-			if (feedAlreadyExists && suppliedFeed.WriteMethod == FeedWriteMethod.ResumeIfExists)
-			{
-				await _webClient.ResumeDownloadFile(CurrentSignedUrl, CurrentFileName);
-			} 
-			else if (feedAlreadyExists && suppliedFeed.WriteMethod == FeedWriteMethod.ForceOverwriteIfExists)
-			{
-				await _webClient.DownloadFile(CurrentSignedUrl, CurrentFileName);
-			}
-			else if (!feedAlreadyExists)
-			{
-				await _webClient.DownloadFile(CurrentSignedUrl, CurrentFileName);
-			}
 		}
 
 		public bool FeedAlreadyExists(Feed suppliedFeed)
