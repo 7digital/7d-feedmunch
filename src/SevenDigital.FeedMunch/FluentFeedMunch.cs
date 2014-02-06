@@ -53,6 +53,11 @@ namespace SevenDigital.FeedMunch
 			}
 		}
 
+		//public void InvokeAndWriteTo(Stream stream)
+		//{
+			
+		//}
+
 		private void Init(FeedMunchConfig config)
 		{
 			FeedDescription = new Feed(config.Feed, config.Catalog) { Country = config.Country };
@@ -88,8 +93,7 @@ namespace SevenDigital.FeedMunch
 
 				_logLog.Info(string.Format("Writing filtered feed out to {0}", feedOutputLocation));
 
-				var timeFilteredFeedWrite =
-					TimerHelper.TimeMe(() => OutputFilteredFeed(feedOutputLocation, headers, csvReader, filterFieldIndex));
+				var timeFilteredFeedWrite = TimerHelper.TimeMe(() => OutputFilteredFeed(feedOutputLocation, headers, csvReader, filterFieldIndex));
 
 				_logLog.Info(string.Format("Took {0} milliseconds to output filtered feed", timeFilteredFeedWrite.ElapsedMilliseconds));
 			}
@@ -101,20 +105,24 @@ namespace SevenDigital.FeedMunch
 			{
 				using (var gzipOut = new GZipStream(output, CompressionMode.Compress))
 				{
-					CsvSerializer.SerializeToStream(headers, gzipOut);
-					while (csvReader.Read())
-					{
-						var currentRecord = csvReader.CurrentRecord;
-
-						if (Filter.ShouldPass(currentRecord[filterFieldIndex]))
-						{
-							CsvSerializer.SerializeToStream(currentRecord, gzipOut);
-						}
-					}
+					OutputFilteredFeed(gzipOut, headers, csvReader, filterFieldIndex);
 				}
 			}
 			TryChangeExtension(feedOutputLocation, ".tmp", ".gz");
 			csvReader.Dispose();
+		}
+
+		private void OutputFilteredFeed(Stream outputStream, string[] headers, ICsvReader csvReader, int filterFieldIndex)
+		{
+			CsvSerializer.SerializeToStream(headers, outputStream);
+			while (csvReader.Read())
+			{
+				var currentRecord = csvReader.CurrentRecord;
+				if (Filter.ShouldPass(currentRecord[filterFieldIndex]))
+				{
+					CsvSerializer.SerializeToStream(currentRecord, outputStream);
+				}
+			}
 		}
 
 		private static void TryChangeExtension(string path, string from, string to)
