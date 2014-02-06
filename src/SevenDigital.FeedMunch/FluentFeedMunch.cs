@@ -37,26 +37,34 @@ namespace SevenDigital.FeedMunch
 			return this;
 		}
 
+		/// <summary>
+		/// Default behaviour, writes response to gzipped file 
+		/// </summary>
 		public void Invoke()
 		{
 			var generateOutputFeedLocation = _fileHelper.GenerateOutputFeedLocation(Config.Output);
-
+			Stream inputStream;
 			if (!string.IsNullOrEmpty(Config.Existing))
 			{
 				FeedDescription.ExistingPath = Config.Existing;
-				FilterFeedAndWrite(generateOutputFeedLocation, FeedDescription);
+				inputStream = _feedUnpacker.GetFeedAsFilestream(FeedDescription);
 			}
 			else
 			{
-				var downloadToStream = _feedDownload.DownloadToStream(FeedDescription).Result;
-				FilterFeedAndWrite(downloadToStream, generateOutputFeedLocation, FeedDescription);
+				inputStream = _feedDownload.DownloadToStream(FeedDescription).Result;
 			}
+			var decompressedStream = _feedUnpacker.GetDecompressedStream(inputStream, FeedDescription);
+			FilterStreamAndWriteToFile(decompressedStream, generateOutputFeedLocation);
 		}
 
-		//public void InvokeAndWriteTo(Stream stream)
-		//{
+		/// <summary>
+		/// Writes to stream passed in
+		/// </summary>
+		/// <param name="stream">Any writable stream to which you wish to dump the downloaded feed</param>
+		public void InvokeAndWriteTo(Stream stream)
+		{
 			
-		//}
+		}
 
 		private void Init(FeedMunchConfig config)
 		{
@@ -64,22 +72,10 @@ namespace SevenDigital.FeedMunch
 			Filter = new Filter(config.Filter);
 		}
 
-		private void FilterFeedAndWrite(string feedOutputLocation, Feed feedDescription)
-		{
-			var decompressedStream = _feedUnpacker.GetDecompressedStream(feedDescription);
-			FilterStreamAndWriteToFile(decompressedStream, feedOutputLocation);
-		}
-
-		private void FilterFeedAndWrite(Stream inputStream, string feedOutputLocation, Feed feedDescription)
-		{
-			var decompressedStream = _feedUnpacker.GetDecompressedStream(inputStream, feedDescription);
-			FilterStreamAndWriteToFile(decompressedStream, feedOutputLocation);
-		}
-
-		private void FilterStreamAndWriteToFile(Stream decompressedStream, string feedOutputLocation)
+		private void FilterStreamAndWriteToFile(Stream inputStream, string feedOutputLocation)
 		{
 			_logLog.Info("Reading data into list");
-			using (var sr = new StreamReader(decompressedStream))
+			using (var sr = new StreamReader(inputStream))
 			{
 				var csvReader = new CsvReader(sr);
 				csvReader.Read();

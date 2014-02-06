@@ -1,10 +1,11 @@
 ﻿using System.IO;
+using System.IO.Compression;
 
 namespace SevenDigital.Api.FeedReader
 {
 	public interface IFeedUnpacker
 	{
-		Stream GetDecompressedStream(Feed feed);
-		Stream GetDecompressedStream(Stream stream, Feed feed);
+		FileStream GetFeedAsFilestream(Feed feed);
+		GZipStream GetDecompressedStream(Stream stream, Feed feed);
 	}
 }

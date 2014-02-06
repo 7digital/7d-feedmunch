@@ -12,25 +12,12 @@ namespace SevenDigital.Api.FeedReader.Feeds
 			_fileHelper = fileHelper;
 		}
 
-		public Stream GetDecompressedStream(Feed feed)
+		public FileStream GetFeedAsFilestream(Feed feed)
 		{
-			FileStream fileStream = null;
-			try
-			{
-				fileStream = new FileStream(BuildFullFilepath(feed), FileMode.Open, FileAccess.Read);
-				return new GZipStream(fileStream, CompressionMode.Decompress);
-			}
-			catch
-			{
-				if (fileStream != null)
-				{
-					fileStream.Close();
-				}
-				throw;
-			}
+			return new FileStream(BuildFullFilepath(feed), FileMode.Open, FileAccess.Read);
 		}
 
-		public Stream GetDecompressedStream(Stream stream, Feed feed)
+		public GZipStream GetDecompressedStream(Stream stream, Feed feed)
 		{
 			try
 			{
