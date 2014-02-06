@@ -14,15 +14,6 @@ namespace SevenDigital.Api.FeedReader
 			_outputFolder = outputFolder;
 		}
 
-		public string GetOrCreateDirectoryAtRoot(string directoryName)
-		{
-			var path = Environment.CurrentDirectory;
-
-			var directory = Path.Combine(path, directoryName);
-			TryCreateDirectory(directory);
-			return directory;
-		}
-
 		public string GenerateOutputFeedLocation(string output)
 		{
 			GetOrCreateFeedsFolder();
@@ -36,7 +27,7 @@ namespace SevenDigital.Api.FeedReader
 		{
 			return GetOrCreateDirectoryAtRoot(_feedsFolder);
 		}
-		
+
 		public string GetOrCreateOutputFolder(string path)
 		{
 			return GetOrCreateDirectoryAtRoot(Path.Combine(_outputFolder, path));
@@ -51,6 +42,15 @@ namespace SevenDigital.Api.FeedReader
 		public string BuildFullFilepath(Feed suppliedFeed)
 		{
 			return Path.Combine(GetOrCreateFeedsFolder(), suppliedFeed.GetLatest());
+		}
+
+		private static string GetOrCreateDirectoryAtRoot(string directoryName)
+		{
+			var path = Environment.CurrentDirectory;
+
+			var directory = Path.Combine(path, directoryName);
+			TryCreateDirectory(directory);
+			return directory;
 		}
 
 		private static void TryCreateDirectory(string directory)

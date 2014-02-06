@@ -3,13 +3,11 @@ using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using SevenDigital.Api.FeedReader.Http;
 
 namespace SevenDigital.Api.FeedReader.Feeds
 {
 	public interface IFeedDownload
 	{
-		bool FeedAlreadyExists(Feed suppliedFeed);
 		string CurrentSignedUrl { get; }
 		string CurrentFileName { get; }
 		Task<Stream> DownloadToStream(Feed suppliedFeed);
@@ -36,11 +34,6 @@ namespace SevenDigital.Api.FeedReader.Feeds
 				Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite)
 			};
 			return await httpClient.GetStreamAsync(CurrentSignedUrl);
-		}
-
-		public bool FeedAlreadyExists(Feed suppliedFeed)
-		{
-			return _fileHelper.FeedExists(suppliedFeed);
 		}
 
 		public string CurrentSignedUrl { get; private set; }

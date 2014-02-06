@@ -64,8 +64,6 @@
     <Compile Include="Feeds\Schema\Release.cs" />
     <Compile Include="FeedType.cs" />
     <Compile Include="FeedWriteMethod.cs" />
-    <Compile Include="Http\IWebClientWrapper.cs" />
-    <Compile Include="Http\WebClientWrapper.cs" />
     <Compile Include="IFeedReader.cs" />
     <Compile Include="IFeedsUrlCreator.cs" />
     <Compile Include="IFeedUnpacker.cs" />
