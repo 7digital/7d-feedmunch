@@ -11,7 +11,7 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 		public void Can_browse_to_artist_full()
 		{
 			var restClient = new RestClient("http://localhost/7d-feeds-filtered/");
-			var restRequest = new RestRequest("artist/full");
+			var restRequest = new RestRequest("artist/full?test=true");
 
 			var restResponse = restClient.Get(restRequest);
 
@@ -23,7 +23,7 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 		public void Can_browse_to_track_full()
 		{
 			var restClient = new RestClient("http://localhost/7d-feeds-filtered/");
-			var restRequest = new RestRequest("track/full");
+			var restRequest = new RestRequest("track/full?test=true");
 
 			var restResponse = restClient.Get(restRequest);
 
@@ -35,7 +35,7 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 		public void Can_browse_to_release_full()
 		{
 			var restClient = new RestClient("http://localhost/7d-feeds-filtered/");
-			var restRequest = new RestRequest("release/full");
+			var restRequest = new RestRequest("release/full?test=true");
 
 			var restResponse = restClient.Get(restRequest);
 
@@ -47,7 +47,7 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 		public void Can_browse_to_artist_update()
 		{
 			var restClient = new RestClient("http://localhost/7d-feeds-filtered/");
-			var restRequest = new RestRequest("artist/updates");
+			var restRequest = new RestRequest("artist/updates?test=true");
 
 			var restResponse = restClient.Get(restRequest);
 
@@ -59,7 +59,7 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 		public void Can_browse_to_track_update()
 		{
 			var restClient = new RestClient("http://localhost/7d-feeds-filtered/");
-			var restRequest = new RestRequest("track/updates");
+			var restRequest = new RestRequest("track/updates?test=true");
 
 			var restResponse = restClient.Get(restRequest);
 
@@ -71,7 +71,7 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 		public void Can_browse_to_release_update()
 		{
 			var restClient = new RestClient("http://localhost/7d-feeds-filtered/");
-			var restRequest = new RestRequest("release/updates");
+			var restRequest = new RestRequest("release/updates?test=true");
 
 			var restResponse = restClient.Get(restRequest);
 

@@ -25,14 +25,17 @@ namespace SevenDigital.Api.FeedReader.Feeds
 		public async Task<Stream> DownloadToStream(Feed suppliedFeed)
 		{
 			CurrentSignedUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.CatalogueType, suppliedFeed.FeedType, suppliedFeed.Country);
-			
 
 			var httpClient = new HttpClient
 			{
 				Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite)
 			};
 			httpClient.DefaultRequestHeaders.Add(HttpRequestHeader.UserAgent.ToString(), "FeedMunch Feed Client");
-			return await httpClient.GetStreamAsync(CurrentSignedUrl);
+
+			var httpResponseMessage = httpClient.GetAsync(CurrentSignedUrl, HttpCompletionOption.ResponseHeadersRead).Result;
+			httpResponseMessage.EnsureSuccessStatusCode();
+
+			return await httpResponseMessage.Content.ReadAsStreamAsync();
 		}
 
 		public string CurrentSignedUrl { get; private set; }
