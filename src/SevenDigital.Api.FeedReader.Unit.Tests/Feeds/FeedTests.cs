@@ -3,11 +3,6 @@ using SevenDigital.Api.FeedReader.Feeds;
 
 namespace SevenDigital.Api.FeedReader.Unit.Tests.Feeds
 {
-	[TestFixture]
-	public class FeedReadingTests
-	{
-	}
-
 	public static class TestFeed
 	{
 		public static string BasicTrackFeed()

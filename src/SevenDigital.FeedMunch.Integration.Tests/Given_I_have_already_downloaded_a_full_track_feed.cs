@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using FeedMuncher.IOC.StructureMap;
 using NUnit.Framework;
 using SevenDigital.Api.FeedReader;
@@ -68,6 +69,19 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
 
 			AssertFiltering.IsAsExpected<Track>(EXPECTED_OUTPUT_FILE, x => x.title == "Jingle Bells");
+		}
+
+		[Test]
+		public void Filtering_by_invalid_field()
+		{
+			_feedMunchConfig.Filter = "jabba=Jingle Bells";
+
+			var feedMunch = FeedMuncher.IOC.StructureMap.FeedMunch.Download
+				.WithConfig(_feedMunchConfig);
+
+			var argumentException = Assert.Throws<ArgumentException>(feedMunch.Invoke);
+
+			Assert.That(argumentException.Message, Is.EqualTo("Chosen filter field is not valid: \"jabba\", remember field names are case sensitive"));
 		}
 
 		[TestFixtureTearDown]

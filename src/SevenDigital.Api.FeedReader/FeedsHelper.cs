@@ -24,14 +24,4 @@ namespace SevenDigital.Api.FeedReader
 			return seedDate.PreviousDayOfWeek(FULL_FEED_DAY_OF_WEEK).ToString("yyyyMMdd");
 		}
 	}
-
-	public static class SystemTime
-	{
-		public static Func<DateTime> _now = () => DateTime.Now;
-
-		public static void SetTo(DateTime instance)
-		{
-			_now = () => instance;
-		}
-	}
 }

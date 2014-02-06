@@ -22,7 +22,6 @@ namespace SevenDigital.Api.FeedReader
 			set { _country = value; }
 		}
 
-		public FeedWriteMethod WriteMethod { get; set; }
 		public FeedType FeedType { get { return _type; } }
 
 		public FeedCatalogueType CatalogueType

@@ -79,12 +79,17 @@ namespace SevenDigital.FeedMunch
 				var csvReader = new CsvReader(sr);
 				csvReader.Read();
 				var headers = csvReader.FieldHeaders;
-				var filterField = Array.FindIndex(headers, x => x == Filter.FieldName);
+				var filterFieldIndex = Array.FindIndex(headers, x => x == Filter.FieldName);
+
+				if (filterFieldIndex < 0)
+				{
+					throw new ArgumentException(String.Format("Chosen filter field is not valid: \"{0}\", remember field names are case sensitive", Filter.FieldName));
+				}
 
 				_logLog.Info(string.Format("Writing filtered feed out to {0}", feedOutputLocation));
 
 				var timeFilteredFeedWrite =
-					TimerHelper.TimeMe(() => OutputFilteredFeed(feedOutputLocation, headers, csvReader, filterField));
+					TimerHelper.TimeMe(() => OutputFilteredFeed(feedOutputLocation, headers, csvReader, filterFieldIndex));
 
 				_logLog.Info(string.Format("Took {0} milliseconds to output filtered feed", timeFilteredFeedWrite.ElapsedMilliseconds));
 			}

@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Rhino.Mocks;
 using SevenDigital.Api.FeedReader.Feeds;
 
