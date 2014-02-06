@@ -7,7 +7,7 @@ using SevenDigital.Api.FeedReader.Feeds.Schema;
 namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 {
 	[TestFixture]
-	[Explicit]
+	[Category("Smoke")]
 	public class Full_end_to_end_track_updates_tests
 	{
 		private const string OUTPUT_FILE = "trackUpdatesTest";
