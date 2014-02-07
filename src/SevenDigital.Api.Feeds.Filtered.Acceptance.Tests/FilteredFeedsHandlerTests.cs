@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using NUnit.Framework;
 using RestSharp;
 
@@ -8,75 +9,111 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 	public class FilteredFeedsHandlerTests
 	{
 		[Test]
-		public void Can_browse_to_artist_full()
+		public void Can_download_artist_full_filtered()
 		{
 			var restClient = new RestClient("http://localhost/7d-feeds-filtered/");
-			var restRequest = new RestRequest("artist/full?test=true");
-
-			var restResponse = restClient.Get(restRequest);
+			var restRequest = new RestRequest("artist/full");
+			restRequest.AddParameter(new Parameter
+			{
+				Name = "filter",
+				Type = ParameterType.QueryString,
+				Value = "name=Interpol"
+			});
+			var restResponse = restClient.Head(restRequest);
 
 			Assert.That(restResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-			Assert.That(restResponse.Content, Is.EqualTo("I am artist full"));
+			Assert.That(restResponse.ContentType, Is.EqualTo("application/x-gzip"));
+			Assert.That(restResponse.Headers.Single(x=>x.Name=="Content-disposition").Value, Is.EqualTo("attachment; filename=\"20140203-GB-artist-full-feed-filtered.gz\""));
 		}
 
 		[Test]
-		public void Can_browse_to_track_full()
+		public void Can_download_artist_updates_filtered()
 		{
 			var restClient = new RestClient("http://localhost/7d-feeds-filtered/");
-			var restRequest = new RestRequest("track/full?test=true");
-
-			var restResponse = restClient.Get(restRequest);
+			var restRequest = new RestRequest("artist/updates");
+			restRequest.AddParameter(new Parameter
+			{
+				Name = "filter",
+				Type = ParameterType.QueryString,
+				Value = "name=Interpol"
+			});
+			var restResponse = restClient.Head(restRequest);
 
 			Assert.That(restResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-			Assert.That(restResponse.Content, Is.EqualTo("I am track full"));
+			Assert.That(restResponse.ContentType, Is.EqualTo("application/x-gzip"));
+			Assert.That(restResponse.Headers.Single(x => x.Name == "Content-disposition").Value, Is.EqualTo("attachment; filename=\"20140203-GB-artist-updates-feed-filtered.gz\""));
 		}
 
 		[Test]
-		public void Can_browse_to_release_full()
+		public void Can_download_track_full_filtered()
 		{
 			var restClient = new RestClient("http://localhost/7d-feeds-filtered/");
-			var restRequest = new RestRequest("release/full?test=true");
-
-			var restResponse = restClient.Get(restRequest);
+			var restRequest = new RestRequest("track/full");
+			restRequest.AddParameter(new Parameter
+			{
+				Name = "filter",
+				Type = ParameterType.QueryString,
+				Value = "version=Album Version"
+			});
+			var restResponse = restClient.Head(restRequest);
 
 			Assert.That(restResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-			Assert.That(restResponse.Content, Is.EqualTo("I am release full"));
+			Assert.That(restResponse.ContentType, Is.EqualTo("application/x-gzip"));
+			Assert.That(restResponse.Headers.Single(x => x.Name == "Content-disposition").Value, Is.EqualTo("attachment; filename=\"20140203-GB-track-full-feed-filtered.gz\""));
 		}
 
 		[Test]
-		public void Can_browse_to_artist_update()
+		public void Can_download_track_updates_filtered()
 		{
 			var restClient = new RestClient("http://localhost/7d-feeds-filtered/");
-			var restRequest = new RestRequest("artist/updates?test=true");
-
-			var restResponse = restClient.Get(restRequest);
+			var restRequest = new RestRequest("track/updates");
+			restRequest.AddParameter(new Parameter
+			{
+				Name = "filter",
+				Type = ParameterType.QueryString,
+				Value = "version=Album Version"
+			});
+			var restResponse = restClient.Head(restRequest);
 
 			Assert.That(restResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-			Assert.That(restResponse.Content, Is.EqualTo("I am artist updates"));
+			Assert.That(restResponse.ContentType, Is.EqualTo("application/x-gzip"));
+			Assert.That(restResponse.Headers.Single(x => x.Name == "Content-disposition").Value, Is.EqualTo("attachment; filename=\"20140203-GB-track-updates-feed-filtered.gz\""));
 		}
 
 		[Test]
-		public void Can_browse_to_track_update()
+		public void Can_download_release_full_filtered()
 		{
 			var restClient = new RestClient("http://localhost/7d-feeds-filtered/");
-			var restRequest = new RestRequest("track/updates?test=true");
-
-			var restResponse = restClient.Get(restRequest);
+			var restRequest = new RestRequest("release/full");
+			restRequest.AddParameter(new Parameter
+			{
+				Name = "filter",
+				Type = ParameterType.QueryString,
+				Value = "licensorId=1"
+			});
+			var restResponse = restClient.Head(restRequest);
 
 			Assert.That(restResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-			Assert.That(restResponse.Content, Is.EqualTo("I am track updates"));
+			Assert.That(restResponse.ContentType, Is.EqualTo("application/x-gzip"));
+			Assert.That(restResponse.Headers.Single(x => x.Name == "Content-disposition").Value, Is.EqualTo("attachment; filename=\"20140203-GB-release-full-feed-filtered.gz\""));
 		}
 
 		[Test]
-		public void Can_browse_to_release_update()
+		public void Can_download_release_updates_filtered()
 		{
 			var restClient = new RestClient("http://localhost/7d-feeds-filtered/");
-			var restRequest = new RestRequest("release/updates?test=true");
-
-			var restResponse = restClient.Get(restRequest);
+			var restRequest = new RestRequest("release/updates");
+			restRequest.AddParameter(new Parameter
+			{
+				Name = "filter",
+				Type = ParameterType.QueryString,
+				Value = "licensorId=1"
+			});
+			var restResponse = restClient.Head(restRequest);
 
 			Assert.That(restResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-			Assert.That(restResponse.Content, Is.EqualTo("I am release updates"));
+			Assert.That(restResponse.ContentType, Is.EqualTo("application/x-gzip"));
+			Assert.That(restResponse.Headers.Single(x => x.Name == "Content-disposition").Value, Is.EqualTo("attachment; filename=\"20140203-GB-release-updates-feed-filtered.gz\""));
 		}
 	}
 }
