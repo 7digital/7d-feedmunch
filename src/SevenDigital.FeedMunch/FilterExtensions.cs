@@ -35,7 +35,7 @@ namespace SevenDigital.FeedMunch
 				var headers = csvReader.FieldHeaders;
 				var filterFieldIndex = Array.FindIndex(headers, x => x == filter.FieldName);
 
-				if (filterFieldIndex < 0)
+				if (!string.IsNullOrEmpty(filter.FieldName) && filterFieldIndex < 0)
 				{
 					throw new ArgumentException(String.Format("Chosen filter field is not valid: \"{0}\", remember field names are case sensitive", filter.FieldName));
 				}
@@ -44,11 +44,13 @@ namespace SevenDigital.FeedMunch
 				while (csvReader.Read())
 				{
 					var currentRecord = csvReader.CurrentRecord;
-					if (filter.ShouldPass(currentRecord[filterFieldIndex]))
+					if (filterFieldIndex < 0 || filter.ShouldPass(currentRecord[filterFieldIndex]))
 					{
 						ServiceStack.Text.CsvSerializer.SerializeToStream(currentRecord, outputStream);
 					}
 				}
+
+				//outputStream.Flush();
 			}
 		}
 	}

@@ -63,9 +63,9 @@ namespace SevenDigital.FeedMunch
 
 			_logLog.Info("Reading data into list");
 
-			var filterStream = TimerHelper.TimeMe(() => Filter.ApplyToStream(decompressedStream, outputStream));
+			var filterStreamTimeMeasurement = TimerHelper.TimeMe(() => Filter.ApplyToStream(decompressedStream, outputStream));
 
-			_logLog.Info(string.Format("Took {0} milliseconds to output filtered feed", filterStream.ElapsedMilliseconds));
+			_logLog.Info(string.Format("Took {0} milliseconds to output filtered feed", filterStreamTimeMeasurement.ElapsedMilliseconds));
 		}
 
 		private Stream ConfigureInputStream()

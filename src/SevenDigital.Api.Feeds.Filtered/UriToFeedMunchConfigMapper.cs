@@ -17,7 +17,7 @@ namespace SevenDigital.Api.Feeds.Filtered
 
 			var queryStringDictionary = uri.QueryStringDictionary();
 			var country = queryStringDictionary.ContainsKey("country") ? queryStringDictionary["country"] : "GB";
-			var filter = queryStringDictionary.ContainsKey("filter") ? HttpUtility.UrlDecode(queryStringDictionary["filter"]) : "";
+			var filter = queryStringDictionary.ContainsKey("filter") ? HttpUtility.UrlDecode(queryStringDictionary["filter"]) : null;
 			
 			return new FeedMunchConfig
 			{

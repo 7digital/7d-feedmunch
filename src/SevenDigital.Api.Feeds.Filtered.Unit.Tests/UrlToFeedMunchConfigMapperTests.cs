@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.Web;
 using NUnit.Framework;
 using SevenDigital.Api.FeedReader;
@@ -19,7 +18,7 @@ namespace SevenDigital.Api.Feeds.Filtered.Unit.Tests
 			Assert.That(feedMunchConfig.Catalog, Is.EqualTo(FeedCatalogueType.Artist));
 			Assert.That(feedMunchConfig.Feed, Is.EqualTo(FeedType.Full));
 			Assert.That(feedMunchConfig.Country, Is.EqualTo("GB"));
-			Assert.That(feedMunchConfig.Filter, Is.EqualTo(""));
+			Assert.That(feedMunchConfig.Filter, Is.Null);
 		}
 
 		[Test]
@@ -32,7 +31,7 @@ namespace SevenDigital.Api.Feeds.Filtered.Unit.Tests
 			Assert.That(feedMunchConfig.Catalog, Is.EqualTo(FeedCatalogueType.Artist));
 			Assert.That(feedMunchConfig.Feed, Is.EqualTo(FeedType.Updates));
 			Assert.That(feedMunchConfig.Country, Is.EqualTo("GB"));
-			Assert.That(feedMunchConfig.Filter, Is.EqualTo(""));
+			Assert.That(feedMunchConfig.Filter, Is.Null);
 		}
 
 		[Test]
@@ -45,7 +44,7 @@ namespace SevenDigital.Api.Feeds.Filtered.Unit.Tests
 			Assert.That(feedMunchConfig.Catalog, Is.EqualTo(FeedCatalogueType.Release));
 			Assert.That(feedMunchConfig.Feed, Is.EqualTo(FeedType.Full));
 			Assert.That(feedMunchConfig.Country, Is.EqualTo("GB"));
-			Assert.That(feedMunchConfig.Filter, Is.EqualTo(""));
+			Assert.That(feedMunchConfig.Filter, Is.Null);
 		}
 
 		[Test]
@@ -58,7 +57,7 @@ namespace SevenDigital.Api.Feeds.Filtered.Unit.Tests
 			Assert.That(feedMunchConfig.Catalog, Is.EqualTo(FeedCatalogueType.Release));
 			Assert.That(feedMunchConfig.Feed, Is.EqualTo(FeedType.Updates));
 			Assert.That(feedMunchConfig.Country, Is.EqualTo("GB"));
-			Assert.That(feedMunchConfig.Filter, Is.EqualTo(""));
+			Assert.That(feedMunchConfig.Filter, Is.Null);
 		}
 
 		[Test]
@@ -71,7 +70,7 @@ namespace SevenDigital.Api.Feeds.Filtered.Unit.Tests
 			Assert.That(feedMunchConfig.Catalog, Is.EqualTo(FeedCatalogueType.Track));
 			Assert.That(feedMunchConfig.Feed, Is.EqualTo(FeedType.Full));
 			Assert.That(feedMunchConfig.Country, Is.EqualTo("GB"));
-			Assert.That(feedMunchConfig.Filter, Is.EqualTo(""));
+			Assert.That(feedMunchConfig.Filter, Is.Null);
 		}
 
 		[Test]
@@ -84,7 +83,7 @@ namespace SevenDigital.Api.Feeds.Filtered.Unit.Tests
 			Assert.That(feedMunchConfig.Catalog, Is.EqualTo(FeedCatalogueType.Track));
 			Assert.That(feedMunchConfig.Feed, Is.EqualTo(FeedType.Updates));
 			Assert.That(feedMunchConfig.Country, Is.EqualTo("GB"));
-			Assert.That(feedMunchConfig.Filter, Is.EqualTo(""));
+			Assert.That(feedMunchConfig.Filter, Is.Null);
 		}
 
 		[Test]
