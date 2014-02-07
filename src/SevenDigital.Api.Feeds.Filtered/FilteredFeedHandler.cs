@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.IO.Compression;
 using System.Net;
 using System.Web;
 using SevenDigital.Api.FeedReader;
@@ -26,43 +27,26 @@ namespace SevenDigital.Api.Feeds.Filtered
 			}
 			else
 			{
-				//var feedMunchConfig = new FeedMunchConfig
-				//{
-				//	Catalog = FeedCatalogueType.Artist,
-				//	Country = "GB",
-				//	Feed = FeedType.Updates,
-				//	Filter = "action=U"
-				//};
+				var feedMunchConfig = new FeedMunchConfig
+				{
+					Catalog = FeedCatalogueType.Artist,
+					Country = "GB",
+					Feed = FeedType.Updates,
+					Filter = "action=U"
+				};
 
-				//FeedMuncher.IOC.StructureMap
-				//	.FeedMunch.Download
-				//	.WithConfig(feedMunchConfig)
-				//	.InvokeAndWriteTo(context.Response.OutputStream);
+				using (var gzip = new GZipStream(context.Response.OutputStream, CompressionMode.Compress))
+				{
+					FeedMuncher.IOC.StructureMap
+						.FeedMunch.Download
+						.WithConfig(feedMunchConfig)
+						.InvokeAndWriteTo(gzip);
 
-				//response.ContentType = "application/x-gzip";
-				//response.StatusCode = (int)HttpStatusCode.OK;
-
-				// build config
-
-				// invoke and write to gzip compressed output stream
-
-				// set content-type
-				// set content-disposition  Content-Disposition: attachment; filename="same as original but with "-filtered" "
-				
-				response.StatusCode = (int)HttpStatusCode.BadRequest;
+					response.ContentType = "application/x-gzip";
+					response.StatusCode = (int)HttpStatusCode.OK;
+					response.Headers.Set("Content-disposition", "attachment; filename=\"20140203-GB-artist-full-feed-filtered.gz\"");
+				}
 			}
 		}
-	}
-
-	public abstract class HttpHandlerBase
-	{
-		public void ProcessRequest(HttpContext context)
-		{
-			ProcessRequest(new HttpContextWrapper(context));
-		}
-
-		public abstract void ProcessRequest(HttpContextBase context);
-
-		public bool IsReusable { get { return true; } }
 	}
 }
