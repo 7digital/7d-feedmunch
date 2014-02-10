@@ -2,7 +2,7 @@
 
 namespace SevenDigital.Api.Feeds.Filtered
 {
-	public abstract class HttpHandlerBase
+	public abstract class HttpHandlerBase : IHttpHandler
 	{
 		public void ProcessRequest(HttpContext context)
 		{

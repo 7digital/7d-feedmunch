@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SevenDigital.Api.Feeds.Filtered
 {
-	public class FilteredFeedHandler : HttpHandlerBase, IHttpHandler
+	public class FilteredFeedHandler : HttpHandlerBase
 	{
 		public override void ProcessRequest(HttpContextBase context)
 		{

@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="HttpHandlerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StatusHandler.cs" />
     <Compile Include="UriToFeedMunchConfigMapper.cs" />
   </ItemGroup>
   <ItemGroup>
