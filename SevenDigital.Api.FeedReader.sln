@@ -38,6 +38,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenDigital.Api.Feeds.Filtered.Unit.Tests", "src\SevenDigital.Api.Feeds.Filtered.Unit.Tests\SevenDigital.Api.Feeds.Filtered.Unit.Tests.csproj", "{E1DBA306-7825-499F-B2EC-CB9BE65A62BC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{5677A15E-60FF-4C48-B329-84BEE31BFCD1}"
+	ProjectSection(SolutionItems) = preProject
+		GruntFile.js = GruntFile.js
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -120,6 +123,5 @@ Global
 		{14AC4892-EA97-4815-8AF5-CAA4A1AEB19B} = {BE281743-82D2-4449-B9EB-A704A10616EB}
 		{65CB8F1B-B29C-49B6-8CC6-2F769FA41BAF} = {BE281743-82D2-4449-B9EB-A704A10616EB}
 		{E1DBA306-7825-499F-B2EC-CB9BE65A62BC} = {BE281743-82D2-4449-B9EB-A704A10616EB}
-		{5677A15E-60FF-4C48-B329-84BEE31BFCD1} = {BE281743-82D2-4449-B9EB-A704A10616EB}
 	EndGlobalSection
 EndGlobal

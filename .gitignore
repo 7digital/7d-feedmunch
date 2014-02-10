@@ -30,3 +30,11 @@ packages/*
 !packages/repositories.config
 
 credentials.txt
+
+# Node modules
+node_modules/
+
+#grunt
+grunt-output.txt
+deployment-package/
+deployment-package.zip
