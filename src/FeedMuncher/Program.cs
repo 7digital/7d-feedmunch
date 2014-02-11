@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.Compression;
 using FeedMuncher.IOC.StructureMap;
+using SevenDigital.FeedMunch;
 
 namespace FeedMuncher
 {
@@ -12,18 +14,26 @@ namespace FeedMuncher
 
 			var feedMunchConfig = FeedMunch.Configure.FromConsoleArgs(args);
 
-			using (var output = File.Create(feedMunchConfig.Output))
+			WriteStreamToGzippedFile(feedMunchConfig, stream =>
+				FeedMunch.Download
+					.WithConfig(feedMunchConfig)
+					.InvokeAndWriteTo(stream)
+			);
+		}
+
+		private static void WriteStreamToGzippedFile(FeedMunchConfig feedMunchConfig, Action<Stream> generateStream)
+		{
+			var path = feedMunchConfig.Output + ".tmp";
+			using (var output = File.Create(path))
 			{
 				using (var gzipOut = new GZipStream(output, CompressionMode.Compress))
 				{
-					FeedMunch.Download
-						.WithConfig(feedMunchConfig)
-						.InvokeAndWriteTo(gzipOut);
+					generateStream(gzipOut);
 				}
 			}
-			TryChangeExtension(feedMunchConfig.Output, ".tmp", ".gz");
+			TryChangeExtension(path, ".tmp", ".gz"); 
 		}
-		
+
 		private static void TryChangeExtension(string path, string from, string to)
 		{
 			var completedFilePath = path.Replace(from, to);

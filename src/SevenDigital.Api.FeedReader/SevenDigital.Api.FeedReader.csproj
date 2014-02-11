@@ -58,16 +58,13 @@
     <Compile Include="Configuration\OAuthConsumerCreds.cs" />
     <Compile Include="Dates\DateExtensions.cs" />
     <Compile Include="Feed.cs" />
-    <Compile Include="FeedsFileHelper.cs" />
     <Compile Include="FeedsDateCreation.cs" />
     <Compile Include="FeedsUrlCreator.cs" />
     <Compile Include="Feeds\Schema\Track.cs" />
     <Compile Include="Feeds\Schema\Release.cs" />
     <Compile Include="FeedType.cs" />
-    <Compile Include="IFeedReader.cs" />
     <Compile Include="IFeedsUrlCreator.cs" />
     <Compile Include="IFeedUnpacker.cs" />
-    <Compile Include="IFileHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Feeds\Schema\Artist.cs" />
   </ItemGroup>

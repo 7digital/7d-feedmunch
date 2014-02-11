@@ -58,7 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DateExtensionTest.cs" />
-    <Compile Include="FeedsFileHelperTests.cs" />
     <Compile Include="FeedsHelperTests.cs" />
     <Compile Include="Feeds\FeedsUrlCreatorTests.cs" />
     <Compile Include="Feeds\FeedTests.cs" />
