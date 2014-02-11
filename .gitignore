@@ -38,3 +38,6 @@ node_modules/
 grunt-output.txt
 deployment-package/
 deployment-package.zip
+
+#msbuild
+!Microsoft.Build.dll
