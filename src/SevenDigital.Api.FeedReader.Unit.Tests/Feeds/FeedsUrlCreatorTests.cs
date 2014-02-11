@@ -11,7 +11,12 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests.Feeds
 		{
 			var feedsUrlCreator = new FeedsUrlCreator(new ApiUrl(), new OAuthConsumerCreds("KEY", "SECRET"));
 
-			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForLatestFeed(FeedCatalogueType.Artist, FeedType.Full, "GB");
+			var feed = new Feed(FeedType.Full, FeedCatalogueType.Artist)
+			{
+				Country = "GB"
+			};
+
+			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForLatestFeed(feed);
 
 			Assert.That(signUrlForLatestFeed, Is.StringStarting("http://feeds.api.7digital.com/1.2/feed/artist/full?oauth_consumer_key=KEY"));
 
@@ -22,7 +27,12 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests.Feeds
 		{
 			var feedsUrlCreator = new FeedsUrlCreator(new ApiUrl(), new OAuthConsumerCreds("KEY", "SECRET"));
 
-			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForLatestFeed(FeedCatalogueType.Artist, FeedType.Updates, "GB");
+			var feed = new Feed(FeedType.Updates, FeedCatalogueType.Artist)
+			{
+				Country = "GB"
+			};
+
+			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForLatestFeed(feed);
 
 			Assert.That(signUrlForLatestFeed, Is.StringStarting("http://feeds.api.7digital.com/1.2/feed/artist/updates?oauth_consumer_key=KEY"));
 		}
@@ -32,7 +42,12 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests.Feeds
 		{
 			var feedsUrlCreator = new FeedsUrlCreator(new ApiUrl(), new OAuthConsumerCreds("KEY", "SECRET"));
 
-			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForLatestFeed(FeedCatalogueType.Release, FeedType.Full, "GB");
+			var feed = new Feed(FeedType.Full, FeedCatalogueType.Release)
+			{
+				Country = "GB"
+			};
+
+			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForLatestFeed(feed);
 
 			Assert.That(signUrlForLatestFeed, Is.StringStarting("http://feeds.api.7digital.com/1.2/feed/release/full?oauth_consumer_key=KEY"));
 
@@ -43,7 +58,12 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests.Feeds
 		{
 			var feedsUrlCreator = new FeedsUrlCreator(new ApiUrl(), new OAuthConsumerCreds("KEY", "SECRET"));
 
-			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForLatestFeed(FeedCatalogueType.Release, FeedType.Updates, "GB");
+			var feed = new Feed(FeedType.Updates, FeedCatalogueType.Release)
+			{
+				Country = "GB"
+			};
+
+			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForLatestFeed(feed);
 
 			Assert.That(signUrlForLatestFeed, Is.StringStarting("http://feeds.api.7digital.com/1.2/feed/release/updates?oauth_consumer_key=KEY"));
 		}
@@ -53,7 +73,12 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests.Feeds
 		{
 			var feedsUrlCreator = new FeedsUrlCreator(new ApiUrl(), new OAuthConsumerCreds("KEY", "SECRET"));
 
-			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForLatestFeed(FeedCatalogueType.Track, FeedType.Full, "GB");
+			var feed = new Feed(FeedType.Full, FeedCatalogueType.Track)
+			{
+				Country = "GB"
+			};
+
+			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForLatestFeed(feed);
 
 			Assert.That(signUrlForLatestFeed, Is.StringStarting("http://feeds.api.7digital.com/1.2/feed/track/full?oauth_consumer_key=KEY"));
 
@@ -64,7 +89,12 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests.Feeds
 		{
 			var feedsUrlCreator = new FeedsUrlCreator(new ApiUrl(), new OAuthConsumerCreds("KEY", "SECRET"));
 
-			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForLatestFeed(FeedCatalogueType.Track, FeedType.Updates, "GB");
+			var feed = new Feed(FeedType.Updates, FeedCatalogueType.Track)
+			{
+				Country = "GB"
+			};
+
+			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForLatestFeed(feed);
 
 			Assert.That(signUrlForLatestFeed, Is.StringStarting("http://feeds.api.7digital.com/1.2/feed/track/updates?oauth_consumer_key=KEY"));
 		}

@@ -24,8 +24,8 @@ namespace SevenDigital.Api.FeedReader.Feeds
 
 		public async Task<Stream> DownloadToStream(Feed suppliedFeed)
 		{
-			CurrentSignedUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed.CatalogueType, suppliedFeed.FeedType, suppliedFeed.Country);
-
+			CurrentSignedUrl = _feedsUrlCreator.SignUrlForLatestFeed(suppliedFeed);
+			
 			var httpClient = new HttpClient
 			{
 				Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite)

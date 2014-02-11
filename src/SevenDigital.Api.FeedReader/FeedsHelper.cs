@@ -7,11 +7,11 @@ namespace SevenDigital.Api.FeedReader
 	{
 		public const DayOfWeek FULL_FEED_DAY_OF_WEEK = DayOfWeek.Monday;
 
-		public static string GetCurrentFullFeedDate(DateTime seedDate)
+		public static string GetCurrentFeedDate(DateTime seedDate, FeedType feedType)
 		{
 			//return FirstOfTheCurrentMonth(seedDate);
 
-			return FirstMondayOfTheCurrentWeek(seedDate);
+			return feedType == FeedType.Full ? FirstMondayOfTheCurrentWeek(seedDate) : seedDate.ToString("yyyyMMdd");
 		}
 
 		private static string FirstOfTheCurrentMonth(DateTime seedDate)

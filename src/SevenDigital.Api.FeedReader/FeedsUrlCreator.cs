@@ -18,11 +18,11 @@ namespace SevenDigital.Api.FeedReader
 			_oauthConsumerCreds = oauthConsumerCreds;
 		}
 
-		public string SignUrlForLatestFeed(FeedCatalogueType feedCatalogueType, FeedType type, string countryCode)
+		public string SignUrlForFeed(Feed feed)
 		{
-			RequireString("countryCode", countryCode);
+			RequireString("countryCode", feed.Country);
 
-			var endpoint = string.Format(FEED_ENDPOINT, feedCatalogueType.ToString().ToLower(), type.ToString().ToLower());
+			var endpoint = string.Format(FEED_ENDPOINT, feed.CatalogueType.ToString().ToLower(), feed.FeedType.ToString().ToLower());
 
 			var requestUrl = string.Concat(_apiUrl.Uri, endpoint);
 			var oAuthRequest = new OAuthRequest
@@ -36,8 +36,8 @@ namespace SevenDigital.Api.FeedReader
 
 			var parameters = new Dictionary<string,string>
 			{
-				{ "country", countryCode},
-				{ "date", FeedsDateCreation.GetCurrentFullFeedDate(DateTime.Now)}
+				{ "country", feed.Country},
+				{ "date", FeedsDateCreation.GetCurrentFeedDate(DateTime.Now, feed.FeedType)}
 			};
 
 			var authorizationQuery = oAuthRequest.GetAuthorizationQuery(parameters);
