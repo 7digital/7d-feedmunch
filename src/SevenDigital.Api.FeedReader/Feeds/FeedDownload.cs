@@ -9,7 +9,6 @@ namespace SevenDigital.Api.FeedReader.Feeds
 {
 	public interface IFeedDownload
 	{
-		string CurrentSignedUrl { get; }
 		Task<Stream> DownloadToStream(Feed suppliedFeed);
 	}
 
@@ -24,7 +23,7 @@ namespace SevenDigital.Api.FeedReader.Feeds
 
 		public async Task<Stream> DownloadToStream(Feed suppliedFeed)
 		{
-			CurrentSignedUrl = _feedsUrlCreator.SignUrlForFeed(suppliedFeed);
+			var currentSignedUrl = _feedsUrlCreator.SignUrlForFeed(suppliedFeed);
 			
 			var httpClient = new HttpClient
 			{
@@ -32,12 +31,10 @@ namespace SevenDigital.Api.FeedReader.Feeds
 			};
 			httpClient.DefaultRequestHeaders.Add(HttpRequestHeader.UserAgent.ToString(), "FeedMunch Feed Client");
 
-			var httpResponseMessage = httpClient.GetAsync(CurrentSignedUrl, HttpCompletionOption.ResponseHeadersRead).Result;
+			var httpResponseMessage = httpClient.GetAsync(currentSignedUrl, HttpCompletionOption.ResponseHeadersRead).Result;
 			httpResponseMessage.EnsureSuccessStatusCode();
 
 			return await httpResponseMessage.Content.ReadAsStreamAsync();
 		}
-
-		public string CurrentSignedUrl { get; private set; }
 	}
 }

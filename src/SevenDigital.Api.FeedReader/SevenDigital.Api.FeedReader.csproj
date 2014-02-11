@@ -52,7 +52,6 @@
   <ItemGroup>
     <Compile Include="DictionaryExtensions.cs" />
     <Compile Include="FeedCatalogueType.cs" />
-    <Compile Include="Feeds\AvailableFeeds.cs" />
     <Compile Include="Feeds\FeedDownload.cs" />
     <Compile Include="Feeds\FeedUnpacker.cs" />
     <Compile Include="Configuration\ApiUrl.cs" />

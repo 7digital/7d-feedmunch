@@ -4,17 +4,11 @@ namespace SevenDigital.Api.FeedReader
 {
 	public class Feed
 	{
+		public const DayOfWeek FULL_FEED_DAY_OF_WEEK = DayOfWeek.Monday;
 		private readonly FeedType _type;
 		private readonly FeedCatalogueType _catalogueType;
-		private string _country = "GB";
-		public const DayOfWeek FULL_FEED_DAY_OF_WEEK = DayOfWeek.Monday;
-		private readonly DateTime _date = DateTime.Now;
-
-		public Feed(FeedType type, FeedCatalogueType catalogueType)
-		{
-			_type = type;
-			_catalogueType = catalogueType;
-		}
+		private readonly string _country = "GB";
+		private readonly DateTime _date;
 
 		public Feed(FeedType type, FeedCatalogueType catalogueType, string country, DateTime date)
 		{
@@ -24,22 +18,16 @@ namespace SevenDigital.Api.FeedReader
 			_date = date;
 		}
 
-		public string Country
-		{
-			get { return _country; }
-			set { _country = value; }
-		}
+		public Feed(FeedType type, FeedCatalogueType catalogueType, string country)
+			:this(type, catalogueType, country, DateTime.Now) 
+		{}
 
 		public FeedType FeedType { get { return _type; } }
-
-		public FeedCatalogueType CatalogueType
-		{
-			get { return _catalogueType; }
-		}
+		public FeedCatalogueType CatalogueType { get { return _catalogueType; } }
+		public DateTime Date { get { return _date; } }
+		public string Country { get { return _country; } }
 
 		public string ExistingPath { get; set; }
-
-		public DateTime Date { get { return _date; } }
 
 		public override string ToString()
 		{

@@ -31,5 +31,8 @@ namespace SevenDigital.FeedMunch
 
 		[Description("/existing allows you to specify a local gz feeds file")]
 		public string Existing { get; set; }
+
+		[Description("/date allows you to specify a date in the yyyyMMdd format")]
+		public string Date { get; set; }
 	}
 }

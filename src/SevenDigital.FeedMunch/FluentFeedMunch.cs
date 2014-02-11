@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Globalization;
+using System.IO;
 using System.IO.Compression;
 using SevenDigital.Api.FeedReader;
 using SevenDigital.Api.FeedReader.Feeds;
@@ -81,7 +83,11 @@ namespace SevenDigital.FeedMunch
 
 		private void Init(FeedMunchConfig config)
 		{
-			FeedDescription = new Feed(config.Feed, config.Catalog) { Country = config.Country };
+			var date = string.IsNullOrEmpty(config.Date)
+					? DateTime.Now
+					: DateTime.ParseExact(config.Date, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+			FeedDescription = new Feed(config.Feed, config.Catalog, config.Country, date);
 			Filter = new Filter(config.Filter);
 		}
 		
