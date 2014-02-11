@@ -37,7 +37,7 @@ namespace SevenDigital.Api.FeedReader
 			var parameters = new Dictionary<string,string>
 			{
 				{ "country", feed.Country},
-				{ "date", FeedsDateCreation.GetCurrentFeedDate(DateTime.Now, feed.FeedType)}
+				{ "date", feed.GetFeedDate()}
 			};
 
 			var authorizationQuery = oAuthRequest.GetAuthorizationQuery(parameters);

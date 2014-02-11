@@ -60,7 +60,7 @@
     <Compile Include="Dates\DateExtensions.cs" />
     <Compile Include="Feed.cs" />
     <Compile Include="FeedsFileHelper.cs" />
-    <Compile Include="FeedsHelper.cs" />
+    <Compile Include="FeedsDateCreation.cs" />
     <Compile Include="FeedsUrlCreator.cs" />
     <Compile Include="Feeds\Schema\Track.cs" />
     <Compile Include="Feeds\Schema\Release.cs" />

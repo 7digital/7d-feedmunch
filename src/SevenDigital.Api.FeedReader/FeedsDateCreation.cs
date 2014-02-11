@@ -9,8 +9,6 @@ namespace SevenDigital.Api.FeedReader
 
 		public static string GetCurrentFeedDate(DateTime seedDate, FeedType feedType)
 		{
-			//return FirstOfTheCurrentMonth(seedDate);
-
 			return feedType == FeedType.Full ? FirstMondayOfTheCurrentWeek(seedDate) : seedDate.ToString("yyyyMMdd");
 		}
 
