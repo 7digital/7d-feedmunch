@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using FeedMuncher.IOC.StructureMap;
 using NUnit.Framework;
 using SevenDigital.Api.FeedReader;
@@ -24,7 +25,8 @@ namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 				Country = "GB",
 				Feed = FeedType.Updates,
 				Filter = "action=U",
-				Output = OUTPUT_FILE
+				Output = OUTPUT_FILE,
+				Date = FeedsDateCreation.GetCurrentFeedDate(DateTime.Now.AddDays(-1), FeedType.Updates)
 			};
 
 			FeedMuncher.IOC.StructureMap
@@ -56,7 +58,8 @@ namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 				Country = "GB",
 				Feed = FeedType.Full,
 				Filter = "name=Interpol,U2",
-				Output = OUTPUT_FILE
+				Output = OUTPUT_FILE,
+				Date = FeedsDateCreation.GetCurrentFeedDate(DateTime.Now.AddDays(-1), FeedType.Updates)
 			};
 
 			FeedMuncher.IOC.StructureMap
