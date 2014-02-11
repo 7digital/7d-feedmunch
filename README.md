@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/gregsochanik/7d-feedmunch.png?branch=master)](https://travis-ci.org/gregsochanik/7d-feedmunch)
-
 7d-feedmunch
 ============
 
