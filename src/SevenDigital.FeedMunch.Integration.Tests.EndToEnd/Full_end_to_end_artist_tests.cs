@@ -9,24 +9,24 @@ namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 {
 	[TestFixture]
 	[Category("Smoke")]
-	public class Full_end_to_end_track_updates_tests
+	public class Full_end_to_end_artist_tests
 	{
-		private const string OUTPUT_FILE = "trackUpdatesTest";
+		private const string OUTPUT_FILE = "artistFullTest";
 		private const string EXPECTED_OUTPUT_FILE = "output/" + OUTPUT_FILE + ".gz";
 
 		[Test]
-		public void Can_filter_version_album_version_on_the_fly()
+		public void Can_filter_action_on_the_fly()
 		{
 			Bootstrap.ConfigureDependencies();
 
 			var feedMunchConfig = new FeedMunchConfig
 			{
-				Catalog = FeedCatalogueType.Track,
+				Catalog = FeedCatalogueType.Artist,
 				Country = "GB",
-				Feed = FeedType.Updates,
-				Filter = "version=Album Version",
+				Feed = FeedType.Full,
+				Filter = "name=Interpol,U2",
 				Output = OUTPUT_FILE,
-				Date = FeedsDateCreation.GetCurrentFeedDate(DateTime.Now.AddDays(-1), FeedType.Updates)
+				Date = FeedsDateCreation.GetCurrentFeedDate(DateTime.Now.AddDays(-1), FeedType.Full)
 			};
 
 			FeedMuncher.IOC.StructureMap
@@ -36,7 +36,7 @@ namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 
 			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
 
-			AssertFiltering.IsAsExpected<TrackIncremental>(EXPECTED_OUTPUT_FILE, x => x.version == "Album Version");
+			AssertFiltering.IsAsExpected<Artist>(EXPECTED_OUTPUT_FILE, x => x.name == "Interpol" || x.name == "U2");
 		}
 	}
 }
