@@ -22,5 +22,12 @@ namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 				}
 			}
 		}
+
+		public static void IsAsExpected<T>(Stream outputStream, Func<T, bool> filteringPredicate)
+		{
+			var deSerialize = CsvDeserialize.DeSerialize<T>(outputStream).ToList();
+			Assert.That(deSerialize.Any(filteringPredicate), Is.True, "No items matching filtering predicate are found");
+			Assert.That(deSerialize.All(filteringPredicate), Is.True, "Not all items match filtering predicate");
+		}
 	}
 }

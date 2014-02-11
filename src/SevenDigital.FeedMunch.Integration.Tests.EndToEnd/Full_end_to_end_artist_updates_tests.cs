@@ -29,14 +29,17 @@ namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 				Date = FeedsDateCreation.GetCurrentFeedDate(DateTime.Now.AddDays(-1), FeedType.Updates)
 			};
 
-			FeedMuncher.IOC.StructureMap
-			           .FeedMunch.Download
-			           .WithConfig(feedMunchConfig)
-			           .InvokeAndWriteToGzippedFile();
+			using (var ms = new MemoryStream())
+			{
+				FeedMuncher.IOC.StructureMap
+						   .FeedMunch.Download
+						   .WithConfig(feedMunchConfig)
+						   .InvokeAndWriteTo(ms);
 
-			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
+				ms.Position = 0;
 
-			AssertFiltering.IsAsExpected<ArtistIncremental>(EXPECTED_OUTPUT_FILE, x => x.action == "U");
+				AssertFiltering.IsAsExpected<ArtistIncremental>(ms, x => x.action == "U");
+			}
 		}
 	}
 }

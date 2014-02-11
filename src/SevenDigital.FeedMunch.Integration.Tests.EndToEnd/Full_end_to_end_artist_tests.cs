@@ -12,7 +12,6 @@ namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 	public class Full_end_to_end_artist_tests
 	{
 		private const string OUTPUT_FILE = "artistFullTest";
-		private const string EXPECTED_OUTPUT_FILE = "output/" + OUTPUT_FILE + ".gz";
 
 		[Test]
 		public void Can_filter_action_on_the_fly()
@@ -29,14 +28,17 @@ namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 				Date = FeedsDateCreation.GetCurrentFeedDate(DateTime.Now.AddDays(-1), FeedType.Full)
 			};
 
-			FeedMuncher.IOC.StructureMap
-			           .FeedMunch.Download
-			           .WithConfig(feedMunchConfig)
-			           .InvokeAndWriteToGzippedFile();
+			using (var ms = new MemoryStream())
+			{
+				FeedMuncher.IOC.StructureMap
+						   .FeedMunch.Download
+						   .WithConfig(feedMunchConfig)
+						   .InvokeAndWriteTo(ms);
 
-			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
+				ms.Position = 0;
 
-			AssertFiltering.IsAsExpected<Artist>(EXPECTED_OUTPUT_FILE, x => x.name == "Interpol" || x.name == "U2");
+				AssertFiltering.IsAsExpected<Artist>(ms, x => x.name == "Interpol" || x.name == "U2");
+			}
 		}
 	}
 }

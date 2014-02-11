@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
-using System.IO.Compression;
 using SevenDigital.Api.FeedReader;
 using SevenDigital.Api.FeedReader.Feeds;
 
@@ -11,18 +10,16 @@ namespace SevenDigital.FeedMunch
 	{
 		private readonly IFeedDownload _feedDownload;
 		private readonly IFeedUnpacker _feedUnpacker;
-		private readonly IFileHelper _fileHelper;
 		private readonly ILogAdapter _logLog;
 
 		public FeedMunchConfig Config { get; private set; }
 		public Filter Filter { get; private set; }
 		public Feed FeedDescription { get; private set; }
 
-		public FluentFeedMunch(IFeedDownload feedDownload, IFeedUnpacker feedUnpacker, IFileHelper fileHelper, ILogAdapter logLog)
+		public FluentFeedMunch(IFeedDownload feedDownload, IFeedUnpacker feedUnpacker, ILogAdapter logLog)
 		{
 			_feedDownload = feedDownload;
 			_feedUnpacker = feedUnpacker;
-			_fileHelper = fileHelper;
 			_logLog = logLog;
 
 			Init(new FeedMunchConfig());
@@ -35,24 +32,7 @@ namespace SevenDigital.FeedMunch
 			_logLog.Info(FeedDescription.ToString());
 			return this;
 		}
-
-		/// <summary>
-		/// Default behaviour, writes output of filtered feed to a gzipped file 
-		/// </summary>
-		public void InvokeAndWriteToGzippedFile()
-		{
-			var generateOutputFeedLocation = _fileHelper.GenerateOutputFeedLocation(Config.Output);
-			
-			using (var output = File.Create(generateOutputFeedLocation))
-			{
-				using (var gzipOut = new GZipStream(output, CompressionMode.Compress))
-				{
-					InvokeAndWriteTo(gzipOut);
-				}
-			}
-			TryChangeExtension(generateOutputFeedLocation, ".tmp", ".gz");
-		}
-
+		
 		/// <summary>
 		/// Writes output of filtered feed to the Stream supplied
 		/// </summary>
@@ -89,16 +69,6 @@ namespace SevenDigital.FeedMunch
 
 			FeedDescription = new Feed(config.Feed, config.Catalog, config.Country, date);
 			Filter = new Filter(config.Filter);
-		}
-		
-		private static void TryChangeExtension(string path, string from, string to)
-		{
-			var completedFilePath = path.Replace(from, to);
-			if (File.Exists(completedFilePath))
-			{
-				File.Delete(completedFilePath);
-			}
-			File.Move(path, completedFilePath);
 		}
 	}
 }

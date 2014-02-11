@@ -12,7 +12,6 @@ namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 	public class Full_end_to_end_release_updates_tests
 	{
 		private const string OUTPUT_FILE = "releaseUpdatesTest";
-		private const string EXPECTED_OUTPUT_FILE = "output/" + OUTPUT_FILE + ".gz";
 
 		[Test]
 		public void Can_filter_action_on_the_fly()
@@ -25,18 +24,20 @@ namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 				Country = "GB",
 				Feed = FeedType.Updates,
 				Filter = "action=U",
-				Output = OUTPUT_FILE,
 				Date = FeedsDateCreation.GetCurrentFeedDate(DateTime.Now.AddDays(-1), FeedType.Updates)
 			};
 
-			FeedMuncher.IOC.StructureMap
-			           .FeedMunch.Download
-			           .WithConfig(feedMunchConfig)
-			           .InvokeAndWriteToGzippedFile();
+			using (var ms = new MemoryStream())
+			{
+				FeedMuncher.IOC.StructureMap
+						   .FeedMunch.Download
+						   .WithConfig(feedMunchConfig)
+						   .InvokeAndWriteTo(ms);
 
-			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
+				ms.Position = 0;
 
-			AssertFiltering.IsAsExpected<ReleaseIncremental>(EXPECTED_OUTPUT_FILE, x => x.action == "U");
+				AssertFiltering.IsAsExpected<ReleaseIncremental>(ms, x => x.action == "U");
+			}
 		}
 	}
 }

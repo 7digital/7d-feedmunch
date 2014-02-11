@@ -9,9 +9,6 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 	[TestFixture]
 	public class Given_I_have_already_downloaded_an_incremental_track_feed
 	{
-		private const string OUTPUT_FILE = "trackIncrementalTest";
-		private const string EXPECTED_OUTPUT_FILE = "output/" + OUTPUT_FILE + ".gz";
-
 		private FeedMunchConfig _feedMunchConfig;
 
 		[TestFixtureSetUp]
@@ -23,8 +20,7 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 			{
 				Feed = FeedType.Updates,
 				Catalog = FeedCatalogueType.Track,
-				Existing = @"Samples/track/1000-line-track-updt-feed.gz",
-				Output = OUTPUT_FILE
+				Existing = @"Samples/track/1000-line-track-updt-feed.gz"
 			};
 		}
 
@@ -33,13 +29,17 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 		{
 			_feedMunchConfig.Filter = "licensorID=1";
 
-			FeedMuncher.IOC.StructureMap.FeedMunch.Download
-				.WithConfig(_feedMunchConfig)
-					.InvokeAndWriteToGzippedFile();
+			using (var ms = new MemoryStream())
+			{
+				FeedMuncher.IOC.StructureMap
+						   .FeedMunch.Download
+						   .WithConfig(_feedMunchConfig)
+						   .InvokeAndWriteTo(ms);
 
-			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
+				ms.Position = 0;
 
-			AssertFiltering.IsAsExpected<TrackIncremental>(EXPECTED_OUTPUT_FILE, x => x.licensorID == 1);
+				AssertFiltering.IsAsExpected<TrackIncremental>(ms, x => x.licensorID == 1);
+			}
 		}
 
 		[Test]
@@ -47,13 +47,17 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 		{
 			_feedMunchConfig.Filter = "licensorID=1,2";
 
-			FeedMuncher.IOC.StructureMap.FeedMunch.Download
-					   .WithConfig(_feedMunchConfig)
-					   .InvokeAndWriteToGzippedFile();
+			using (var ms = new MemoryStream())
+			{
+				FeedMuncher.IOC.StructureMap
+						   .FeedMunch.Download
+						   .WithConfig(_feedMunchConfig)
+						   .InvokeAndWriteTo(ms);
 
-			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
+				ms.Position = 0;
 
-			AssertFiltering.IsAsExpected<TrackIncremental>(EXPECTED_OUTPUT_FILE, x => x.licensorID == 1 || x.licensorID == 2);
+				AssertFiltering.IsAsExpected<TrackIncremental>(ms, x => x.licensorID == 1 || x.licensorID == 2);
+			}
 		}
 
 		[Test]
@@ -61,21 +65,16 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 		{
 			_feedMunchConfig.Filter = "action=I,U";
 
-			FeedMuncher.IOC.StructureMap.FeedMunch.Download
-					   .WithConfig(_feedMunchConfig)
-					   .InvokeAndWriteToGzippedFile();
-
-			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
-
-			AssertFiltering.IsAsExpected<TrackIncremental>(EXPECTED_OUTPUT_FILE, x => x.action == "U" || x.action == "I");
-		}
-
-		[TestFixtureTearDown]
-		public void TearDown()
-		{
-			if (File.Exists(EXPECTED_OUTPUT_FILE))
+			using (var ms = new MemoryStream())
 			{
-				File.Delete(EXPECTED_OUTPUT_FILE);
+				FeedMuncher.IOC.StructureMap
+						   .FeedMunch.Download
+						   .WithConfig(_feedMunchConfig)
+						   .InvokeAndWriteTo(ms);
+
+				ms.Position = 0;
+
+				AssertFiltering.IsAsExpected<TrackIncremental>(ms, x => x.action == "U" || x.action == "I");
 			}
 		}
 	}

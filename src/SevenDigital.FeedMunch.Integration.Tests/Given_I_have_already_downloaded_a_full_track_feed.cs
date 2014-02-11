@@ -11,7 +11,6 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 	public class Given_I_have_already_downloaded_a_full_track_feed
 	{
 		private const string OUTPUT_FILE = "trackTest";
-		private const string EXPECTED_OUTPUT_FILE = "output/" + OUTPUT_FILE + ".gz";
 
 		private FeedMunchConfig _feedMunchConfig;
 
@@ -24,8 +23,7 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 			{
 				Feed = FeedType.Full,
 				Catalog = FeedCatalogueType.Track,
-				Existing = @"Samples/track/1000-line-track-full-feed.gz",
-				Output = OUTPUT_FILE
+				Existing = @"Samples/track/1000-line-track-full-feed.gz"
 			};
 		}
 
@@ -34,27 +32,35 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 		{
 			_feedMunchConfig.Filter = "licensorID=1";
 
-			FeedMuncher.IOC.StructureMap.FeedMunch.Download
-				.WithConfig(_feedMunchConfig)
-				.InvokeAndWriteToGzippedFile();
+			using (var ms = new MemoryStream())
+			{
+				FeedMuncher.IOC.StructureMap
+						   .FeedMunch.Download
+						   .WithConfig(_feedMunchConfig)
+						   .InvokeAndWriteTo(ms);
 
-			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
+				ms.Position = 0;
 
-			AssertFiltering.IsAsExpected<Track>(EXPECTED_OUTPUT_FILE, x => x.licensorID == 1);
+				AssertFiltering.IsAsExpected<Track>(ms, x => x.licensorID == 1);
+			}
 		}
 
 		[Test]
 		public void Can_filter_feed_by_2_licensorIds()
 		{
 			_feedMunchConfig.Filter = "licensorID=1,2";
+			
+			using (var ms = new MemoryStream())
+			{
+				FeedMuncher.IOC.StructureMap
+						   .FeedMunch.Download
+						   .WithConfig(_feedMunchConfig)
+						   .InvokeAndWriteTo(ms);
 
-			FeedMuncher.IOC.StructureMap.FeedMunch.Download
-				.WithConfig(_feedMunchConfig)
-				.InvokeAndWriteToGzippedFile();
+				ms.Position = 0;
 
-			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
-
-			AssertFiltering.IsAsExpected<Track>(EXPECTED_OUTPUT_FILE, x => x.licensorID == 1 || x.licensorID == 2);
+				AssertFiltering.IsAsExpected<Track>(ms, x => x.licensorID == 1 || x.licensorID == 2);
+			}
 		}
 
 		[Test]
@@ -62,13 +68,17 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 		{
 			_feedMunchConfig.Filter = "title=Jingle Bells";
 
-			FeedMuncher.IOC.StructureMap.FeedMunch.Download
-				.WithConfig(_feedMunchConfig)
-				.InvokeAndWriteToGzippedFile();
+			using (var ms = new MemoryStream())
+			{
+				FeedMuncher.IOC.StructureMap
+						   .FeedMunch.Download
+						   .WithConfig(_feedMunchConfig)
+						   .InvokeAndWriteTo(ms);
 
-			Assert.That(File.Exists(EXPECTED_OUTPUT_FILE));
+				ms.Position = 0;
 
-			AssertFiltering.IsAsExpected<Track>(EXPECTED_OUTPUT_FILE, x => x.title == "Jingle Bells");
+				AssertFiltering.IsAsExpected<Track>(ms, x => x.title == "Jingle Bells");
+			}
 		}
 
 		[Test]
@@ -78,18 +88,11 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 
 			var feedMunch = FeedMuncher.IOC.StructureMap.FeedMunch.Download
 				.WithConfig(_feedMunchConfig);
-
-			var argumentException = Assert.Throws<ArgumentException>(feedMunch.InvokeAndWriteToGzippedFile);
-
-			Assert.That(argumentException.Message, Is.EqualTo("Chosen filter field is not valid: \"jabba\", remember field names are case sensitive"));
-		}
-
-		[TestFixtureTearDown]
-		public void TearDown()
-		{
-			if (File.Exists(EXPECTED_OUTPUT_FILE))
+			using (var ms = new MemoryStream())
 			{
-				File.Delete(EXPECTED_OUTPUT_FILE);
+				var argumentException = Assert.Throws<ArgumentException>(() => feedMunch.InvokeAndWriteTo(ms));
+
+				Assert.That(argumentException.Message, Is.EqualTo("Chosen filter field is not valid: \"jabba\", remember field names are case sensitive"));
 			}
 		}
 	}
