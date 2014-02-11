@@ -16,7 +16,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests.Feeds
 				Country = "GB"
 			};
 
-			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForLatestFeed(feed);
+			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForFeed(feed);
 
 			Assert.That(signUrlForLatestFeed, Is.StringStarting("http://feeds.api.7digital.com/1.2/feed/artist/full?oauth_consumer_key=KEY"));
 
@@ -32,7 +32,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests.Feeds
 				Country = "GB"
 			};
 
-			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForLatestFeed(feed);
+			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForFeed(feed);
 
 			Assert.That(signUrlForLatestFeed, Is.StringStarting("http://feeds.api.7digital.com/1.2/feed/artist/updates?oauth_consumer_key=KEY"));
 		}
@@ -47,7 +47,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests.Feeds
 				Country = "GB"
 			};
 
-			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForLatestFeed(feed);
+			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForFeed(feed);
 
 			Assert.That(signUrlForLatestFeed, Is.StringStarting("http://feeds.api.7digital.com/1.2/feed/release/full?oauth_consumer_key=KEY"));
 
@@ -63,7 +63,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests.Feeds
 				Country = "GB"
 			};
 
-			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForLatestFeed(feed);
+			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForFeed(feed);
 
 			Assert.That(signUrlForLatestFeed, Is.StringStarting("http://feeds.api.7digital.com/1.2/feed/release/updates?oauth_consumer_key=KEY"));
 		}
@@ -78,7 +78,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests.Feeds
 				Country = "GB"
 			};
 
-			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForLatestFeed(feed);
+			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForFeed(feed);
 
 			Assert.That(signUrlForLatestFeed, Is.StringStarting("http://feeds.api.7digital.com/1.2/feed/track/full?oauth_consumer_key=KEY"));
 
@@ -94,7 +94,7 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests.Feeds
 				Country = "GB"
 			};
 
-			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForLatestFeed(feed);
+			var signUrlForLatestFeed = feedsUrlCreator.SignUrlForFeed(feed);
 
 			Assert.That(signUrlForLatestFeed, Is.StringStarting("http://feeds.api.7digital.com/1.2/feed/track/updates?oauth_consumer_key=KEY"));
 		}

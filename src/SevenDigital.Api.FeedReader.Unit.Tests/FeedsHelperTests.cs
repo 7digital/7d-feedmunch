@@ -32,5 +32,14 @@ namespace SevenDigital.Api.FeedReader.Unit.Tests
 
 			Assert.That(currentFullFeedDate, Is.EqualTo("20140224"));
 		}
+
+		[Test]
+		public void Current_update_feed_date_should_be_today()
+		{
+			var seedDate = new DateTime(2012, 1, 22);
+			var currentFullFeedDate = FeedsDateCreation.GetCurrentFeedDate(seedDate, FeedType.Updates);
+
+			Assert.That(currentFullFeedDate, Is.EqualTo("20120122"));
+		}
 	}
 }

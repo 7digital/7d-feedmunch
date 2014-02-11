@@ -1,5 +1,4 @@
 ﻿using System;
-using SevenDigital.Api.FeedReader.Dates;
 
 namespace SevenDigital.Api.FeedReader
 {
@@ -31,30 +30,9 @@ namespace SevenDigital.Api.FeedReader
 
 		public string ExistingPath { get; set; }
 
-		public string GetLatest()
-		{
-			var feedsDate = GetPreviousFeedDate();
-			return feedsDate + "-" + Country + "-" + _catalogueType.ToString().ToLower() + "-" + _type.ToString().ToLower() + "-feed.gz";
-		}
-
 		public override string ToString()
 		{
-			return string.Format("FeedType: {0} FeedCatalogue: {1} Country: {2}", FeedType, CatalogueType, Country );
-		}
-
-		private string GetPreviousFeedDate()
-		{
-			return _type == FeedType.Full ? GetPreviousFullFeedDate() : GetPreviousIncrementalFeedDate();
-		}
-
-		private static string GetPreviousFullFeedDate()
-		{
-			return DateTime.Now.PreviousDayOfWeek(FULL_FEED_DAY_OF_WEEK).ToString("yyyyMMdd");
-		}
-
-		private static string GetPreviousIncrementalFeedDate()
-		{
-			return DateTime.Now.PreviousDayOfWeek().ToString("yyyyMMdd");
+			return string.Format("FeedType: {0} FeedCatalogue: {1} Country: {2} Date: {3}", FeedType, CatalogueType, Country );
 		}
 	}
 }
