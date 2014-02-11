@@ -7,5 +7,3 @@ before_install:
   - mv -f .nuget/NuGet.mono.targets .nuget/NuGet.targets
   - export EnableNuGetPackageRestore=true
 
-script:
-  - xbuild CI.proj
