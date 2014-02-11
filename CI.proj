@@ -4,7 +4,7 @@
   <Target Name="CI" DependsOnTargets="Build" />
  
   <Target Name="Build">
-    <MSBuild Projects="SevenDigital.Api.FeedReader.sln" Properties="Configuration=Release;Platform=x86" />
+    <MSBuild Projects="SevenDigital.Api.FeedReader.sln" Properties="Configuration=Release" />
   </Target>
  
 </Project>
