@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="ConsoleFeedMunchConfig.cs" />
     <Compile Include="FeedMunchArgumentAdapter.cs" />
+    <Compile Include="GzippedFileFeedStreamWriter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
