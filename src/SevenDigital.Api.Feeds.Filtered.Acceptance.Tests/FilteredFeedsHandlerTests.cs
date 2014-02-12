@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using NUnit.Framework;
 using RestSharp;
+using SevenDigital.Api.FeedReader;
 
 namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 {
@@ -19,6 +21,7 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 		[Test]
 		public void Can_download_artist_full_filtered()
 		{
+
 			var restRequest = new RestRequest("artist/full");
 			restRequest.AddParameter(new Parameter
 			{
@@ -28,9 +31,11 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 			});
 			var restResponse = _restClient.Head(restRequest);
 
+			var currentFeedDate = FeedsDateCreation.GetCurrentFeedDate(DateTime.Now, FeedType.Full);
+
 			Assert.That(restResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 			Assert.That(restResponse.ContentType, Is.EqualTo("application/x-gzip"));
-			Assert.That(restResponse.Headers.Single(x=>x.Name=="Content-disposition").Value, Is.EqualTo("attachment; filename=\"20140203-GB-artist-full-feed-filtered.gz\""));
+			Assert.That(restResponse.Headers.Single(x => x.Name == "Content-disposition").Value, Is.EqualTo("attachment; filename=\"GB_artist_full_" + currentFeedDate + "-filtered.gz\""));
 		}
 
 		[Test]
@@ -45,9 +50,11 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 			});
 			var restResponse = _restClient.Head(restRequest);
 
+			var currentFeedDate = FeedsDateCreation.GetCurrentFeedDate(DateTime.Now, FeedType.Updates);
+
 			Assert.That(restResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 			Assert.That(restResponse.ContentType, Is.EqualTo("application/x-gzip"));
-			Assert.That(restResponse.Headers.Single(x => x.Name == "Content-disposition").Value, Is.EqualTo("attachment; filename=\"20140203-GB-artist-updates-feed-filtered.gz\""));
+			Assert.That(restResponse.Headers.Single(x => x.Name == "Content-disposition").Value, Is.EqualTo("attachment; filename=\"GB_artist_updates_" + currentFeedDate + "-filtered.gz\""));
 		}
 
 		[Test]
@@ -62,9 +69,11 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 			});
 			var restResponse = _restClient.Head(restRequest);
 
+			var currentFeedDate = FeedsDateCreation.GetCurrentFeedDate(DateTime.Now, FeedType.Full);
+
 			Assert.That(restResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 			Assert.That(restResponse.ContentType, Is.EqualTo("application/x-gzip"));
-			Assert.That(restResponse.Headers.Single(x => x.Name == "Content-disposition").Value, Is.EqualTo("attachment; filename=\"20140203-GB-track-full-feed-filtered.gz\""));
+			Assert.That(restResponse.Headers.Single(x => x.Name == "Content-disposition").Value, Is.EqualTo("attachment; filename=\"GB_track_full_" + currentFeedDate + "-filtered.gz\""));
 		}
 
 		[Test]
@@ -79,9 +88,11 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 			});
 			var restResponse = _restClient.Head(restRequest);
 
+			var currentFeedDate = FeedsDateCreation.GetCurrentFeedDate(DateTime.Now, FeedType.Updates);
+
 			Assert.That(restResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 			Assert.That(restResponse.ContentType, Is.EqualTo("application/x-gzip"));
-			Assert.That(restResponse.Headers.Single(x => x.Name == "Content-disposition").Value, Is.EqualTo("attachment; filename=\"20140203-GB-track-updates-feed-filtered.gz\""));
+			Assert.That(restResponse.Headers.Single(x => x.Name == "Content-disposition").Value, Is.EqualTo("attachment; filename=\"GB_track_updates_" + currentFeedDate + "-filtered.gz\""));
 		}
 
 		[Test]
@@ -96,9 +107,11 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 			});
 			var restResponse = _restClient.Head(restRequest);
 
+			var currentFeedDate = FeedsDateCreation.GetCurrentFeedDate(DateTime.Now, FeedType.Full);
+
 			Assert.That(restResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 			Assert.That(restResponse.ContentType, Is.EqualTo("application/x-gzip"));
-			Assert.That(restResponse.Headers.Single(x => x.Name == "Content-disposition").Value, Is.EqualTo("attachment; filename=\"20140203-GB-release-full-feed-filtered.gz\""));
+			Assert.That(restResponse.Headers.Single(x => x.Name == "Content-disposition").Value, Is.EqualTo("attachment; filename=\"GB_release_full_" + currentFeedDate + "-filtered.gz\""));
 		}
 
 		[Test]
@@ -113,9 +126,11 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 			});
 			var restResponse = _restClient.Head(restRequest);
 
+			var currentFeedDate = FeedsDateCreation.GetCurrentFeedDate(DateTime.Now, FeedType.Updates);
+
 			Assert.That(restResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 			Assert.That(restResponse.ContentType, Is.EqualTo("application/x-gzip"));
-			Assert.That(restResponse.Headers.Single(x => x.Name == "Content-disposition").Value, Is.EqualTo("attachment; filename=\"20140203-GB-release-updates-feed-filtered.gz\""));
+			Assert.That(restResponse.Headers.Single(x => x.Name == "Content-disposition").Value, Is.EqualTo("attachment; filename=\"GB_release_updates_" + currentFeedDate + "-filtered.gz\""));
 		}
 	}
 }

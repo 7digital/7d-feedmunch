@@ -15,7 +15,7 @@ namespace SevenDigital.Api.FeedReader.Feeds
 	public class FeedDownload : IFeedDownload
 	{
 		private readonly IFeedsUrlCreator _feedsUrlCreator;
-
+		
 		public FeedDownload(IFeedsUrlCreator feedsUrlCreator)
 		{
 			_feedsUrlCreator = feedsUrlCreator;

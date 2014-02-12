@@ -2,6 +2,7 @@
 using System.IO.Compression;
 using System.Net;
 using System.Web;
+using SevenDigital.Api.FeedReader;
 
 namespace SevenDigital.Api.Feeds.Filtered
 {
@@ -10,8 +11,10 @@ namespace SevenDigital.Api.Feeds.Filtered
 		public override void ProcessRequest(HttpContextBase context)
 		{
 			var response = context.Response;
-			var feedMunchConfig = context.Request.Url.ToFeedMunchConfig(); // TODO - need to know filename of original request, so should have response details stored somewhere.
-			var contentDisposition = string.Format("attachment; filename=\"20140203-{0}-{1}-{2}-feed-filtered.gz\"", feedMunchConfig.Country, feedMunchConfig.Catalog.ToString().ToLower(), feedMunchConfig.Feed.ToString().ToLower());
+			var feedMunchConfig = context.Request.Url.ToFeedMunchConfig(); 
+			var currentFeedDate = FeedsDateCreation.GetCurrentFeedDate(DateTime.Now, feedMunchConfig.Feed);
+
+			var contentDisposition = string.Format("attachment; filename=\"{0}_{1}_{2}_{3}-filtered.gz\"", feedMunchConfig.Country, feedMunchConfig.Catalog.ToString().ToLower(), feedMunchConfig.Feed.ToString().ToLower(), currentFeedDate);
 			
 			using (var gzip = new GZipStream(context.Response.OutputStream, CompressionMode.Compress))
 			{

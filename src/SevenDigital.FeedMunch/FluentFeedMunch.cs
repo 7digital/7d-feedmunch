@@ -15,7 +15,7 @@ namespace SevenDigital.FeedMunch
 		public FeedMunchConfig Config { get; private set; }
 		public Filter Filter { get; private set; }
 		public Feed FeedDescription { get; private set; }
-
+		
 		public FluentFeedMunch(IFeedDownload feedDownload, IFeedUnpacker feedUnpacker, ILogAdapter logLog)
 		{
 			_feedDownload = feedDownload;
