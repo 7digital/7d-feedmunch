@@ -14,21 +14,22 @@ namespace FeedMuncher
 
 			var feedMunchConfig = FeedMunchArgumentAdapter.FromConsoleArgs(args);
 
-			WriteStreamToGzippedFile(feedMunchConfig, stream =>
-				FeedMunch.Download
-					.WithConfig(feedMunchConfig)
-					.InvokeAndWriteTo(stream)
-			);
+			FeedMunch.Download
+				.WithConfig(feedMunchConfig)
+				.InvokeAndWriteTo(new GzippedFileFeedStreamWriter());
 		}
+	}
 
-		private static void WriteStreamToGzippedFile(ConsoleFeedMunchConfig feedMunchConfig, Action<Stream> generateStream)
+	public class GzippedFileFeedStreamWriter : IFeedStreamWriter
+	{
+		public void Write(FeedMunchConfig feedMunchConfig, Action<Stream> writeFeedStream)
 		{
-			var path = feedMunchConfig.Output + ".tmp";
+			var path = ((ConsoleFeedMunchConfig)feedMunchConfig).Output + ".tmp";
 			using (var output = File.Create(path))
 			{
 				using (var gzipOut = new GZipStream(output, CompressionMode.Compress))
 				{
-					generateStream(gzipOut);
+					writeFeedStream(gzipOut);
 				}
 			}
 			TryChangeExtension(path, ".tmp", ".gz"); 

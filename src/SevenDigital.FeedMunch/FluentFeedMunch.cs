@@ -50,6 +50,11 @@ namespace SevenDigital.FeedMunch
 			_logLog.Info(string.Format("Took {0} milliseconds to output filtered feed", filterStreamTimeMeasurement.ElapsedMilliseconds));
 		}
 
+		public void InvokeAndWriteTo(IFeedStreamWriter feedStreamWriter)
+		{
+			feedStreamWriter.Write(Config, InvokeAndWriteTo);
+		}
+
 		private Stream ConfigureInputStream()
 		{
 			if (!string.IsNullOrEmpty(Config.Existing))
