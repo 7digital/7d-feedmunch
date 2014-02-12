@@ -8,6 +8,7 @@ using SevenDigital.Api.FeedReader.Feeds.Schema;
 namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 {
 	[TestFixture]
+	[Ignore("The artist tests are causing issues because the feeds aren't always there, so ignoring for now. Maybe pick up as work at a later date to allo console app to check for latest feed if current is 404ing, or wait until this functionality is offered by the feeds-api")]
 	[Category("Smoke")]
 	public class Full_end_to_end_artist_tests
 	{
