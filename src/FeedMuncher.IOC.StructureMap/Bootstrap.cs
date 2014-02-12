@@ -21,10 +21,5 @@ namespace FeedMuncher.IOC.StructureMap
 		{
 			get { return ObjectFactory.GetInstance<FluentFeedMunch>(); }
 		}
-
-		public static FeedMunchArgumentAdapter Configure
-		{
-			get { return ObjectFactory.GetInstance<FeedMunchArgumentAdapter>(); }
-		}
 	}
 }

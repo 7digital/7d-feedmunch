@@ -10,7 +10,6 @@ namespace SevenDigital.FeedMunch
 		{
 			Date = DateTime.Now.ToString("yyyyMMdd");
 			Country = "GB";
-			Output = BuildDefaultOutputFilename();
 		}
 
 		[Description("Either Full or Updates")]
@@ -23,9 +22,6 @@ namespace SevenDigital.FeedMunch
 		public string Filter { get; set; }
 
 		[Description("")]
-		public string Output { get; set; }
-
-		[Description("")]
 		public string Country { get; set; }
 
 		[Description("/limit allows you to specifiy a  number of rows to limit the download to, currently only 0-row number, defaults to 0 which is all rows")]
@@ -36,11 +32,5 @@ namespace SevenDigital.FeedMunch
 
 		[Description("/date allows you to specify a date in the yyyyMMdd format")]
 		public string Date { get; set; }
-
-		private string BuildDefaultOutputFilename()
-		{
-			var isFiltered = !string.IsNullOrEmpty(Filter) ? "-filtered" : string.Empty;
-			return string.Format("./{0}-{1}-{2}-{3}-feed{4}", Date, Country, Catalog, Feed, isFiltered);
-		}
 	}
 }

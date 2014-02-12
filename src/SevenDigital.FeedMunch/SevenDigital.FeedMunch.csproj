@@ -54,7 +54,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleLogAdapter.cs" />
-    <Compile Include="FeedMunchArgumentAdapter.cs" />
     <Compile Include="FeedMunchConfig.cs" />
     <Compile Include="Filter.cs" />
     <Compile Include="FilterExtensions.cs" />

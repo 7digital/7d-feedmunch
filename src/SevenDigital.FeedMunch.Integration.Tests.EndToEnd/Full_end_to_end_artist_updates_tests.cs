@@ -12,8 +12,6 @@ namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 	[Category("Smoke")]
 	public class Full_end_to_end_artist_updates_tests
 	{
-		private const string OUTPUT_FILE = "artistUpdatesTest";
-
 		[Test]
 		public void Can_filter_action_on_the_fly()
 		{
@@ -25,7 +23,6 @@ namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 				Country = "GB",
 				Feed = FeedType.Updates,
 				Filter = "action=U",
-				Output = OUTPUT_FILE,
 				Date = FeedsDateCreation.GetCurrentFeedDate(DateTime.Now.AddDays(-1), FeedType.Updates)
 			};
 

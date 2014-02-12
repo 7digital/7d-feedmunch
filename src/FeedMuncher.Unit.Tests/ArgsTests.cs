@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using SevenDigital.Api.FeedReader;
 
-namespace SevenDigital.FeedMunch.Unit.Tests
+namespace FeedMuncher.Unit.Tests
 {
 	[TestFixture]
 	public class ArgsTests
@@ -18,8 +18,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 				"/country", "GB"
 			};
 
-			var feedMunchArgumentAdapter = new FeedMunchArgumentAdapter();
-			var feedMunchConfig = feedMunchArgumentAdapter.FromConsoleArgs(args);
+			var feedMunchConfig = FeedMunchArgumentAdapter.FromConsoleArgs(args);
 
 			Assert.That(feedMunchConfig.Catalog, Is.EqualTo(FeedCatalogueType.Artist));
 			Assert.That(feedMunchConfig.Feed, Is.EqualTo(FeedType.Full));
@@ -40,8 +39,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 				"/country", "US"
 			};
 
-			var feedMunchArgumentAdapter = new FeedMunchArgumentAdapter();
-			var feedMunchConfig = feedMunchArgumentAdapter.FromConsoleArgs(args);
+			var feedMunchConfig = FeedMunchArgumentAdapter.FromConsoleArgs(args);
 
 			Assert.That(feedMunchConfig.Catalog, Is.EqualTo(FeedCatalogueType.Track));
 			Assert.That(feedMunchConfig.Feed, Is.EqualTo(FeedType.Updates));
@@ -62,8 +60,7 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 				"/cOuNtry", "GB"
 			};
 			
-			var feedMunchArgumentAdapter = new FeedMunchArgumentAdapter();
-			var feedMunchConfig = feedMunchArgumentAdapter.FromConsoleArgs(args);
+			var feedMunchConfig = FeedMunchArgumentAdapter.FromConsoleArgs(args);
 
 			Assert.That(feedMunchConfig.Catalog, Is.EqualTo(FeedCatalogueType.Release));
 			Assert.That(feedMunchConfig.Feed, Is.EqualTo(FeedType.Full));
@@ -71,6 +68,5 @@ namespace SevenDigital.FeedMunch.Unit.Tests
 			Assert.That(feedMunchConfig.Output, Is.EqualTo("./blah"));
 			Assert.That(feedMunchConfig.Country, Is.EqualTo("GB"));
 		}
-
 	}
 }

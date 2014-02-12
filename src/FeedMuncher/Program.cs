@@ -12,7 +12,7 @@ namespace FeedMuncher
 		{
 			Bootstrap.ConfigureDependencies();
 
-			var feedMunchConfig = FeedMunch.Configure.FromConsoleArgs(args);
+			var feedMunchConfig = FeedMunchArgumentAdapter.FromConsoleArgs(args);
 
 			WriteStreamToGzippedFile(feedMunchConfig, stream =>
 				FeedMunch.Download
@@ -21,7 +21,7 @@ namespace FeedMuncher
 			);
 		}
 
-		private static void WriteStreamToGzippedFile(FeedMunchConfig feedMunchConfig, Action<Stream> generateStream)
+		private static void WriteStreamToGzippedFile(ConsoleFeedMunchConfig feedMunchConfig, Action<Stream> generateStream)
 		{
 			var path = feedMunchConfig.Output + ".tmp";
 			using (var output = File.Create(path))
