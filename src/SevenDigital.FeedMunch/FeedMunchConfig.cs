@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using SevenDigital.Api.FeedReader;
 
 namespace SevenDigital.FeedMunch
@@ -7,8 +8,9 @@ namespace SevenDigital.FeedMunch
 	{
 		public FeedMunchConfig()
 		{
+			Date = DateTime.Now.ToString("yyyyMMdd");
 			Country = "GB";
-			Output = "./tempfile.tmp";
+			Output = BuildDefaultOutputFilename();
 		}
 
 		[Description("Either Full or Updates")]
@@ -34,5 +36,11 @@ namespace SevenDigital.FeedMunch
 
 		[Description("/date allows you to specify a date in the yyyyMMdd format")]
 		public string Date { get; set; }
+
+		private string BuildDefaultOutputFilename()
+		{
+			var isFiltered = !string.IsNullOrEmpty(Filter) ? "-filtered" : string.Empty;
+			return string.Format("./{0}-{1}-{2}-{3}-feed{4}", Date, Country, Catalog, Feed, isFiltered);
+		}
 	}
 }
