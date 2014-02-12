@@ -83,10 +83,6 @@
       <Project>{b06a9b73-808b-4d4d-9474-d44964ccdbbb}</Project>
       <Name>FeedMuncher.IOC.StructureMap</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SevenDigital.Api.FeedReader\SevenDigital.Api.FeedReader.csproj">
-      <Project>{B39EBE65-0598-4BA5-B73A-BEB9E1888BD9}</Project>
-      <Name>SevenDigital.Api.FeedReader</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SevenDigital.FeedMunch\SevenDigital.FeedMunch.csproj">
       <Project>{de76ffdf-5b7d-4f59-bb9a-6b727dc1f6c6}</Project>
       <Name>SevenDigital.FeedMunch</Name>

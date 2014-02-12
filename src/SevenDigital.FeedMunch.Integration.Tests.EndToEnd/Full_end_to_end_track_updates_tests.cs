@@ -2,8 +2,7 @@
 using System.IO;
 using FeedMuncher.IOC.StructureMap;
 using NUnit.Framework;
-using SevenDigital.Api.FeedReader;
-using SevenDigital.Api.FeedReader.Feeds.Schema;
+using SevenDigital.FeedMunch.Feeds.Schema;
 
 namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 {

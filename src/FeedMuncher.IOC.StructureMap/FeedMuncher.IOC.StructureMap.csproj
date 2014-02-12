@@ -55,10 +55,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SevenDigital.Api.FeedReader\SevenDigital.Api.FeedReader.csproj">
-      <Project>{b39ebe65-0598-4ba5-b73a-beb9e1888bd9}</Project>
-      <Name>SevenDigital.Api.FeedReader</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SevenDigital.FeedMunch\SevenDigital.FeedMunch.csproj">
       <Project>{DE76FFDF-5B7D-4F59-BB9A-6B727DC1F6C6}</Project>
       <Name>SevenDigital.FeedMunch</Name>

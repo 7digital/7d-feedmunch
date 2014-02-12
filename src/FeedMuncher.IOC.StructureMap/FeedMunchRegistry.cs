@@ -1,6 +1,5 @@
-﻿using SevenDigital.Api.FeedReader;
-using SevenDigital.Api.FeedReader.Configuration;
-using SevenDigital.FeedMunch;
+﻿using SevenDigital.FeedMunch;
+using SevenDigital.FeedMunch.Configuration;
 using StructureMap.Configuration.DSL;
 
 namespace FeedMuncher.IOC.StructureMap
@@ -11,7 +10,6 @@ namespace FeedMuncher.IOC.StructureMap
 		{
 			Scan(x =>
 			{
-				x.AssemblyContainingType<Feed>();
 				x.AssemblyContainingType<FluentFeedMunch>();
 				x.WithDefaultConventions();
 				x.SingleImplementationsOfInterface();

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
-using SevenDigital.Api.FeedReader;
-using SevenDigital.Api.FeedReader.Feeds;
+using SevenDigital.FeedMunch.Feeds;
 
 namespace SevenDigital.FeedMunch
 {

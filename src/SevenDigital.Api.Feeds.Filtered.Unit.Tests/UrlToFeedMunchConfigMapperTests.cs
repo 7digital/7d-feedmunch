@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
 using NUnit.Framework;
-using SevenDigital.Api.FeedReader;
+using SevenDigital.FeedMunch;
 
 namespace SevenDigital.Api.Feeds.Filtered.Unit.Tests
 {

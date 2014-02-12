@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Web;
-using SevenDigital.Api.FeedReader;
 using SevenDigital.FeedMunch;
 
 namespace SevenDigital.Api.Feeds.Filtered

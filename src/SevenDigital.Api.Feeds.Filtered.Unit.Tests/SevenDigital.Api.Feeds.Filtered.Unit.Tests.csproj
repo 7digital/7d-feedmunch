@@ -60,10 +60,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SevenDigital.Api.FeedReader\SevenDigital.Api.FeedReader.csproj">
-      <Project>{B39EBE65-0598-4BA5-B73A-BEB9E1888BD9}</Project>
-      <Name>SevenDigital.Api.FeedReader</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SevenDigital.Api.Feeds.Filtered\SevenDigital.Api.Feeds.Filtered.csproj">
       <Project>{14AC4892-EA97-4815-8AF5-CAA4A1AEB19B}</Project>
       <Name>SevenDigital.Api.Feeds.Filtered</Name>

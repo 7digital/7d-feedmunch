@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using SevenDigital.Api.FeedReader;
+using SevenDigital.FeedMunch;
 
 namespace FeedMuncher.Unit.Tests
 {

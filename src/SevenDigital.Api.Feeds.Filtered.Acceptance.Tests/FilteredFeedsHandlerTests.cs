@@ -3,7 +3,7 @@ using System.Linq;
 using System.Net;
 using NUnit.Framework;
 using RestSharp;
-using SevenDigital.Api.FeedReader;
+using SevenDigital.FeedMunch;
 
 namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 {

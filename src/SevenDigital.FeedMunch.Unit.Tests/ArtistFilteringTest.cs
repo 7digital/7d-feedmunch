@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
-using SevenDigital.Api.FeedReader.Feeds.Schema;
+using SevenDigital.FeedMunch.Feeds.Schema;
 
 namespace SevenDigital.FeedMunch.Unit.Tests
 {

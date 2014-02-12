@@ -3,7 +3,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Web;
-using SevenDigital.Api.FeedReader;
 using SevenDigital.FeedMunch;
 
 namespace SevenDigital.Api.Feeds.Filtered

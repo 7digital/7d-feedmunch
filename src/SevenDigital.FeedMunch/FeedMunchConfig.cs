@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using SevenDigital.Api.FeedReader;
 
 namespace SevenDigital.FeedMunch
 {
