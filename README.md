@@ -1,14 +1,20 @@
 7d-feedmunch
 ============
 
-A few basic classes to help download, read and filter 7digital feeds
+An api to help download, read and filter 7digital feeds.
+
+It allows you to:
+
+* Download the current latest Full or incremental feed with the minumum of fuss
+* Filter feeds using a simple field name filter expression
+* Write the feed to any .NET `Stream` or custom 'IFeedStreamWriter` you wish
 
 SevenDigital.FeedMunch
 ==
 
 The basic syntax is as follows:
 
-```c#
+```C#
 FeedMunch.Download
 				.WithConfig(feedMunchConfig)
 				.InvokeAndWriteTo(stream);
@@ -23,13 +29,9 @@ As well as the standard .NET `Stream` object, the `InvokeAndWriteTo` method acce
 
 Currently there are 2 supplied as part of example projects (see below):
 
-`GzippedHttpFeedStreamWriter`
---
-Takes the `Stream` and writes it to the supplied `HttpResponseBase` output stream as a `GZipStream`, and updates the response headers accordingly
+`GzippedHttpFeedStreamWriter` : Takes the `Stream` and writes it to the supplied `HttpResponseBase` output stream as a `GZipStream`, and updates the response headers accordingly
 
-`GzippedFileFeedStreamWriter` 
---
-Takes the `Stream` and writes it to a file path specified in the `FeedMunchConfig` compressed to gzip.
+`GzippedFileFeedStreamWriter` : Takes the `Stream` and writes it to a file path specified in the `FeedMunchConfig` compressed to gzip.
 
 SevenDigital.Api.Feeds.Filtered
 ==
