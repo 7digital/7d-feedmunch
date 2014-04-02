@@ -15,11 +15,10 @@ namespace SevenDigital.Api.Feeds.Filtered
 			var request = context.Request;
 
 			var feedMunchConfig = request.Url.ToFeedMunchConfig();
-
 			FeedMuncher.IOC.StructureMap
-							.FeedMunch.Download
-							.WithConfig(feedMunchConfig)
-							.InvokeAndWriteTo(new GzippedHttpFeedStreamWriter(request, response));
+				.FeedMunch.Download
+				.WithConfig(feedMunchConfig)
+				.InvokeAndWriteTo(new GzippedHttpFeedStreamWriter(request, response));
 		}
 	}
 

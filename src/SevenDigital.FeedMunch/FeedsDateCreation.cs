@@ -9,7 +9,7 @@ namespace SevenDigital.FeedMunch
 
 		public static string GetCurrentFeedDate(DateTime seedDate, FeedType feedType)
 		{
-			return feedType == FeedType.Full ? FirstMondayOfTheCurrentWeek(seedDate) : seedDate.ToString("yyyyMMdd");
+			return feedType == FeedType.Full ? FirstOfTheCurrentMonth(seedDate) : seedDate.ToString("yyyyMMdd");
 		}
 
 		private static string FirstOfTheCurrentMonth(DateTime seedDate)
