@@ -1,28 +1,51 @@
 7d-feedmunch
 ============
 
-A few basic classes to help download and read 7digital feeds
+A few basic classes to help download, read and filter 7digital feeds
 
-The idea 
---------
+SevenDigital.FeedMunch
+==
 
-To create a set of helper classes and a client to enable users to easily download, read, filter and dump our csv feeds into various custom formats.
+The basic syntax is as follows:
 
-### Use case 
-i.e. a use case would be:
+```c#
+FeedMunch.Download
+				.WithConfig(feedMunchConfig)
+				.InvokeAndWriteTo(stream);
+```
 
-* feedCatalog: track
-* feedType: update
-* filter: labelId != 3
-* output: filesystem / mongodb / redis / whatever
+You can fire it without supplying a `FeedMunchConfig`, which uses default settings. 
 
-### Custom Filtering / Dumping 
+Building Custom IFeedStreamWriter
+==
 
-We could offer out of the box filter classes (based on cmd line parameters for example), with the ability for consumers to extend if they wanted more complex functionality. 
+As well as the standard .NET `Stream` object, the `InvokeAndWriteTo` method accepts an `IFeedStreamWriter` with a single `Write` method. This allows you to create custom instructions for writing the results of the feed.
 
-We could also offer out of the box data store conversion classes to enable a user to dump a feed to disk in the simplest case, or to redis or mongodb.
+Currently there are 2 supplied as part of example projects (see below):
 
-FeedMuncher
+`GzippedHttpFeedStreamWriter`
+--
+Takes the `Stream` and writes it to the supplied `HttpResponseBase` output stream as a `GZipStream`, and updates the response headers accordingly
+
+`GzippedFileFeedStreamWriter` 
+--
+Takes the `Stream` and writes it to a file path specified in the `FeedMunchConfig` compressed to gzip.
+
+SevenDigital.Api.Feeds.Filtered
+==
+
+This is an example of a .NET web service that uses the `SevenDigital.FeedMunch` api to write the results to the Http response stream as a gzipped file.
+
+The custom `IFeedStreamWriter` used is `GzippedHttpFeedStreamWriter`.
+
+Feeds can be accessed via the following endpoint template:
+
+`~/{artist|release|track}/{full|updates}?filter={filterexpression}&country={country}`
+
+Where `filterexpression` can be `name=U2` or `licensorId!=1`, but the `=` or `!=` must be urlencoded (`%3D`) 
+and `country` is the 2 letter country code (e.g. country=US), defaulting to GB.
+
+SevenDigital.FeedMuncher.exe
 ===========
 
 `FeedMuncher` is a .NET 4.5 console app that does the following
@@ -41,7 +64,15 @@ Accepts the following parameters:
 * `/output` - A file system path where you want the zipped output feed to be written to
 * `/country` - The country code in ISO format (e.g. GB) of the feed you want.
 * `/existing` - The local path to an existing feed you wish to filter, the values you specify with `/feed` and `catalog` must match the feed that you are passing, otherwise an exception will be thrown.
- 
+
+It uses `GzippedFileFeedStreamWriter` to write the data to a file.
+
+Other Custom FeedStreamWriters
+==
+
+There are currently only 2 supplied output options at the moment, but it wouldn't take a huge leap of imagination to build other types for example a `MongoDbFeedStreamWriter` that writes the Stream produced by `SevenDigital.FeedMunch` to a MongoDb collection, or a `RedisFeedStreamWriter` that does thesame for Redis.
+
+Pull requests accepted!
 
 
 
