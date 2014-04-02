@@ -7,7 +7,7 @@ It allows you to:
 
 * Download the current latest Full or incremental feed with the minumum of fuss
 * Filter feeds using a simple field name filter expression
-* Write the feed to any .NET `Stream` or custom 'IFeedStreamWriter` you wish
+* Write the feed to any .NET `Stream` or custom `IFeedStreamWriter` you wish
 
 SevenDigital.FeedMunch
 ==
