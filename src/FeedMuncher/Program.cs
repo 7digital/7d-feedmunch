@@ -1,4 +1,4 @@
-﻿using FeedMuncher.IOC.StructureMap;
+﻿using SevenDigital.FeedMunch.IOC.StructureMap;
 
 namespace FeedMuncher
 {

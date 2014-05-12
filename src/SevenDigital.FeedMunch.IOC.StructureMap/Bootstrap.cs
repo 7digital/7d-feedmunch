@@ -1,7 +1,6 @@
-﻿using SevenDigital.FeedMunch;
-using StructureMap;
+﻿using StructureMap;
 
-namespace FeedMuncher.IOC.StructureMap
+namespace SevenDigital.FeedMunch.IOC.StructureMap
 {
 	public static class Bootstrap
 	{

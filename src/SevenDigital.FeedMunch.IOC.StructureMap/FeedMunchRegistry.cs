@@ -1,8 +1,7 @@
-﻿using SevenDigital.FeedMunch;
-using SevenDigital.FeedMunch.Configuration;
+﻿using SevenDigital.FeedMunch.Configuration;
 using StructureMap.Configuration.DSL;
 
-namespace FeedMuncher.IOC.StructureMap
+namespace SevenDigital.FeedMunch.IOC.StructureMap
 {
 	public class FeedMunchRegistry : Registry
 	{

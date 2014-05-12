@@ -81,7 +81,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SevenDigital.FeedMunch.IOC.StructureMap\SevenDigital.FeedMunch.IOC.StructureMap.csproj">
       <Project>{b06a9b73-808b-4d4d-9474-d44964ccdbbb}</Project>
-      <Name>FeedMuncher.IOC.StructureMap</Name>
+      <Name>SevenDigital.FeedMunch.IOC.StructureMap</Name>
     </ProjectReference>
     <ProjectReference Include="..\SevenDigital.FeedMunch\SevenDigital.FeedMunch.csproj">
       <Project>{de76ffdf-5b7d-4f59-bb9a-6b727dc1f6c6}</Project>

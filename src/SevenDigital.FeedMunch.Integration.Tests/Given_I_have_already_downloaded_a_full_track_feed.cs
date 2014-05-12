@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using FeedMuncher.IOC.StructureMap;
 using NUnit.Framework;
 using SevenDigital.FeedMunch.Feeds.Schema;
+using SevenDigital.FeedMunch.IOC.StructureMap;
 
 namespace SevenDigital.FeedMunch.Integration.Tests
 {
@@ -33,10 +33,10 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 
 			using (var ms = new MemoryStream())
 			{
-				FeedMuncher.IOC.StructureMap
-						   .FeedMunch.Download
-						   .WithConfig(_feedMunchConfig)
-						   .InvokeAndWriteTo(ms);
+				IOC.StructureMap
+						.FeedMunch.Download
+						.WithConfig(_feedMunchConfig)
+						.InvokeAndWriteTo(ms);
 
 				ms.Position = 0;
 
@@ -51,10 +51,10 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 			
 			using (var ms = new MemoryStream())
 			{
-				FeedMuncher.IOC.StructureMap
-						   .FeedMunch.Download
-						   .WithConfig(_feedMunchConfig)
-						   .InvokeAndWriteTo(ms);
+				IOC.StructureMap
+						.FeedMunch.Download
+						.WithConfig(_feedMunchConfig)
+						.InvokeAndWriteTo(ms);
 
 				ms.Position = 0;
 
@@ -69,10 +69,10 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 
 			using (var ms = new MemoryStream())
 			{
-				FeedMuncher.IOC.StructureMap
-						   .FeedMunch.Download
-						   .WithConfig(_feedMunchConfig)
-						   .InvokeAndWriteTo(ms);
+				IOC.StructureMap
+						.FeedMunch.Download
+						.WithConfig(_feedMunchConfig)
+						.InvokeAndWriteTo(ms);
 
 				ms.Position = 0;
 
@@ -85,7 +85,7 @@ namespace SevenDigital.FeedMunch.Integration.Tests
 		{
 			_feedMunchConfig.Filter = "jabba=Jingle Bells";
 
-			var feedMunch = FeedMuncher.IOC.StructureMap.FeedMunch.Download
+			var feedMunch = IOC.StructureMap.FeedMunch.Download
 				.WithConfig(_feedMunchConfig);
 			using (var ms = new MemoryStream())
 			{

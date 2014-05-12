@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using FeedMuncher.IOC.StructureMap;
 using NUnit.Framework;
 using SevenDigital.FeedMunch.Feeds.Schema;
+using SevenDigital.FeedMunch.IOC.StructureMap;
 
 namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 {
@@ -28,10 +28,10 @@ namespace SevenDigital.FeedMunch.Integration.Tests.EndToEnd
 
 			using (var ms = new MemoryStream())
 			{
-				FeedMuncher.IOC.StructureMap
-						   .FeedMunch.Download
-						   .WithConfig(feedMunchConfig)
-						   .InvokeAndWriteTo(ms);
+				IOC.StructureMap
+						.FeedMunch.Download
+						.WithConfig(feedMunchConfig)
+						.InvokeAndWriteTo(ms);
 
 				ms.Position = 0;
 
