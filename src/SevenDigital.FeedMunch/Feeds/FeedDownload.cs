@@ -31,7 +31,7 @@ namespace SevenDigital.FeedMunch.Feeds
 			};
 			httpClient.DefaultRequestHeaders.Add(HttpRequestHeader.UserAgent.ToString(), "FeedMunch Feed Client");
 
-			var httpResponseMessage = httpClient.GetAsync(currentSignedUrl, HttpCompletionOption.ResponseHeadersRead).Result;
+			var httpResponseMessage = await httpClient.GetAsync(currentSignedUrl, HttpCompletionOption.ResponseHeadersRead);
 			httpResponseMessage.EnsureSuccessStatusCode();
 
 			return await httpResponseMessage.Content.ReadAsStreamAsync();
