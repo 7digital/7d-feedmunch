@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_DeCsv", "_DeCsv", "{2F218B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fluent Api Library", "Fluent Api Library", "{6ACE1632-D472-4234-BC65-315C8A33CFAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedMuncher.IOC.StructureMap", "src\FeedMuncher.IOC.StructureMap\FeedMuncher.IOC.StructureMap.csproj", "{B06A9B73-808B-4D4D-9474-D44964CCDBBB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenDigital.FeedMunch.IOC.StructureMap", "src\SevenDigital.FeedMunch.IOC.StructureMap\SevenDigital.FeedMunch.IOC.StructureMap.csproj", "{B06A9B73-808B-4D4D-9474-D44964CCDBBB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenDigital.FeedMunch", "src\SevenDigital.FeedMunch\SevenDigital.FeedMunch.csproj", "{DE76FFDF-5B7D-4F59-BB9A-6B727DC1F6C6}"
 EndProject

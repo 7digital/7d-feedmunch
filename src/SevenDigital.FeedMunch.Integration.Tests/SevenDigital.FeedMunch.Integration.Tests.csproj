@@ -71,7 +71,7 @@
       <Project>{1FA527BA-8469-4628-90EE-05A7699359AC}</Project>
       <Name>DeCsv</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FeedMuncher.IOC.StructureMap\FeedMuncher.IOC.StructureMap.csproj">
+    <ProjectReference Include="..\SevenDigital.FeedMunch.IOC.StructureMap\SevenDigital.FeedMunch.IOC.StructureMap.csproj">
       <Project>{b06a9b73-808b-4d4d-9474-d44964ccdbbb}</Project>
       <Name>FeedMuncher.IOC.StructureMap</Name>
     </ProjectReference>
