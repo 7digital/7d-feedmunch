@@ -40,15 +40,16 @@ namespace SevenDigital.FeedMunch
 					throw new ArgumentException(String.Format("Chosen filter field is not valid: \"{0}\", remember field names are case sensitive", filter.FieldName));
 				}
 
-				ServiceStack.Text.CsvSerializer.SerializeToStream(headers, outputStream); 
-				while (csvReader.Read())
+				ServiceStack.Text.CsvSerializer.SerializeToStream(headers, outputStream);
+				do
 				{
 					var currentRecord = csvReader.CurrentRecord;
-					if (filterFieldIndex < 0 || filter.ShouldPass(currentRecord[filterFieldIndex]))
+					if (filterFieldIndex < 0 ||
+						filter.ShouldPass(currentRecord[filterFieldIndex]))
 					{
 						ServiceStack.Text.CsvSerializer.SerializeToStream(currentRecord, outputStream);
 					}
-				}
+				} while (csvReader.Read());
 			}
 		}
 	}

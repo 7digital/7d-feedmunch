@@ -59,6 +59,7 @@
     <Compile Include="FeedsHelperTests.cs" />
     <Compile Include="Feeds\FeedsUrlCreatorTests.cs" />
     <Compile Include="Feeds\FeedTests.cs" />
+    <Compile Include="FilterApplicationTests.cs" />
     <Compile Include="FilterParseTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestData\ArtistData.cs" />
