@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using NUnit.Framework;
 using RestSharp;
 using SevenDigital.FeedMunch;
@@ -16,13 +17,14 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 		public void SetUp()
 		{
 			_restClient = new RestClient(Config.ServiceUrl);
+			_restClient.Timeout = 5000;
 		}
 
 		[Test]
-		public void Can_download_artist_full_filtered()
+		public void Can_get_headers_for_artist_full_filtered()
 		{
-
 			var restRequest = new RestRequest("artist/full");
+			
 			restRequest.AddParameter(new Parameter
 			{
 				Name = "filter",
@@ -48,7 +50,7 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 				Type = ParameterType.QueryString,
 				Value = "name=Interpol"
 			});
-			var restResponse = _restClient.Head(restRequest);
+			var restResponse = _restClient.Get(restRequest);
 
 			var currentFeedDate = FeedsDateCreation.GetCurrentFeedDate(DateTime.Now, FeedType.Updates);
 
@@ -58,7 +60,7 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 		}
 
 		[Test]
-		public void Can_download_track_full_filtered()
+		public void Can_get_headers_for_track_full_filtered()
 		{
 			var restRequest = new RestRequest("track/full");
 			restRequest.AddParameter(new Parameter
@@ -86,7 +88,7 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 				Type = ParameterType.QueryString,
 				Value = "version=Album Version"
 			});
-			var restResponse = _restClient.Head(restRequest);
+			var restResponse = _restClient.Get(restRequest);
 
 			var currentFeedDate = FeedsDateCreation.GetCurrentFeedDate(DateTime.Now, FeedType.Updates);
 
@@ -96,7 +98,7 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 		}
 
 		[Test]
-		public void Can_download_release_full_filtered()
+		public void Can_get_headers_for_release_full_filtered()
 		{
 			var restRequest = new RestRequest("release/full");
 			restRequest.AddParameter(new Parameter
@@ -124,7 +126,7 @@ namespace SevenDigital.Api.Feeds.Filtered.Acceptance.Tests
 				Type = ParameterType.QueryString,
 				Value = "licensorId=1"
 			});
-			var restResponse = _restClient.Head(restRequest);
+			var restResponse = _restClient.Get(restRequest);
 
 			var currentFeedDate = FeedsDateCreation.GetCurrentFeedDate(DateTime.Now, FeedType.Updates);
 

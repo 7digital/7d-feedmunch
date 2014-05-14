@@ -31,7 +31,8 @@ namespace SevenDigital.FeedMunch.Feeds
 			};
 			httpClient.DefaultRequestHeaders.Add(HttpRequestHeader.UserAgent.ToString(), "FeedMunch Feed Client");
 
-			var httpResponseMessage = await httpClient.GetAsync(currentSignedUrl, HttpCompletionOption.ResponseHeadersRead);
+			// NOTE: awaiting this is currently causing issues when you try and use this within an ASP.NET IHttpHandler, the GetAsync method hangs. 
+			var httpResponseMessage = httpClient.GetAsync(currentSignedUrl, HttpCompletionOption.ResponseHeadersRead).Result;
 			httpResponseMessage.EnsureSuccessStatusCode();
 
 			return await httpResponseMessage.Content.ReadAsStreamAsync();
