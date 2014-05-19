@@ -9,6 +9,10 @@ It allows you to:
 * Filter feeds using a simple field name filter expression
 * Write the feed to any .NET `Stream` or custom `IFeedStreamWriter` you wish
 
+# Contributing
+
+See https://gist.github.com/gregsochanik/d588a335200abf9d3f3c
+
 ## SevenDigital.FeedMunch
 
 The basic syntax is as follows:
