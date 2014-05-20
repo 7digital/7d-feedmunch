@@ -44,8 +44,7 @@ namespace SevenDigital.FeedMunch
 				do
 				{
 					var currentRecord = csvReader.CurrentRecord;
-					if (filterFieldIndex < 0 ||
-						filter.ShouldPass(currentRecord[filterFieldIndex]))
+					if ((filterFieldIndex < 0 || filter.ShouldPass(currentRecord[filterFieldIndex])) && !csvReader.IsRecordEmpty())
 					{
 						ServiceStack.Text.CsvSerializer.SerializeToStream(currentRecord, outputStream);
 					}
